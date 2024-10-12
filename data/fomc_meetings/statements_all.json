@@ -1,0 +1,357 @@
+[
+    {
+        "Month": "January",
+        "Date": "30-31",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "March",
+        "Date": "19-20*",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "Apr/May",
+        "Date": "30-1",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "June",
+        "Date": "11-12*",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "July",
+        "Date": "30-31",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "September",
+        "Date": "17-18*",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "November",
+        "Date": "6-7",
+        "Statement": ""
+    },
+    {
+        "Month": "December",
+        "Date": "17-18*",
+        "Statement": ""
+    },
+    {
+        "Month": "Jan/Feb",
+        "Date": "31-1",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "March",
+        "Date": "21-22*",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "May",
+        "Date": "2-3",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "June",
+        "Date": "13-14*",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "July",
+        "Date": "25-26",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "September",
+        "Date": "19-20*",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "Oct/Nov",
+        "Date": "31-1",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "December",
+        "Date": "12-13*",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "January",
+        "Date": "25-26",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "March",
+        "Date": "15-16*",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "May",
+        "Date": "3-4",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "June",
+        "Date": "14-15*",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "July",
+        "Date": "26-27",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "September",
+        "Date": "20-21*",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "November",
+        "Date": "1-2",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "December",
+        "Date": "13-14*",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "January",
+        "Date": "26-27",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "March",
+        "Date": "16-17*",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "April",
+        "Date": "27-28",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "June",
+        "Date": "15-16*",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "July",
+        "Date": "27-28",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "September",
+        "Date": "21-22*",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "November",
+        "Date": "2-3",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "December",
+        "Date": "14-15*",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "January",
+        "Date": "28-29",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "March",
+        "Date": "3 (unscheduled)",
+        "Statement": "Statement:PDF | HTML (Released March 3, 2020)\nImplementation Note"
+    },
+    {
+        "Month": "March",
+        "Date": "15 (unscheduled)",
+        "Statement": "Statement:PDF | HTML (Released March 15, 2020)\nImplementation Note"
+    },
+    {
+        "Month": "March",
+        "Date": "17-18* (cancelled)",
+        "Statement": ""
+    },
+    {
+        "Month": "March",
+        "Date": "19 (notation vote)",
+        "Statement": "Press Release"
+    },
+    {
+        "Month": "March",
+        "Date": "23 (notation vote)",
+        "Statement": "Statement:PDF | HTML (Released March 23, 2020)"
+    },
+    {
+        "Month": "March",
+        "Date": "31 (notation vote)",
+        "Statement": "Press Release"
+    },
+    {
+        "Month": "April",
+        "Date": "28-29",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "June",
+        "Date": "9-10*",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "July",
+        "Date": "28-29",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "August",
+        "Date": "27 (notation vote)",
+        "Statement": "Statement on Longer-Run Goals and Monetary Policy Strategy"
+    },
+    {
+        "Month": "September",
+        "Date": "15-16*",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "November",
+        "Date": "4-5",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "December",
+        "Date": "15-16*",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "January",
+        "Date": "29-30",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "March",
+        "Date": "19-20*",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "April/May",
+        "Date": "30-1",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "June",
+        "Date": "18-19*",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "July",
+        "Date": "30-31",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "September",
+        "Date": "17-18*",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "October",
+        "Date": "4 (unscheduled)",
+        "Statement": "Statement:PDF | HTML (Released October 11, 2019)"
+    },
+    {
+        "Month": "October",
+        "Date": "29-30",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "December",
+        "Date": "10-11*",
+        "Statement": "Statement:\nPDF | HTML\nImplementation Note"
+    },
+    {
+        "Month": "January",
+        "Date": "28-29",
+        "Statement": ""
+    },
+    {
+        "Month": "March",
+        "Date": "18-19*",
+        "Statement": ""
+    },
+    {
+        "Month": "May",
+        "Date": "6-7",
+        "Statement": ""
+    },
+    {
+        "Month": "June",
+        "Date": "17-18*",
+        "Statement": ""
+    },
+    {
+        "Month": "July",
+        "Date": "29-30",
+        "Statement": ""
+    },
+    {
+        "Month": "September",
+        "Date": "16-17*",
+        "Statement": ""
+    },
+    {
+        "Month": "October",
+        "Date": "28-29",
+        "Statement": ""
+    },
+    {
+        "Month": "December",
+        "Date": "9-10*",
+        "Statement": ""
+    },
+    {
+        "Month": "January",
+        "Date": "27-28",
+        "Statement": ""
+    },
+    {
+        "Month": "March",
+        "Date": "17-18*",
+        "Statement": ""
+    },
+    {
+        "Month": "April",
+        "Date": "28-29",
+        "Statement": ""
+    },
+    {
+        "Month": "June",
+        "Date": "16-17*",
+        "Statement": ""
+    },
+    {
+        "Month": "July",
+        "Date": "28-29",
+        "Statement": ""
+    },
+    {
+        "Month": "September",
+        "Date": "15-16*",
+        "Statement": ""
+    },
+    {
+        "Month": "October",
+        "Date": "27-28",
+        "Statement": ""
+    },
+    {
+        "Month": "December",
+        "Date": "8-9*",
+        "Statement": ""
+    }
+]
