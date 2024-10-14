@@ -17,3 +17,62 @@
 2024-10-12 10:15:37,408 - my_logger - INFO - Skip March 07, 2024 Brief Remarks About the U.S. Economy and Monetary Policy
 2024-10-12 10:15:37,408 - my_logger - INFO - Skip February 29, 2024 Building Financial System Resilience
 2024-10-12 10:15:37,409 - my_logger - INFO - Skip February 06, 2024 Views on the Economy and Monetary Policy: In a Good Place and Ensuring We Reach an Even Better One
+2024-10-12 17:59:51,005 - ScraperLogger - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-12 17:59:51,007 - ScraperLogger - INFO - Skip speech Loretta J. Mester May 28, 2024 Forward Guidance and Monetary Policy Communications: Use Your Words and Connect the Dots cause' it's earlier than start_date.
+2024-10-12 17:59:51,008 - ScraperLogger - INFO - Skip speech Loretta J. Mester May 16, 2024 Returning to Price Stability: An Update on the Economy and Monetary Policy cause' it's earlier than start_date.
+2024-10-12 17:59:51,009 - ScraperLogger - INFO - Skip speech Loretta J. Mester April 02, 2024 An Update on the U.S. Economy and Monetary Policy cause' it's earlier than start_date.
+2024-10-12 17:59:51,011 - ScraperLogger - INFO - Skip speech Loretta J. Mester March 07, 2024 Brief Remarks About the U.S. Economy and Monetary Policy cause' it's earlier than start_date.
+2024-10-12 17:59:51,011 - ScraperLogger - INFO - Skip speech Loretta J. Mester February 29, 2024 Building Financial System Resilience cause' it's earlier than start_date.
+2024-10-12 17:59:51,012 - ScraperLogger - INFO - Skip speech Loretta J. Mester February 06, 2024 Views on the Economy and Monetary Policy: In a Good Place and Ensuring We Reach an Even Better One cause' it's earlier than start_date.
+2024-10-12 18:01:18,054 - ScraperLogger - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-12 18:01:18,055 - ScraperLogger - INFO - Skip speech Loretta J. Mester May 28, 2024 Forward Guidance and Monetary Policy Communications: Use Your Words and Connect the Dots cause' it's earlier than start_date.
+2024-10-12 18:01:18,055 - ScraperLogger - INFO - Skip speech Loretta J. Mester May 16, 2024 Returning to Price Stability: An Update on the Economy and Monetary Policy cause' it's earlier than start_date.
+2024-10-12 18:01:18,056 - ScraperLogger - INFO - Skip speech Loretta J. Mester April 02, 2024 An Update on the U.S. Economy and Monetary Policy cause' it's earlier than start_date.
+2024-10-12 18:01:18,056 - ScraperLogger - INFO - Skip speech Loretta J. Mester March 07, 2024 Brief Remarks About the U.S. Economy and Monetary Policy cause' it's earlier than start_date.
+2024-10-12 18:01:18,056 - ScraperLogger - INFO - Skip speech Loretta J. Mester February 29, 2024 Building Financial System Resilience cause' it's earlier than start_date.
+2024-10-12 18:01:18,057 - ScraperLogger - INFO - Skip speech Loretta J. Mester February 06, 2024 Views on the Economy and Monetary Policy: In a Good Place and Ensuring We Reach an Even Better One cause' it's earlier than start_date.
+2024-10-12 18:03:16,241 - ScraperLogger - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-12 18:03:16,242 - ScraperLogger - INFO - Skip speech Loretta J. Mester May 28, 2024 Forward Guidance and Monetary Policy Communications: Use Your Words and Connect the Dots cause' it's earlier than start_date.
+2024-10-12 18:03:16,243 - ScraperLogger - INFO - Skip speech Loretta J. Mester May 16, 2024 Returning to Price Stability: An Update on the Economy and Monetary Policy cause' it's earlier than start_date.
+2024-10-12 18:03:16,243 - ScraperLogger - INFO - Skip speech Loretta J. Mester April 02, 2024 An Update on the U.S. Economy and Monetary Policy cause' it's earlier than start_date.
+2024-10-12 18:03:16,243 - ScraperLogger - INFO - Skip speech Loretta J. Mester March 07, 2024 Brief Remarks About the U.S. Economy and Monetary Policy cause' it's earlier than start_date.
+2024-10-12 18:03:16,244 - ScraperLogger - INFO - Skip speech Loretta J. Mester February 29, 2024 Building Financial System Resilience cause' it's earlier than start_date.
+2024-10-12 18:03:16,244 - ScraperLogger - INFO - Skip speech Loretta J. Mester February 06, 2024 Views on the Economy and Monetary Policy: In a Good Place and Ensuring We Reach an Even Better One cause' it's earlier than start_date.
+2024-10-12 18:06:13,183 - ScraperLogger - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-12 18:06:13,185 - ScraperLogger - INFO - Skip speech Loretta J. Mester May 28, 2024 Forward Guidance and Monetary Policy Communications: Use Your Words and Connect the Dots cause' it's earlier than start_date.
+2024-10-12 18:06:13,185 - ScraperLogger - INFO - Skip speech Loretta J. Mester May 16, 2024 Returning to Price Stability: An Update on the Economy and Monetary Policy cause' it's earlier than start_date.
+2024-10-12 18:06:13,185 - ScraperLogger - INFO - Skip speech Loretta J. Mester April 02, 2024 An Update on the U.S. Economy and Monetary Policy cause' it's earlier than start_date.
+2024-10-12 18:06:13,186 - ScraperLogger - INFO - Skip speech Loretta J. Mester March 07, 2024 Brief Remarks About the U.S. Economy and Monetary Policy cause' it's earlier than start_date.
+2024-10-12 18:06:13,186 - ScraperLogger - INFO - Skip speech Loretta J. Mester February 29, 2024 Building Financial System Resilience cause' it's earlier than start_date.
+2024-10-12 18:06:13,187 - ScraperLogger - INFO - Skip speech Loretta J. Mester February 06, 2024 Views on the Economy and Monetary Policy: In a Good Place and Ensuring We Reach an Even Better One cause' it's earlier than start_date.
+2024-10-12 18:09:01,106 - ScraperLogger - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-12 18:09:01,107 - ScraperLogger - INFO - Skip speech Loretta J. Mester May 28, 2024 Forward Guidance and Monetary Policy Communications: Use Your Words and Connect the Dots cause' it's earlier than start_date.
+2024-10-12 18:09:01,108 - ScraperLogger - INFO - Skip speech Loretta J. Mester May 16, 2024 Returning to Price Stability: An Update on the Economy and Monetary Policy cause' it's earlier than start_date.
+2024-10-12 18:09:01,109 - ScraperLogger - INFO - Skip speech Loretta J. Mester April 02, 2024 An Update on the U.S. Economy and Monetary Policy cause' it's earlier than start_date.
+2024-10-12 18:09:01,109 - ScraperLogger - INFO - Skip speech Loretta J. Mester March 07, 2024 Brief Remarks About the U.S. Economy and Monetary Policy cause' it's earlier than start_date.
+2024-10-12 18:09:01,109 - ScraperLogger - INFO - Skip speech Loretta J. Mester February 29, 2024 Building Financial System Resilience cause' it's earlier than start_date.
+2024-10-12 18:09:01,109 - ScraperLogger - INFO - Skip speech Loretta J. Mester February 06, 2024 Views on the Economy and Monetary Policy: In a Good Place and Ensuring We Reach an Even Better One cause' it's earlier than start_date.
+2024-10-12 18:10:37,538 - ScraperLogger - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-12 18:10:37,540 - ScraperLogger - INFO - Skip speech Loretta J. Mester May 28, 2024 Forward Guidance and Monetary Policy Communications: Use Your Words and Connect the Dots cause' it's earlier than start_date.
+2024-10-12 18:10:37,541 - ScraperLogger - INFO - Skip speech Loretta J. Mester May 16, 2024 Returning to Price Stability: An Update on the Economy and Monetary Policy cause' it's earlier than start_date.
+2024-10-12 18:10:37,541 - ScraperLogger - INFO - Skip speech Loretta J. Mester April 02, 2024 An Update on the U.S. Economy and Monetary Policy cause' it's earlier than start_date.
+2024-10-12 18:10:37,541 - ScraperLogger - INFO - Skip speech Loretta J. Mester March 07, 2024 Brief Remarks About the U.S. Economy and Monetary Policy cause' it's earlier than start_date.
+2024-10-12 18:10:37,542 - ScraperLogger - INFO - Skip speech Loretta J. Mester February 29, 2024 Building Financial System Resilience cause' it's earlier than start_date.
+2024-10-12 18:10:37,542 - ScraperLogger - INFO - Skip speech Loretta J. Mester February 06, 2024 Views on the Economy and Monetary Policy: In a Good Place and Ensuring We Reach an Even Better One cause' it's earlier than start_date.
+2024-10-12 18:11:23,535 - ScraperLogger - INFO - 2024 updated.
+2024-10-12 18:12:06,986 - ScraperLogger - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-12 18:12:49,262 - ScraperLogger - INFO - 2024 updated.
+2024-10-12 18:13:58,916 - ScraperLogger - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-12 18:14:58,771 - ScraperLogger - WARNING - Extract Loretta J. Mester October 02, 2023 A Timely Journey Back to Price Stability: Are We There Yet? No. Will We Get There? Yes.
+2024-10-12 18:16:03,604 - ScraperLogger - WARNING - Extract Edward S. Knotek II November 15, 2022 Get to Know the Cleveland Fed¡¯s Center for Inflation Research - YouTube
+2024-10-12 18:16:22,454 - ScraperLogger - WARNING - Extract Loretta J. Mester October 06, 2022 Economists on the Economy
+2024-10-12 18:16:34,550 - ScraperLogger - WARNING - Extract Loretta J. Mester September 29, 2022 Inflation: Drivers and Dynamics Conference 2022
+2024-10-12 18:18:05,428 - ScraperLogger - WARNING - Extract Loretta J. Mester November 30, 2021 President Mester in conversation with Federal Reserve Vice Chair Clarida
+2024-10-12 18:18:11,907 - ScraperLogger - WARNING - Extract Loretta J. Mester October 07, 2021 President Mester in conversation with ECB's Lane
+2024-10-12 18:18:23,580 - ScraperLogger - WARNING - Extract Loretta J. Mester October 01, 2021 President Mester in Shadow Open Market Committee panel discussion
+2024-10-12 18:25:02,416 - ScraperLogger - WARNING - Extract Loretta J. Mester March 02, 2017 Athena Power Talk with Loretta J. Mester
+2024-10-12 18:25:32,742 - ScraperLogger - WARNING - Extract Loretta J. Mester October 07, 2016 Acknowledging Uncertainty
+2024-10-12 18:26:14,819 - ScraperLogger - WARNING - Extract Loretta J. Mester September 23, 2016 Presidents¡¯ Perspectives: The Fed¡¯s Role in Transforming Our Communities
+2024-10-12 18:27:50,688 - ScraperLogger - WARNING - Extract Loretta J. Mester March 04, 2016 Discussion of "Cost-Benefit Analysis of Leaning Against the Wind: Are Costs Larger Also with Less Effective Macroprudential Policy?"
+2024-10-12 18:28:18,915 - ScraperLogger - WARNING - Extract Loretta J. Mester October 15, 2015 Long-Run Economic Growth
+2024-10-12 18:30:01,900 - ScraperLogger - INFO - 2024 updated.

@@ -5,7 +5,7 @@
 @Time    :   2024/09/29 17:42:47
 @Author  :   wbzhang
 @Version :   1.0
-@Desc    :   None
+@Desc    :   公共方法
 """
 
 from datetime import datetime
