@@ -76,3 +76,240 @@
 2024-10-12 18:27:50,688 - ScraperLogger - WARNING - Extract Loretta J. Mester March 04, 2016 Discussion of "Cost-Benefit Analysis of Leaning Against the Wind: Are Costs Larger Also with Less Effective Macroprudential Policy?"
 2024-10-12 18:28:18,915 - ScraperLogger - WARNING - Extract Loretta J. Mester October 15, 2015 Long-Run Economic Growth
 2024-10-12 18:30:01,900 - ScraperLogger - INFO - 2024 updated.
+2024-10-23 14:52:43,507 - ScraperLogger - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-23 14:52:43,510 - ScraperLogger - INFO - Skip speech Patrick T. Harker October 22, 2024 Ever Evolving, Never Irrelevant: The Philadelphia Fed¡¯s Fintech Conference cause' it's earlier than start_date.
+2024-10-23 14:52:43,511 - ScraperLogger - INFO - Skip speech Patrick T. Harker October 22, 2024 Ever Evolving, Never Irrelevant: The Philadelphia Fed¡¯s Fintech Conference cause' it's earlier than start_date.
+2024-10-23 14:52:43,512 - ScraperLogger - INFO - Skip speech Patrick T. Harker October 22, 2024 Ever Evolving, Never Irrelevant: The Philadelphia Fed¡¯s Fintech Conference cause' it's earlier than start_date.
+2024-10-23 14:52:43,513 - ScraperLogger - INFO - Skip speech Patrick T. Harker October 22, 2024 Ever Evolving, Never Irrelevant: The Philadelphia Fed¡¯s Fintech Conference cause' it's earlier than start_date.
+2024-10-23 14:52:43,513 - ScraperLogger - INFO - Skip speech Patrick T. Harker October 22, 2024 Ever Evolving, Never Irrelevant: The Philadelphia Fed¡¯s Fintech Conference cause' it's earlier than start_date.
+2024-10-23 14:52:43,515 - ScraperLogger - INFO - Skip speech Patrick T. Harker October 22, 2024 Ever Evolving, Never Irrelevant: The Philadelphia Fed¡¯s Fintech Conference cause' it's earlier than start_date.
+2024-10-23 14:52:43,516 - ScraperLogger - INFO - Skip speech Patrick T. Harker October 22, 2024 Ever Evolving, Never Irrelevant: The Philadelphia Fed¡¯s Fintech Conference cause' it's earlier than start_date.
+2024-10-23 14:52:43,517 - ScraperLogger - INFO - Skip speech Patrick T. Harker October 22, 2024 Ever Evolving, Never Irrelevant: The Philadelphia Fed¡¯s Fintech Conference cause' it's earlier than start_date.
+2024-10-23 14:52:43,518 - ScraperLogger - INFO - Skip speech Patrick T. Harker October 22, 2024 Ever Evolving, Never Irrelevant: The Philadelphia Fed¡¯s Fintech Conference cause' it's earlier than start_date.
+2024-10-23 14:52:43,518 - ScraperLogger - INFO - Skip speech Patrick T. Harker October 22, 2024 Ever Evolving, Never Irrelevant: The Philadelphia Fed¡¯s Fintech Conference cause' it's earlier than start_date.
+2024-10-23 14:52:43,519 - ScraperLogger - INFO - Skip speech Patrick T. Harker October 22, 2024 Ever Evolving, Never Irrelevant: The Philadelphia Fed¡¯s Fintech Conference cause' it's earlier than start_date.
+2024-10-23 14:52:43,520 - ScraperLogger - INFO - Skip speech Patrick T. Harker October 22, 2024 Ever Evolving, Never Irrelevant: The Philadelphia Fed¡¯s Fintech Conference cause' it's earlier than start_date.
+2024-10-23 14:52:43,521 - ScraperLogger - ERROR - JSON update failed. Unknown object type: <class 'NoneType'>
+2024-10-23 14:52:43,523 - ScraperLogger - ERROR - JSON update failed. Unknown object type: <class 'NoneType'>
+2024-10-23 14:57:18,386 - ScraperLogger - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-23 14:57:32,412 - ScraperLogger - INFO - Skip speech Patrick T. Harker October 22, 2024 Ever Evolving, Never Irrelevant: The Philadelphia Fed¡¯s Fintech Conference cause' it's earlier than start_date.
+2024-10-23 14:58:07,560 - ScraperLogger - INFO - Skip speech Patrick T. Harker October 22, 2024 Ever Evolving, Never Irrelevant: The Philadelphia Fed¡¯s Fintech Conference cause' it's earlier than start_date.
+2024-10-23 14:58:23,220 - ScraperLogger - INFO - Skip speech Patrick T. Harker October 22, 2024 Ever Evolving, Never Irrelevant: The Philadelphia Fed¡¯s Fintech Conference cause' it's earlier than start_date.
+2024-10-23 14:58:23,222 - ScraperLogger - INFO - Skip speech Patrick T. Harker October 22, 2024 Ever Evolving, Never Irrelevant: The Philadelphia Fed¡¯s Fintech Conference cause' it's earlier than start_date.
+2024-10-23 14:58:23,223 - ScraperLogger - INFO - Skip speech Patrick T. Harker October 22, 2024 Ever Evolving, Never Irrelevant: The Philadelphia Fed¡¯s Fintech Conference cause' it's earlier than start_date.
+2024-10-23 14:58:23,223 - ScraperLogger - INFO - Skip speech Patrick T. Harker October 22, 2024 Ever Evolving, Never Irrelevant: The Philadelphia Fed¡¯s Fintech Conference cause' it's earlier than start_date.
+2024-10-23 14:58:23,224 - ScraperLogger - INFO - Skip speech Patrick T. Harker October 22, 2024 Ever Evolving, Never Irrelevant: The Philadelphia Fed¡¯s Fintech Conference cause' it's earlier than start_date.
+2024-10-23 14:58:23,225 - ScraperLogger - INFO - Skip speech Patrick T. Harker October 22, 2024 Ever Evolving, Never Irrelevant: The Philadelphia Fed¡¯s Fintech Conference cause' it's earlier than start_date.
+2024-10-23 14:58:23,226 - ScraperLogger - INFO - Skip speech Patrick T. Harker October 22, 2024 Ever Evolving, Never Irrelevant: The Philadelphia Fed¡¯s Fintech Conference cause' it's earlier than start_date.
+2024-10-23 14:58:23,226 - ScraperLogger - INFO - Skip speech Patrick T. Harker October 22, 2024 Ever Evolving, Never Irrelevant: The Philadelphia Fed¡¯s Fintech Conference cause' it's earlier than start_date.
+2024-10-23 14:58:23,227 - ScraperLogger - INFO - Skip speech Patrick T. Harker October 22, 2024 Ever Evolving, Never Irrelevant: The Philadelphia Fed¡¯s Fintech Conference cause' it's earlier than start_date.
+2024-10-23 14:58:23,228 - ScraperLogger - INFO - Skip speech Patrick T. Harker October 22, 2024 Ever Evolving, Never Irrelevant: The Philadelphia Fed¡¯s Fintech Conference cause' it's earlier than start_date.
+2024-10-23 14:58:23,229 - ScraperLogger - ERROR - JSON update failed. Unknown object type: <class 'NoneType'>
+2024-10-23 14:58:23,231 - ScraperLogger - ERROR - JSON update failed. Unknown object type: <class 'NoneType'>
+2024-10-23 15:08:40,445 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/philadelphia_fed_speeches/philadelphia_speeches_2024.json created.
+2024-10-23 15:08:42,319 - ScraperLogger - WARNING - Extract Patrick T. Harker October 16, 2023 ¡°Doing Nothing¡± Is Still Doing a Lot
+2024-10-23 15:08:42,680 - ScraperLogger - WARNING - Extract Patrick T. Harker October 16, 2023 ¡°Doing Nothing¡± Is Still Doing a Lot
+2024-10-23 15:08:42,958 - ScraperLogger - WARNING - Extract Patrick T. Harker October 16, 2023 ¡°Doing Nothing¡± Is Still Doing a Lot
+2024-10-23 15:08:43,245 - ScraperLogger - WARNING - Extract Patrick T. Harker October 16, 2023 ¡°Doing Nothing¡± Is Still Doing a Lot
+2024-10-23 15:08:43,499 - ScraperLogger - WARNING - Extract Patrick T. Harker October 16, 2023 ¡°Doing Nothing¡± Is Still Doing a Lot
+2024-10-23 15:08:43,753 - ScraperLogger - WARNING - Extract Patrick T. Harker October 16, 2023 ¡°Doing Nothing¡± Is Still Doing a Lot
+2024-10-23 15:08:44,041 - ScraperLogger - WARNING - Extract Patrick T. Harker October 16, 2023 ¡°Doing Nothing¡± Is Still Doing a Lot
+2024-10-23 15:08:44,357 - ScraperLogger - WARNING - Extract Patrick T. Harker October 16, 2023 ¡°Doing Nothing¡± Is Still Doing a Lot
+2024-10-23 15:08:44,620 - ScraperLogger - WARNING - Extract Patrick T. Harker October 16, 2023 ¡°Doing Nothing¡± Is Still Doing a Lot
+2024-10-23 15:08:44,887 - ScraperLogger - WARNING - Extract Patrick T. Harker October 16, 2023 ¡°Doing Nothing¡± Is Still Doing a Lot
+2024-10-23 15:08:45,189 - ScraperLogger - WARNING - Extract Patrick T. Harker October 16, 2023 ¡°Doing Nothing¡± Is Still Doing a Lot
+2024-10-23 15:08:45,469 - ScraperLogger - WARNING - Extract Patrick T. Harker October 16, 2023 ¡°Doing Nothing¡± Is Still Doing a Lot
+2024-10-23 15:08:47,055 - ScraperLogger - WARNING - Extract Patrick T. Harker January 13, 2023 Survey Results on Economic Conditions
+2024-10-23 15:08:47,338 - ScraperLogger - WARNING - Extract Patrick T. Harker January 13, 2023 Survey Results on Economic Conditions
+2024-10-23 15:08:47,637 - ScraperLogger - WARNING - Extract Patrick T. Harker January 13, 2023 Survey Results on Economic Conditions
+2024-10-23 15:08:47,894 - ScraperLogger - WARNING - Extract Patrick T. Harker January 13, 2023 Survey Results on Economic Conditions
+2024-10-23 15:08:48,248 - ScraperLogger - WARNING - Extract Patrick T. Harker January 13, 2023 Survey Results on Economic Conditions
+2024-10-23 15:08:48,511 - ScraperLogger - WARNING - Extract Patrick T. Harker January 13, 2023 Survey Results on Economic Conditions
+2024-10-23 15:08:48,756 - ScraperLogger - WARNING - Extract Patrick T. Harker January 13, 2023 Survey Results on Economic Conditions
+2024-10-23 15:08:49,014 - ScraperLogger - WARNING - Extract Patrick T. Harker January 13, 2023 Survey Results on Economic Conditions
+2024-10-23 15:08:49,293 - ScraperLogger - WARNING - Extract Patrick T. Harker January 13, 2023 Survey Results on Economic Conditions
+2024-10-23 15:08:49,700 - ScraperLogger - WARNING - Extract Patrick T. Harker January 13, 2023 Survey Results on Economic Conditions
+2024-10-23 15:08:50,001 - ScraperLogger - WARNING - Extract Patrick T. Harker January 13, 2023 Survey Results on Economic Conditions
+2024-10-23 15:08:50,424 - ScraperLogger - WARNING - Extract Patrick T. Harker January 13, 2023 Survey Results on Economic Conditions
+2024-10-23 15:08:50,426 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/philadelphia_fed_speeches/philadelphia_speeches_2023.json created.
+2024-10-23 15:08:51,968 - ScraperLogger - WARNING - Extract Patrick T. Harker January 14, 2022 Survey Results on the State of the Economy
+2024-10-23 15:08:52,241 - ScraperLogger - WARNING - Extract Patrick T. Harker January 14, 2022 Survey Results on the State of the Economy
+2024-10-23 15:08:52,497 - ScraperLogger - WARNING - Extract Patrick T. Harker January 14, 2022 Survey Results on the State of the Economy
+2024-10-23 15:08:52,761 - ScraperLogger - WARNING - Extract Patrick T. Harker January 14, 2022 Survey Results on the State of the Economy
+2024-10-23 15:08:53,140 - ScraperLogger - WARNING - Extract Patrick T. Harker January 14, 2022 Survey Results on the State of the Economy
+2024-10-23 15:08:53,413 - ScraperLogger - WARNING - Extract Patrick T. Harker January 14, 2022 Survey Results on the State of the Economy
+2024-10-23 15:08:53,679 - ScraperLogger - WARNING - Extract Patrick T. Harker January 14, 2022 Survey Results on the State of the Economy
+2024-10-23 15:08:53,985 - ScraperLogger - WARNING - Extract Patrick T. Harker January 14, 2022 Survey Results on the State of the Economy
+2024-10-23 15:08:54,256 - ScraperLogger - WARNING - Extract Patrick T. Harker January 14, 2022 Survey Results on the State of the Economy
+2024-10-23 15:08:54,617 - ScraperLogger - WARNING - Extract Patrick T. Harker January 14, 2022 Survey Results on the State of the Economy
+2024-10-23 15:08:54,927 - ScraperLogger - WARNING - Extract Patrick T. Harker January 14, 2022 Survey Results on the State of the Economy
+2024-10-23 15:08:55,193 - ScraperLogger - WARNING - Extract Patrick T. Harker January 14, 2022 Survey Results on the State of the Economy
+2024-10-23 15:08:55,194 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/philadelphia_fed_speeches/philadelphia_speeches_2022.json created.
+2024-10-23 15:08:56,736 - ScraperLogger - WARNING - Extract Patrick T. Harker June 02, 2021 Supporting Small Business Owners of Color
+2024-10-23 15:08:57,037 - ScraperLogger - WARNING - Extract Patrick T. Harker June 02, 2021 Supporting Small Business Owners of Color
+2024-10-23 15:08:57,356 - ScraperLogger - WARNING - Extract Patrick T. Harker June 02, 2021 Supporting Small Business Owners of Color
+2024-10-23 15:08:57,634 - ScraperLogger - WARNING - Extract Patrick T. Harker June 02, 2021 Supporting Small Business Owners of Color
+2024-10-23 15:08:57,913 - ScraperLogger - WARNING - Extract Patrick T. Harker June 02, 2021 Supporting Small Business Owners of Color
+2024-10-23 15:08:58,166 - ScraperLogger - WARNING - Extract Patrick T. Harker June 02, 2021 Supporting Small Business Owners of Color
+2024-10-23 15:08:58,429 - ScraperLogger - WARNING - Extract Patrick T. Harker June 02, 2021 Supporting Small Business Owners of Color
+2024-10-23 15:08:58,681 - ScraperLogger - WARNING - Extract Patrick T. Harker June 02, 2021 Supporting Small Business Owners of Color
+2024-10-23 15:08:58,991 - ScraperLogger - WARNING - Extract Patrick T. Harker June 02, 2021 Supporting Small Business Owners of Color
+2024-10-23 15:08:59,308 - ScraperLogger - WARNING - Extract Patrick T. Harker June 02, 2021 Supporting Small Business Owners of Color
+2024-10-23 15:08:59,560 - ScraperLogger - WARNING - Extract Patrick T. Harker June 02, 2021 Supporting Small Business Owners of Color
+2024-10-23 15:08:59,873 - ScraperLogger - WARNING - Extract Patrick T. Harker June 02, 2021 Supporting Small Business Owners of Color
+2024-10-23 15:08:59,874 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/philadelphia_fed_speeches/philadelphia_speeches_2021.json created.
+2024-10-23 15:09:00,972 - ScraperLogger - WARNING - Extract Patrick T. Harker September 29, 2020 The Economy, the Pandemic, and Machine Learning
+2024-10-23 15:09:01,240 - ScraperLogger - WARNING - Extract Patrick T. Harker September 29, 2020 The Economy, the Pandemic, and Machine Learning
+2024-10-23 15:09:01,524 - ScraperLogger - WARNING - Extract Patrick T. Harker September 29, 2020 The Economy, the Pandemic, and Machine Learning
+2024-10-23 15:09:01,784 - ScraperLogger - WARNING - Extract Patrick T. Harker September 29, 2020 The Economy, the Pandemic, and Machine Learning
+2024-10-23 15:09:02,047 - ScraperLogger - WARNING - Extract Patrick T. Harker September 29, 2020 The Economy, the Pandemic, and Machine Learning
+2024-10-23 15:09:02,307 - ScraperLogger - WARNING - Extract Patrick T. Harker September 29, 2020 The Economy, the Pandemic, and Machine Learning
+2024-10-23 15:09:02,612 - ScraperLogger - WARNING - Extract Patrick T. Harker September 29, 2020 The Economy, the Pandemic, and Machine Learning
+2024-10-23 15:09:03,190 - ScraperLogger - WARNING - Extract Patrick T. Harker September 29, 2020 The Economy, the Pandemic, and Machine Learning
+2024-10-23 15:09:04,112 - ScraperLogger - WARNING - Extract Patrick T. Harker September 29, 2020 The Economy, the Pandemic, and Machine Learning
+2024-10-23 15:09:04,797 - ScraperLogger - WARNING - Extract Patrick T. Harker September 29, 2020 The Economy, the Pandemic, and Machine Learning
+2024-10-23 15:09:05,455 - ScraperLogger - WARNING - Extract Patrick T. Harker September 29, 2020 The Economy, the Pandemic, and Machine Learning
+2024-10-23 15:09:05,979 - ScraperLogger - WARNING - Extract Patrick T. Harker September 29, 2020 The Economy, the Pandemic, and Machine Learning
+2024-10-23 15:09:05,981 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/philadelphia_fed_speeches/philadelphia_speeches_2020.json created.
+2024-10-23 15:09:08,999 - ScraperLogger - WARNING - Extract Patrick T. Harker October 01, 2019 2019 Community Banking in the 21st Century Research and Policy Conference
+2024-10-23 15:09:09,326 - ScraperLogger - WARNING - Extract Patrick T. Harker October 01, 2019 2019 Community Banking in the 21st Century Research and Policy Conference
+2024-10-23 15:09:09,652 - ScraperLogger - WARNING - Extract Patrick T. Harker October 01, 2019 2019 Community Banking in the 21st Century Research and Policy Conference
+2024-10-23 15:09:09,932 - ScraperLogger - WARNING - Extract Patrick T. Harker October 01, 2019 2019 Community Banking in the 21st Century Research and Policy Conference
+2024-10-23 15:09:10,225 - ScraperLogger - WARNING - Extract Patrick T. Harker October 01, 2019 2019 Community Banking in the 21st Century Research and Policy Conference
+2024-10-23 15:09:10,531 - ScraperLogger - WARNING - Extract Patrick T. Harker October 01, 2019 2019 Community Banking in the 21st Century Research and Policy Conference
+2024-10-23 15:09:10,805 - ScraperLogger - WARNING - Extract Patrick T. Harker October 01, 2019 2019 Community Banking in the 21st Century Research and Policy Conference
+2024-10-23 15:09:11,089 - ScraperLogger - WARNING - Extract Patrick T. Harker October 01, 2019 2019 Community Banking in the 21st Century Research and Policy Conference
+2024-10-23 15:09:11,364 - ScraperLogger - WARNING - Extract Patrick T. Harker October 01, 2019 2019 Community Banking in the 21st Century Research and Policy Conference
+2024-10-23 15:09:11,644 - ScraperLogger - WARNING - Extract Patrick T. Harker October 01, 2019 2019 Community Banking in the 21st Century Research and Policy Conference
+2024-10-23 15:09:11,922 - ScraperLogger - WARNING - Extract Patrick T. Harker October 01, 2019 2019 Community Banking in the 21st Century Research and Policy Conference
+2024-10-23 15:09:12,218 - ScraperLogger - WARNING - Extract Patrick T. Harker October 01, 2019 2019 Community Banking in the 21st Century Research and Policy Conference
+2024-10-23 15:09:13,980 - ScraperLogger - WARNING - Extract Patrick T. Harker February 27, 2019 An Economic Outlook: 2019 Inquirer Influencers of Finance
+2024-10-23 15:09:14,254 - ScraperLogger - WARNING - Extract Patrick T. Harker February 27, 2019 An Economic Outlook: 2019 Inquirer Influencers of Finance
+2024-10-23 15:09:14,641 - ScraperLogger - WARNING - Extract Patrick T. Harker February 27, 2019 An Economic Outlook: 2019 Inquirer Influencers of Finance
+2024-10-23 15:09:14,911 - ScraperLogger - WARNING - Extract Patrick T. Harker February 27, 2019 An Economic Outlook: 2019 Inquirer Influencers of Finance
+2024-10-23 15:09:15,180 - ScraperLogger - WARNING - Extract Patrick T. Harker February 27, 2019 An Economic Outlook: 2019 Inquirer Influencers of Finance
+2024-10-23 15:09:15,621 - ScraperLogger - WARNING - Extract Patrick T. Harker February 27, 2019 An Economic Outlook: 2019 Inquirer Influencers of Finance
+2024-10-23 15:09:15,927 - ScraperLogger - WARNING - Extract Patrick T. Harker February 27, 2019 An Economic Outlook: 2019 Inquirer Influencers of Finance
+2024-10-23 15:09:16,190 - ScraperLogger - WARNING - Extract Patrick T. Harker February 27, 2019 An Economic Outlook: 2019 Inquirer Influencers of Finance
+2024-10-23 15:09:16,476 - ScraperLogger - WARNING - Extract Patrick T. Harker February 27, 2019 An Economic Outlook: 2019 Inquirer Influencers of Finance
+2024-10-23 15:09:16,741 - ScraperLogger - WARNING - Extract Patrick T. Harker February 27, 2019 An Economic Outlook: 2019 Inquirer Influencers of Finance
+2024-10-23 15:09:17,034 - ScraperLogger - WARNING - Extract Patrick T. Harker February 27, 2019 An Economic Outlook: 2019 Inquirer Influencers of Finance
+2024-10-23 15:09:17,338 - ScraperLogger - WARNING - Extract Patrick T. Harker February 27, 2019 An Economic Outlook: 2019 Inquirer Influencers of Finance
+2024-10-23 15:09:17,339 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/philadelphia_fed_speeches/philadelphia_speeches_2019.json created.
+2024-10-23 15:09:19,068 - ScraperLogger - WARNING - Extract Patrick T. Harker February 07, 2018 Higher Education in an Evolving Economy
+2024-10-23 15:09:19,341 - ScraperLogger - WARNING - Extract Patrick T. Harker February 07, 2018 Higher Education in an Evolving Economy
+2024-10-23 15:09:19,612 - ScraperLogger - WARNING - Extract Patrick T. Harker February 07, 2018 Higher Education in an Evolving Economy
+2024-10-23 15:09:20,299 - ScraperLogger - WARNING - Extract Patrick T. Harker February 07, 2018 Higher Education in an Evolving Economy
+2024-10-23 15:09:20,573 - ScraperLogger - WARNING - Extract Patrick T. Harker February 07, 2018 Higher Education in an Evolving Economy
+2024-10-23 15:09:20,833 - ScraperLogger - WARNING - Extract Patrick T. Harker February 07, 2018 Higher Education in an Evolving Economy
+2024-10-23 15:09:21,156 - ScraperLogger - WARNING - Extract Patrick T. Harker February 07, 2018 Higher Education in an Evolving Economy
+2024-10-23 15:09:21,447 - ScraperLogger - WARNING - Extract Patrick T. Harker February 07, 2018 Higher Education in an Evolving Economy
+2024-10-23 15:09:21,719 - ScraperLogger - WARNING - Extract Patrick T. Harker February 07, 2018 Higher Education in an Evolving Economy
+2024-10-23 15:09:21,985 - ScraperLogger - WARNING - Extract Patrick T. Harker February 07, 2018 Higher Education in an Evolving Economy
+2024-10-23 15:09:22,245 - ScraperLogger - WARNING - Extract Patrick T. Harker February 07, 2018 Higher Education in an Evolving Economy
+2024-10-23 15:09:22,510 - ScraperLogger - WARNING - Extract Patrick T. Harker February 07, 2018 Higher Education in an Evolving Economy
+2024-10-23 15:09:22,512 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/philadelphia_fed_speeches/philadelphia_speeches_2018.json created.
+2024-10-23 15:09:24,014 - ScraperLogger - WARNING - Extract Patrick T. Harker May 22, 2017 Economic Outlook: The Labor Market, Rates, and the Balance Sheet
+2024-10-23 15:09:24,264 - ScraperLogger - WARNING - Extract Patrick T. Harker May 22, 2017 Economic Outlook: The Labor Market, Rates, and the Balance Sheet
+2024-10-23 15:09:24,553 - ScraperLogger - WARNING - Extract Patrick T. Harker May 22, 2017 Economic Outlook: The Labor Market, Rates, and the Balance Sheet
+2024-10-23 15:09:24,823 - ScraperLogger - WARNING - Extract Patrick T. Harker May 22, 2017 Economic Outlook: The Labor Market, Rates, and the Balance Sheet
+2024-10-23 15:09:25,087 - ScraperLogger - WARNING - Extract Patrick T. Harker May 22, 2017 Economic Outlook: The Labor Market, Rates, and the Balance Sheet
+2024-10-23 15:09:25,386 - ScraperLogger - WARNING - Extract Patrick T. Harker May 22, 2017 Economic Outlook: The Labor Market, Rates, and the Balance Sheet
+2024-10-23 15:09:25,645 - ScraperLogger - WARNING - Extract Patrick T. Harker May 22, 2017 Economic Outlook: The Labor Market, Rates, and the Balance Sheet
+2024-10-23 15:09:25,970 - ScraperLogger - WARNING - Extract Patrick T. Harker May 22, 2017 Economic Outlook: The Labor Market, Rates, and the Balance Sheet
+2024-10-23 15:09:26,278 - ScraperLogger - WARNING - Extract Patrick T. Harker May 22, 2017 Economic Outlook: The Labor Market, Rates, and the Balance Sheet
+2024-10-23 15:09:26,564 - ScraperLogger - WARNING - Extract Patrick T. Harker May 22, 2017 Economic Outlook: The Labor Market, Rates, and the Balance Sheet
+2024-10-23 15:09:26,845 - ScraperLogger - WARNING - Extract Patrick T. Harker May 22, 2017 Economic Outlook: The Labor Market, Rates, and the Balance Sheet
+2024-10-23 15:09:27,271 - ScraperLogger - WARNING - Extract Patrick T. Harker May 22, 2017 Economic Outlook: The Labor Market, Rates, and the Balance Sheet
+2024-10-23 15:09:27,273 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/philadelphia_fed_speeches/philadelphia_speeches_2017.json created.
+2024-10-23 15:09:30,454 - ScraperLogger - WARNING - Extract Patrick T. Harker October 12, 2016 A Shot in the Arm: Stimulating the American Workforce
+2024-10-23 15:09:30,758 - ScraperLogger - WARNING - Extract Patrick T. Harker October 12, 2016 A Shot in the Arm: Stimulating the American Workforce
+2024-10-23 15:09:31,039 - ScraperLogger - WARNING - Extract Patrick T. Harker October 12, 2016 A Shot in the Arm: Stimulating the American Workforce
+2024-10-23 15:09:31,328 - ScraperLogger - WARNING - Extract Patrick T. Harker October 12, 2016 A Shot in the Arm: Stimulating the American Workforce
+2024-10-23 15:09:31,621 - ScraperLogger - WARNING - Extract Patrick T. Harker October 12, 2016 A Shot in the Arm: Stimulating the American Workforce
+2024-10-23 15:09:31,915 - ScraperLogger - WARNING - Extract Patrick T. Harker October 12, 2016 A Shot in the Arm: Stimulating the American Workforce
+2024-10-23 15:09:32,202 - ScraperLogger - WARNING - Extract Patrick T. Harker October 12, 2016 A Shot in the Arm: Stimulating the American Workforce
+2024-10-23 15:09:32,589 - ScraperLogger - WARNING - Extract Patrick T. Harker October 12, 2016 A Shot in the Arm: Stimulating the American Workforce
+2024-10-23 15:09:32,874 - ScraperLogger - WARNING - Extract Patrick T. Harker October 12, 2016 A Shot in the Arm: Stimulating the American Workforce
+2024-10-23 15:09:33,212 - ScraperLogger - WARNING - Extract Patrick T. Harker October 12, 2016 A Shot in the Arm: Stimulating the American Workforce
+2024-10-23 15:09:33,509 - ScraperLogger - WARNING - Extract Patrick T. Harker October 12, 2016 A Shot in the Arm: Stimulating the American Workforce
+2024-10-23 15:09:33,800 - ScraperLogger - WARNING - Extract Patrick T. Harker October 12, 2016 A Shot in the Arm: Stimulating the American Workforce
+2024-10-23 15:09:33,801 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/philadelphia_fed_speeches/philadelphia_speeches_2016.json created.
+2024-10-23 15:09:35,344 - ScraperLogger - WARNING - Extract Patrick T. Harker December 01, 2015 Welcoming Remarks: New Perspectives, New Partners, New Pathways: Extending Opportunities for Our Youth
+2024-10-23 15:09:35,740 - ScraperLogger - WARNING - Extract Patrick T. Harker December 01, 2015 Welcoming Remarks: New Perspectives, New Partners, New Pathways: Extending Opportunities for Our Youth
+2024-10-23 15:09:36,207 - ScraperLogger - WARNING - Extract Patrick T. Harker December 01, 2015 Welcoming Remarks: New Perspectives, New Partners, New Pathways: Extending Opportunities for Our Youth
+2024-10-23 15:09:36,639 - ScraperLogger - WARNING - Extract Patrick T. Harker December 01, 2015 Welcoming Remarks: New Perspectives, New Partners, New Pathways: Extending Opportunities for Our Youth
+2024-10-23 15:09:37,090 - ScraperLogger - WARNING - Extract Patrick T. Harker December 01, 2015 Welcoming Remarks: New Perspectives, New Partners, New Pathways: Extending Opportunities for Our Youth
+2024-10-23 15:09:37,091 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/philadelphia_fed_speeches/philadelphia_speeches_2015.json created.
+2024-10-23 15:09:37,101 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/philadelphia_fed_speeches/philadelphia_speeches.json created.
+2024-10-23 15:24:41,656 - ScraperLogger - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-23 15:24:41,658 - ScraperLogger - INFO - Skip speech Patrick T. Harker October 22, 2024 Ever Evolving, Never Irrelevant: The Philadelphia Fed¡¯s Fintech Conference cause' it's earlier than start_date.
+2024-10-23 15:24:41,659 - ScraperLogger - INFO - Skip speech Patrick T. Harker October 22, 2024 Ever Evolving, Never Irrelevant: The Philadelphia Fed¡¯s Fintech Conference cause' it's earlier than start_date.
+2024-10-23 15:24:41,660 - ScraperLogger - INFO - Skip speech Patrick T. Harker October 22, 2024 Ever Evolving, Never Irrelevant: The Philadelphia Fed¡¯s Fintech Conference cause' it's earlier than start_date.
+2024-10-23 15:24:41,660 - ScraperLogger - INFO - Skip speech Patrick T. Harker October 22, 2024 Ever Evolving, Never Irrelevant: The Philadelphia Fed¡¯s Fintech Conference cause' it's earlier than start_date.
+2024-10-23 15:24:41,661 - ScraperLogger - INFO - Skip speech Patrick T. Harker October 22, 2024 Ever Evolving, Never Irrelevant: The Philadelphia Fed¡¯s Fintech Conference cause' it's earlier than start_date.
+2024-10-23 15:24:41,661 - ScraperLogger - INFO - Skip speech Patrick T. Harker October 22, 2024 Ever Evolving, Never Irrelevant: The Philadelphia Fed¡¯s Fintech Conference cause' it's earlier than start_date.
+2024-10-23 15:24:41,662 - ScraperLogger - INFO - Skip speech Patrick T. Harker October 22, 2024 Ever Evolving, Never Irrelevant: The Philadelphia Fed¡¯s Fintech Conference cause' it's earlier than start_date.
+2024-10-23 15:24:41,663 - ScraperLogger - INFO - Skip speech Patrick T. Harker October 22, 2024 Ever Evolving, Never Irrelevant: The Philadelphia Fed¡¯s Fintech Conference cause' it's earlier than start_date.
+2024-10-23 15:24:41,663 - ScraperLogger - INFO - Skip speech Patrick T. Harker October 22, 2024 Ever Evolving, Never Irrelevant: The Philadelphia Fed¡¯s Fintech Conference cause' it's earlier than start_date.
+2024-10-23 15:24:41,664 - ScraperLogger - INFO - Skip speech Patrick T. Harker October 22, 2024 Ever Evolving, Never Irrelevant: The Philadelphia Fed¡¯s Fintech Conference cause' it's earlier than start_date.
+2024-10-23 15:24:41,665 - ScraperLogger - INFO - Skip speech Patrick T. Harker October 22, 2024 Ever Evolving, Never Irrelevant: The Philadelphia Fed¡¯s Fintech Conference cause' it's earlier than start_date.
+2024-10-23 15:24:41,667 - ScraperLogger - INFO - Skip speech Patrick T. Harker October 22, 2024 Ever Evolving, Never Irrelevant: The Philadelphia Fed¡¯s Fintech Conference cause' it's earlier than start_date.
+2024-10-23 15:24:41,674 - ScraperLogger - INFO - 2024 updated.
+2024-10-23 15:25:23,115 - ScraperLogger - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-23 15:25:50,069 - ScraperLogger - WARNING - Extract Patrick T. Harker October 16, 2023 ¡°Doing Nothing¡± Is Still Doing a Lot
+2024-10-23 15:25:51,604 - ScraperLogger - WARNING - Extract Patrick T. Harker October 16, 2023 ¡°Doing Nothing¡± Is Still Doing a Lot
+2024-10-23 15:25:53,166 - ScraperLogger - WARNING - Extract Patrick T. Harker October 16, 2023 ¡°Doing Nothing¡± Is Still Doing a Lot
+2024-10-23 15:25:54,718 - ScraperLogger - WARNING - Extract Patrick T. Harker October 16, 2023 ¡°Doing Nothing¡± Is Still Doing a Lot
+2024-10-23 15:25:56,358 - ScraperLogger - WARNING - Extract Patrick T. Harker October 16, 2023 ¡°Doing Nothing¡± Is Still Doing a Lot
+2024-10-23 15:25:57,871 - ScraperLogger - WARNING - Extract Patrick T. Harker October 16, 2023 ¡°Doing Nothing¡± Is Still Doing a Lot
+2024-10-23 15:25:59,411 - ScraperLogger - WARNING - Extract Patrick T. Harker October 16, 2023 ¡°Doing Nothing¡± Is Still Doing a Lot
+2024-10-23 15:26:00,905 - ScraperLogger - WARNING - Extract Patrick T. Harker October 16, 2023 ¡°Doing Nothing¡± Is Still Doing a Lot
+2024-10-23 15:26:02,439 - ScraperLogger - WARNING - Extract Patrick T. Harker October 16, 2023 ¡°Doing Nothing¡± Is Still Doing a Lot
+2024-10-23 15:28:55,598 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/philadelphia_fed_speeches/philadelphia_speeches_2024.json created.
+2024-10-23 15:28:58,192 - ScraperLogger - WARNING - Extract Patrick T. Harker October 16, 2023 ¡°Doing Nothing¡± Is Still Doing a Lot
+2024-10-23 15:28:59,775 - ScraperLogger - WARNING - Extract Patrick T. Harker October 16, 2023 ¡°Doing Nothing¡± Is Still Doing a Lot
+2024-10-23 15:29:01,279 - ScraperLogger - WARNING - Extract Patrick T. Harker October 16, 2023 ¡°Doing Nothing¡± Is Still Doing a Lot
+2024-10-23 15:29:02,762 - ScraperLogger - WARNING - Extract Patrick T. Harker October 16, 2023 ¡°Doing Nothing¡± Is Still Doing a Lot
+2024-10-23 15:29:04,262 - ScraperLogger - WARNING - Extract Patrick T. Harker October 16, 2023 ¡°Doing Nothing¡± Is Still Doing a Lot
+2024-10-23 15:29:05,740 - ScraperLogger - WARNING - Extract Patrick T. Harker October 16, 2023 ¡°Doing Nothing¡± Is Still Doing a Lot
+2024-10-23 15:29:07,211 - ScraperLogger - WARNING - Extract Patrick T. Harker October 16, 2023 ¡°Doing Nothing¡± Is Still Doing a Lot
+2024-10-23 15:29:08,704 - ScraperLogger - WARNING - Extract Patrick T. Harker October 16, 2023 ¡°Doing Nothing¡± Is Still Doing a Lot
+2024-10-23 15:29:10,183 - ScraperLogger - WARNING - Extract Patrick T. Harker October 16, 2023 ¡°Doing Nothing¡± Is Still Doing a Lot
+2024-10-23 15:29:11,686 - ScraperLogger - WARNING - Extract Patrick T. Harker October 16, 2023 ¡°Doing Nothing¡± Is Still Doing a Lot
+2024-10-23 15:29:13,167 - ScraperLogger - WARNING - Extract Patrick T. Harker October 16, 2023 ¡°Doing Nothing¡± Is Still Doing a Lot
+2024-10-23 16:49:32,873 - ScraperLogger - WARNING - Extract Patrick T. Harker September 20, 2024 The Federal Reserve: It¡¯s More Than Just Interest Rates
+2024-10-23 16:51:16,772 - ScraperLogger - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-23 16:52:15,387 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/philadelphia_fed_speeches/philadelphia_speeches_2024.json created.
+2024-10-23 16:53:09,128 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/philadelphia_fed_speeches/philadelphia_speeches_2023.json created.
+2024-10-23 16:53:38,818 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/philadelphia_fed_speeches/philadelphia_speeches_2022.json created.
+2024-10-23 16:54:21,161 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/philadelphia_fed_speeches/philadelphia_speeches_2021.json created.
+2024-10-23 16:54:57,311 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/philadelphia_fed_speeches/philadelphia_speeches_2020.json created.
+2024-10-23 16:55:42,266 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/philadelphia_fed_speeches/philadelphia_speeches_2019.json created.
+2024-10-23 16:56:05,870 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/philadelphia_fed_speeches/philadelphia_speeches_2018.json created.
+2024-10-23 16:56:53,186 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/philadelphia_fed_speeches/philadelphia_speeches_2017.json created.
+2024-10-23 16:57:20,988 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/philadelphia_fed_speeches/philadelphia_speeches_2016.json created.
+2024-10-23 16:57:32,926 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/philadelphia_fed_speeches/philadelphia_speeches_2015.json created.
+2024-10-23 16:57:32,964 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/philadelphia_fed_speeches/philadelphia_speeches.json created.
+2024-10-24 16:06:53,546 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/dallas_fed_speeches/dallas_speeches_2024.json created.
+2024-10-24 16:07:20,229 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/dallas_fed_speeches/dallas_speeches_2023.json created.
+2024-10-24 16:07:24,694 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/dallas_fed_speeches/dallas_speeches_2022.json created.
+2024-10-24 16:07:30,747 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/dallas_fed_speeches/dallas_speeches_2021.json created.
+2024-10-24 16:07:36,250 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/dallas_fed_speeches/dallas_speeches_2020.json created.
+2024-10-24 16:11:42,403 - ScraperLogger - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-24 16:13:00,051 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/dallas_fed_speeches/dallas_speeches_2015.json created.
+2024-10-24 16:13:20,073 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/dallas_fed_speeches/dallas_speeches_2016.json created.
+2024-10-24 16:13:35,726 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/dallas_fed_speeches/dallas_speeches_2017.json created.
+2024-10-24 16:13:52,253 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/dallas_fed_speeches/dallas_speeches_2018.json created.
+2024-10-24 16:14:13,285 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/dallas_fed_speeches/dallas_speeches_2019.json created.
+2024-10-24 16:14:46,326 - ScraperLogger - WARNING - Extract Richard Fisher April 16, 2014 Richard Fisher's presentation to the Texas Public Policy Foundation
+2024-10-24 16:15:00,976 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/dallas_fed_speeches/dallas_speeches_2014.json created.
+2024-10-24 16:16:01,586 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/dallas_fed_speeches/dallas_speeches_2013.json created.
+2024-10-24 16:16:50,035 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/dallas_fed_speeches/dallas_speeches_2012.json created.
+2024-10-24 16:17:41,809 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/dallas_fed_speeches/dallas_speeches_2011.json created.
+2024-10-24 16:18:18,571 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/dallas_fed_speeches/dallas_speeches_2010.json created.
+2024-10-24 16:19:02,388 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/dallas_fed_speeches/dallas_speeches_2009.json created.
+2024-10-24 16:19:44,515 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/dallas_fed_speeches/dallas_speeches_2008.json created.
+2024-10-24 16:20:36,524 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/dallas_fed_speeches/dallas_speeches_2007.json created.
+2024-10-24 16:21:37,422 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/dallas_fed_speeches/dallas_speeches_2006.json created.
+2024-10-24 16:21:37,467 - ScraperLogger - ERROR - JSON file ../../data/fed_speeches/dallas_fed_speeches/dallas_speeches.json created.

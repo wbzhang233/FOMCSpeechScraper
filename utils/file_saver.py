@@ -75,7 +75,7 @@ def records_update(records: list[dict], new: list[dict],
         logger.warning(msg)
         return records
 
-def json_update(filepath: str, obj):
+def json_update(filepath: str, obj, **kwargs):
     """更新已存储的json文件
 
     Args:
@@ -85,14 +85,18 @@ def json_update(filepath: str, obj):
     if isinstance(exist_obj, dict):
         for k, v in obj.items():
             if k in exist_obj:
-                exist_obj[k] = records_update(exist_obj[k], v)
+                exist_obj[k] = records_update(exist_obj[k], v, **kwargs)
                 logger.info(f"{k} updated.")
             else:
                 exist_obj[k] = v
         json_dump(exist_obj, filepath)
     elif isinstance(exist_obj, list):
-        exist_obj = records_update(exist_obj, obj)
+        exist_obj = records_update(exist_obj, obj, **kwargs)
         json_dump(exist_obj, filepath)
+    elif not exist_obj:
+        json_dump(obj, filepath)
+        msg = "JSON file {} created.".format(filepath)
+        logger.error(msg)
     else:
         msg = f"JSON update failed. Unknown object type: {type(exist_obj)}"
         logger.error(msg)
