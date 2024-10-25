@@ -1,5 +1,22 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+'''
+@File    :   boston.py
+@Time    :   2024/10/24 16:47:09
+@Author  :   wbzhang 
+@Version :   1.0
+@Desc    :   波士顿联储银行银行演讲稿数据爬取
+'''
+
+
+from datetime import datetime
 import os
+import re
 import sys
+import time
+
+from utils.logger import get_logger
+from utils.common import parse_datestring
 
 sys.path.append("../../")
 from scraper import SpeechScraper
@@ -7,14 +24,16 @@ from scraper import SpeechScraper
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-from utils.file_saver import json_dump, json_load
+from selenium.webdriver.remote.webelement import WebElement
+from utils.file_saver import json_dump, json_load, json_update
 
+logger = get_logger('boston_speech_scraper')
 
 class BostonSpeechScraper(SpeechScraper):
     URL = "https://www.bostonfed.org/news-and-events/speeches.aspx"
-    SAVE_PATH = "../../data/fed_speeches/boston_fed_speeches/"
-    __name__ = "BostonSpeechScraper"
     __fed_name__ = "boston_fed"
+    __name__ = f"{__fed_name__.title()}SpeechScraper"
+    SAVE_PATH = f"../../data/fed_speeches/{__fed_name__}_fed_speeches/"
 
     def __init__(self, url: str = None, auto_save: bool = True):
         super().__init__(url)
@@ -24,7 +43,33 @@ class BostonSpeechScraper(SpeechScraper):
         print(f"{self.SAVE_PATH} has been created.")
         self.save = auto_save
 
-    def parse_single_row(self, data_row):
+    def extract_speech_date(self, text: str):
+        """提取段落中的日期
+
+        Args:
+            text (str): _description_
+
+        Returns:
+            _type_: _description_
+        """
+        # 正则分段
+        try:
+            date= ""
+            paras = re.split(r"[\n\"·]+", text)
+            for para in paras:
+                parse_date = parse_datestring(para.split('|')[0].strip(' \n'))
+                if isinstance(parse_date, datetime):
+                    date = para
+                else:
+                    continue
+            if date == "":
+                print(paras[-1])
+        except:
+            date = ""
+        return date
+        
+
+    def parse_single_row(self, data_row: WebElement):
         """解析Boston中的单个文章
 
         Args:
@@ -35,15 +80,22 @@ class BostonSpeechScraper(SpeechScraper):
         """
         try:
             # 日期
-            date_and_location = data_row.find_element(
+            date_and_location = data_row.find_elements(
                 By.CSS_SELECTOR,
                 "p.date-and-location",
-            ).text
-            date = date_and_location.split("|")[0].strip()
+            )
+            if date_and_location:
+                date = date_and_location[0].text.split("|")[0].strip()
+            else:
+                date = self.extract_speech_date(data_row.text)
             # 标题
-            title_element = data_row.find_element(By.CSS_SELECTOR, "h1.card-title > a")
-            title = title_element.text
-            href = title_element.get_attribute("href")
+            title_element = data_row.find_elements(By.CSS_SELECTOR, "h1.card-title > a[href]")
+            if title_element:
+                title = title_element[0].text
+                href = title_element[0].get_attribute("href")
+            else:
+                title = ""
+                href = ""
             # 总结
             summaries = data_row.find_elements(By.CSS_SELECTOR, "p.event-text")
             summary = "\n\n".join(
@@ -114,7 +166,9 @@ class BostonSpeechScraper(SpeechScraper):
             speech_infos_single_year = []
             for data_row in data_rows:
                 speech_info = self.parse_single_row(data_row)
-                if speech_info:
+                if speech_info and speech_info["href"].startswith(
+                    "https://www.bostonfed.org/"
+                ):
                     print(
                         "{date}. {title}. {speaker}\n".format(
                             date=speech_info["date"],
@@ -143,26 +197,34 @@ class BostonSpeechScraper(SpeechScraper):
 
             # Wait for the content to load
             WebDriverWait(self.driver, 10).until(
-                EC.presence_of_element_located((By.ID, "main-content"))
+                EC.visibility_of_all_elements_located((By.ID, "main-content"))
             )
+            time.sleep(1.2)
 
             # 演讲标题
+            # speech_title = self.driver.find_element(
+            #     By.CSS_SELECTOR,
+            #     "#main-content > div.container.title-container > div > div > div > div > h1",
+            # ).text
             speech_title = self.driver.find_element(
-                By.CSS_SELECTOR,
-                "#main-content > div.container.title-container > div > div > div > div > h1",
+                By.XPATH,
+                "//h1[contains(@class, 'title')]"
             ).text
             # 重点
             highlights_elements = self.driver.find_elements(
                 By.CSS_SELECTOR,
                 "#main-content > div:nth-child(9) > div > div > p",
             )
-            highlights = "\n\n".join(
-                [highlight.text for highlight in highlights_elements]
-            )
+            if highlights_elements:
+                highlights = "\n\n".join(
+                    [highlight.text for highlight in highlights_elements]
+                )
+            else:
+                highlights = ""
             # 内容
             content_elements = self.driver.find_element(
                 By.CSS_SELECTOR,
-                "#main-content > div.bodytextlist > div:nth-child(2) > div > div > div",
+                "#main-content > div.bodytextlist > div.container > div.row > div.col-sm-10.col-md-8.center-block > div.tag-box-container",
             )
             contents = content_elements.text
             speech = {
@@ -173,30 +235,73 @@ class BostonSpeechScraper(SpeechScraper):
         except:
             print(f"Error when extracting speech content from {href}")
             speech = {
-                "speech_title": "Error",
-                "highlights": "Error",
-                "content": "Error",
+                "speech_title": "",
+                "highlights": "",
+                "content": "",
             }
         speech.update(speech_info)
         return speech
 
-    def extract_speeches(self, speech_infos_by_year: dict):
+    def extract_speeches(
+        self, speech_infos_by_year: dict, start_date: str = "Jan 01, 2006"
+    ):
         """搜集每篇演讲的内容"""
+        # 获取演讲的开始时间
+        start_date = parse_datestring(start_date)
+        start_year = start_date.year
+
+        # 获取每年的演讲内容
         speeches_by_year = {}
+        failed = []
         for year, single_year_infos in speech_infos_by_year.items():
-            singe_year_speeches = []
+            if not year.isdigit():
+                continue
+            # 跳过之前的年份
+            if int(year) < start_year:
+                continue
+            single_year_speeches = []
             for speech_info in single_year_infos:
+                if not speech_info["date"] or speech_info["date"] == "":
+                    continue
+                # 跳过start_date之前的演讲
+                if parse_datestring(speech_info["date"]) <= start_date:
+                    logger.info(
+                        "Skip speech {speaker} {date} {title} cause' it's earlier than start_date.".format(
+                            speaker=speech_info["speaker"],
+                            date=speech_info["date"],
+                            title=speech_info["title"],
+                        )
+                    )
+                    continue
+                # 提取演讲正文
                 single_speech = self.extract_single_speech(speech_info)
-                singe_year_speeches.append(single_speech)
-            speeches_by_year[year] = singe_year_speeches
+                if single_speech["content"] == "":
+                    # 记录提取失败的报告
+                    failed.append(single_speech)
+                    logger.warning(
+                        "Extract {speaker} {date} {title}".format(
+                            speaker=speech_info["speaker"],
+                            date=speech_info["date"],
+                            title=speech_info["title"],
+                        )
+                    )
+                single_year_speeches.append(single_speech)
+            speeches_by_year[year] = single_year_speeches
             if self.save:
-                json_dump(
-                    singe_year_speeches,
+                json_update(
                     self.SAVE_PATH + f"{self.__fed_name__}_speeches_{year}.json",
+                    single_year_speeches,
                 )
+            print(f"Speeches of {year} collected.")
+        # 保存演讲内容
         if self.save:
+            # 保存读取失败的演讲内容
             json_dump(
-                speeches_by_year, self.SAVE_PATH + f"{self.__fed_name__}_speeches.json"
+                failed, self.SAVE_PATH + f"{self.__fed_name__}_failed_speech_infos.json"
+            )
+            # 更新已存储的演讲内容
+            json_update(
+                self.SAVE_PATH + f"{self.__fed_name__}_speeches.json", speeches_by_year
             )
         return speeches_by_year
 
@@ -206,12 +311,22 @@ class BostonSpeechScraper(SpeechScraper):
         Returns:
             _type_: _description_
         """
-        # 提取每年演讲的信息
+        # 提取每年演讲的基本信息（不含正文和highlights等）
         if os.path.exists(self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"):
             speech_infos = json_load(
                 self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
             )
-            print("Speech Infos Data already exists, skip collecting.")
+            # 查看已有的最新的演讲日期
+            latest_year = max([k for k, _ in speech_infos.items()])
+            dates = []
+            for speech_info in speech_infos[latest_year]:
+                speech_date = parse_datestring(speech_info["date"])
+                if isinstance(speech_date, datetime):
+                    dates.append(speech_date)
+            existed_lastest = max(dates).strftime("%b %d, %Y")
+            # existed_lastest = "Jan 01, 2006"
+            existed_lastest = "Jan 01, 2006"
+            logger.info("Speech Infos Data already exists, skip collecting infos.")
         else:
             speech_infos = self.extract_speech_infos()
             if self.save:
@@ -219,35 +334,11 @@ class BostonSpeechScraper(SpeechScraper):
                     speech_infos,
                     self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json",
                 )
-        # 提取演讲内容
-        speeches = self.extract_speeches(speech_infos)
-        if self.save:
-            json_dump(speeches, self.SAVE_PATH + f"{self.__fed_name__}_speeches.json")
+            existed_lastest = "Jan 01, 2006"
+
+        # 提取演讲正文内容
+        speeches = self.extract_speeches(speech_infos, existed_lastest)
         return speeches
-
-
-def test_extract_single_speech():
-    """测试 extract_single_speech 方法"""
-    scraper = BostonSpeechScraper()
-    # speech_info = {
-    #     "year": "2024",
-    #     "date": "2024-06-18",
-    #     "title": "A Partnership for Progress",
-    #     "href": "https://www.bostonfed.org/news-and-events/speeches/2024/a-partnership-for-progress.aspx",
-    #     "summary": "Remarks to members of the Merrimack Valley community at the Lawrence Partnership’s 2024 Annual Meeting & 10th Year Anniversary celebration.",
-    #     "speaker": "Susan M. Collins",
-    # }
-
-    speech_info = {
-        "date": "November 17, 2023",
-        "title": "Full Employment: A Broad-Based, Inclusive Goal",
-        "href": "https://www.bostonfed.org/news-and-events/speeches/2023/full-employment-a-broad-based-inclusive-goal.aspx",
-        "summary": "67th Economic Conference",
-        "speaker": "Susan M. Collins, President & Chief Executive Officer",
-    }
-
-    speech = scraper.extract_single_speech(speech_info)
-    print(speech)
 
 
 def test_extract_speech_infos():
@@ -257,10 +348,36 @@ def test_extract_speech_infos():
     print(speech_infos)
 
 
+def test_extract_single_speech():
+    """测试 extract_single_speech 方法"""
+    scraper = BostonSpeechScraper()
+    speech_info = {
+        "year": "2024",
+        "date": "2024-06-18",
+        "title": "A Partnership for Progress",
+        "href": "https://www.bostonfed.org/news-and-events/speeches/2024/a-partnership-for-progress.aspx",
+        "summary": "Remarks to members of the Merrimack Valley community at the Lawrence Partnership’s 2024 Annual Meeting & 10th Year Anniversary celebration.",
+        "speaker": "Susan M. Collins",
+    }
+
+    # speech_info = {
+    #     "date": "November 17, 2023",
+    #     "title": "Full Employment: A Broad-Based, Inclusive Goal",
+    #     "href": "https://www.bostonfed.org/news-and-events/speeches/2023/full-employment-a-broad-based-inclusive-goal.aspx",
+    #     "summary": "67th Economic Conference",
+    #     "speaker": "Susan M. Collins, President & Chief Executive Officer",
+    # }
+
+    speech = scraper.extract_single_speech(speech_info)
+    print(speech)
+
+
 def test():
     scraper = BostonSpeechScraper()
     scraper.collect()
 
 
 if __name__ == "__main__":
+    # test_extract_speech_infos()
+    # test_extract_single_speech()
     test()

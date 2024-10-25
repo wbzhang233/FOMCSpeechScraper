@@ -95,7 +95,7 @@ def json_update(filepath: str, obj, **kwargs):
         json_dump(exist_obj, filepath)
     elif not exist_obj:
         json_dump(obj, filepath)
-        msg = "JSON file {} created.".format(filepath)
+        msg = "JSON file was not existed. New file {} created.".format(filepath)
         logger.error(msg)
     else:
         msg = f"JSON update failed. Unknown object type: {type(exist_obj)}"

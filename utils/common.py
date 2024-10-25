@@ -31,7 +31,7 @@ date_patterns = [
 ]
 
 
-def parse_datestring(date_str: str) -> datetime:
+def parse_datestring(date_str: str, format: str=None) -> datetime:
     """日期字符串标准化
 
     Args:
@@ -43,7 +43,7 @@ def parse_datestring(date_str: str) -> datetime:
     if not date_str:
         return None
     try:
-        result = pd.to_datetime(date_str).to_pydatetime()
+        result = pd.to_datetime(date_str, format=format).to_pydatetime()
         return result
     except Exception as e:
         pass

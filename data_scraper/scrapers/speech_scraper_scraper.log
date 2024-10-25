@@ -1,0 +1,121 @@
+2024-10-24 19:24:35,531 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/boston_fed_speeches/boston_speeches_2024.json created.
+2024-10-24 19:24:35,536 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/boston_fed_speeches/boston_speeches.json created.
+2024-10-24 19:29:38,822 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/boston_fed_fed_speeches/boston_fed_speeches_2024.json created.
+2024-10-24 19:30:31,166 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/boston_fed_fed_speeches/boston_fed_speeches_2023.json created.
+2024-10-24 19:30:42,689 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/boston_fed_fed_speeches/boston_fed_speeches_2022.json created.
+2024-10-24 19:31:27,684 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/boston_fed_fed_speeches/boston_fed_speeches_2021.json created.
+2024-10-24 19:32:20,169 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/boston_fed_fed_speeches/boston_fed_speeches_2020.json created.
+2024-10-24 19:33:15,361 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/boston_fed_fed_speeches/boston_fed_speeches_2019.json created.
+2024-10-24 19:34:08,397 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/boston_fed_fed_speeches/boston_fed_speeches_2018.json created.
+2024-10-24 19:34:54,217 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/boston_fed_fed_speeches/boston_fed_speeches_2017.json created.
+2024-10-24 19:35:41,503 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/boston_fed_fed_speeches/boston_fed_speeches_2016.json created.
+2024-10-24 19:36:22,475 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/boston_fed_fed_speeches/boston_fed_speeches_2015.json created.
+2024-10-24 19:37:02,562 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/boston_fed_fed_speeches/boston_fed_speeches_2014.json created.
+2024-10-24 19:37:53,729 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/boston_fed_fed_speeches/boston_fed_speeches_2013.json created.
+2024-10-24 19:38:33,735 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/boston_fed_fed_speeches/boston_fed_speeches_2012.json created.
+2024-10-24 19:39:14,661 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/boston_fed_fed_speeches/boston_fed_speeches_2011.json created.
+2024-10-24 19:39:52,562 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/boston_fed_fed_speeches/boston_fed_speeches_2010.json created.
+2024-10-24 19:40:46,771 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/boston_fed_fed_speeches/boston_fed_speeches_2009.json created.
+2024-10-24 19:41:35,836 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/boston_fed_fed_speeches/boston_fed_speeches_2008.json created.
+2024-10-24 19:42:05,043 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/boston_fed_fed_speeches/boston_fed_speeches_2007.json created.
+2024-10-24 19:42:23,469 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/boston_fed_fed_speeches/boston_fed_speeches_2006.json created.
+2024-10-24 19:42:23,509 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/boston_fed_fed_speeches/boston_fed_speeches.json created.
+2024-10-25 09:27:40,008 - speech_scraper - WARNING - Records update failed. Error: KeyError('date')
+2024-10-25 09:28:00,855 - speech_scraper - WARNING - Records update failed. Error: KeyError('date')
+2024-10-25 09:39:26,547 - speech_scraper - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-25 09:40:35,521 - speech_scraper - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-25 09:41:45,738 - speech_scraper - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-25 09:46:15,062 - speech_scraper - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-25 09:48:39,097 - speech_scraper - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-25 09:50:01,815 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/chicago_fed_speeches/chicago_speeches_2006.json created.
+2024-10-25 09:50:33,592 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/chicago_fed_speeches/chicago_speeches_2007.json created.
+2024-10-25 09:50:50,817 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/chicago_fed_speeches/chicago_speeches_2008.json created.
+2024-10-25 09:51:16,089 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/chicago_fed_speeches/chicago_speeches_2009.json created.
+2024-10-25 09:54:44,731 - speech_scraper - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-25 09:57:13,238 - speech_scraper - WARNING - Extract Austan D. Goolsbee October 9-10, 2024 Chicago Payments Symposium
+2024-10-25 09:57:13,255 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/chicago_fed_speeches/chicago_speeches_2010.json created.
+2024-10-25 09:57:31,331 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/chicago_fed_speeches/chicago_speeches_2011.json created.
+2024-10-25 09:57:56,526 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/chicago_fed_speeches/chicago_speeches_2012.json created.
+2024-10-25 09:58:21,399 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/chicago_fed_speeches/chicago_speeches_2013.json created.
+2024-10-25 09:58:47,753 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/chicago_fed_speeches/chicago_speeches_2014.json created.
+2024-10-25 09:59:14,113 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/chicago_fed_speeches/chicago_speeches_2015.json created.
+2024-10-25 09:59:38,384 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/chicago_fed_speeches/chicago_speeches_2016.json created.
+2024-10-25 10:00:11,884 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/chicago_fed_speeches/chicago_speeches_2017.json created.
+2024-10-25 10:00:39,431 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/chicago_fed_speeches/chicago_speeches_2018.json created.
+2024-10-25 10:01:08,764 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/chicago_fed_speeches/chicago_speeches_2019.json created.
+2024-10-25 10:01:20,769 - speech_scraper - WARNING - Extract Charles L. Evans December 04, 2020 MBA Bank Management and Directors Conference
+2024-10-25 10:01:29,013 - speech_scraper - WARNING - Extract Charles L. Evans November 23, 2020 President Evans Live Event With The Iowa Bankers Association
+2024-10-25 10:01:45,367 - speech_scraper - WARNING - Extract Charles L. Evans  Countering Downward Bias in Inflation¡ªSlides
+2024-10-25 10:01:49,377 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/chicago_fed_speeches/chicago_speeches_2020.json created.
+2024-10-25 10:02:43,529 - speech_scraper - WARNING - Extract Charles L. Evans July 09, 2021 Moderated Q&A: Thirteenth Annual Rocky Mountain Economic Summit
+2024-10-25 10:03:29,811 - speech_scraper - WARNING - Extract Charles L. Evans March 19, 2021 President Evans Event with Women in Housing and Finance
+2024-10-25 10:03:37,426 - speech_scraper - WARNING - Extract Charles L. Evans March 19, 2021 Perspectives on the U.S. Economy
+2024-10-25 10:03:53,243 - speech_scraper - WARNING - Extract Charles L. Evans  An Economic Discussion with Chicago Federal Reserve President Charles Evans
+2024-10-25 10:03:57,797 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/chicago_fed_speeches/chicago_speeches_2021.json created.
+2024-10-25 10:04:11,676 - speech_scraper - WARNING - Extract Charles L. Evans October 21, 2022 2022 Community Bankers Symposium
+2024-10-25 10:04:14,028 - speech_scraper - WARNING - Extract Charles L. Evans October 03, 2022 Jefferson Scholars Foundation Moderated Q&A
+2024-10-25 10:04:29,672 - speech_scraper - WARNING - Extract Charles L. Evans October 06, 2022 Illinois Chamber of Commerce Annual Luncheon
+2024-10-25 10:04:37,751 - speech_scraper - WARNING - Extract Charles L. Evans September 27, 2022 London School of Economics
+2024-10-25 10:04:55,667 - speech_scraper - WARNING - Extract Charles L. Evans September 13, 2022 College of DuPage Economic Forum
+2024-10-25 10:05:03,766 - speech_scraper - WARNING - Extract Charles L. Evans August 10, 2022 Economic Update with the Chicago Fed
+2024-10-25 10:05:17,787 - speech_scraper - WARNING - Extract Charles L. Evans April 20, 2022 Peterson Institute: Macro Week 2022
+2024-10-25 10:05:33,588 - speech_scraper - WARNING - Extract Charles L. Evans April 11, 2022 Detroit Economic Club: A Conversation on the Economy and Monetary Policy
+2024-10-25 10:05:52,997 - speech_scraper - WARNING - Extract Charles L. Evans March 01, 2022 2022 Lake Forest-Lake Bluff Rotary Club Economic Update
+2024-10-25 10:06:03,584 - speech_scraper - WARNING - Extract Charles L. Evans January 13, 2022 Milwaukee Business Journal
+2024-10-25 10:06:03,589 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/chicago_fed_speeches/chicago_speeches_2022.json created.
+2024-10-25 10:06:09,808 - speech_scraper - WARNING - Extract Austan D. Goolsbee November 21, 2023 Economic Outlook Symposium
+2024-10-25 10:06:11,981 - speech_scraper - WARNING - Extract Austan D. Goolsbee November 29, 2023 Midwest Agriculture Conference: Who Owns Midwest Farmland? And Why?
+2024-10-25 10:06:20,116 - speech_scraper - WARNING - Extract Austan D. Goolsbee November 14, 2023 2023 Community Bankers Symposium: Back to the New Basics
+2024-10-25 10:06:28,424 - speech_scraper - WARNING - Extract Austan D. Goolsbee November 13, 2023 Detroit Economic Club: A Conversation on the Economy and Monetary Policy
+2024-10-25 10:06:31,000 - speech_scraper - WARNING - Extract Austan D. Goolsbee October 19, 2023 Wisconsin Manufacturers & Commerce Moderated Q&A
+2024-10-25 10:06:39,188 - speech_scraper - WARNING - Extract Austan D. Goolsbee September 25, 2023 A Conversation with Raghuram G. Rajan
+2024-10-25 10:06:41,999 - speech_scraper - WARNING - Extract Austan D. Goolsbee October 04, 2023 Chicago Payments Symposium
+2024-10-25 10:06:50,097 - speech_scraper - WARNING - Extract Austan D. Goolsbee September 28, 2023 Policy Speech: Peterson Institute for International Economics
+2024-10-25 10:06:54,375 - speech_scraper - WARNING - Extract Austan D. Goolsbee September 05, 2023 Fourth Annual Exploring Career Pathways in Economics and Related Fields Conference
+2024-10-25 10:06:56,505 - speech_scraper - WARNING - Extract Austan D. Goolsbee August 22, 2023 Fed Listens: Joining the Labor Force After Covid ¨C A Discussion on Youth Employment
+2024-10-25 10:07:04,459 - speech_scraper - WARNING - Extract Austan D. Goolsbee August 01, 2023 Chicago¡¯s Business Smart Week
+2024-10-25 10:07:06,997 - speech_scraper - WARNING - Extract Austan D. Goolsbee June 23, 2023 The Wall Street Journal¡¯s Global Food Forum
+2024-10-25 10:07:14,953 - speech_scraper - WARNING - Extract Austan D. Goolsbee May 17, 2023 Atlanta Fed¡¯s Financial Markets Conference
+2024-10-25 10:07:23,318 - speech_scraper - WARNING - Extract Austan D. Goolsbee March 31, 2023 Economic Club of Chicago Forum
+2024-10-25 10:07:31,502 - speech_scraper - WARNING - Extract Austan D. Goolsbee February 28, 2023 Ivy Tech Community College
+2024-10-25 10:07:31,504 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/chicago_fed_speeches/chicago_speeches_2023.json created.
+2024-10-25 10:07:44,527 - speech_scraper - WARNING - Extract Austan D. Goolsbee October 17, 2024 Exploring Career Pathways
+2024-10-25 10:07:55,148 - speech_scraper - WARNING - Extract Austan D. Goolsbee October 11, 2024 Community Banking: Navigating a Changing Landscape
+2024-10-25 10:08:03,337 - speech_scraper - WARNING - Extract Austan D. Goolsbee September 23, 2024 National Association of State Treasurers Annual Conference
+2024-10-25 10:08:11,012 - speech_scraper - WARNING - Extract Austan D. Goolsbee August 16, 2024 Fireside Chat with Angeles Investors
+2024-10-25 10:08:14,646 - speech_scraper - WARNING - Extract Austan D. Goolsbee July 10, 2024 Fed Listens: Exploring Challenges Facing the Childcare Industry, Working Parents, and Employers
+2024-10-25 10:08:22,912 - speech_scraper - WARNING - Extract Austan D. Goolsbee June 12, 2024 The Marshall Forum
+2024-10-25 10:08:30,658 - speech_scraper - WARNING - Extract Austan D. Goolsbee May 28, 2024 Iowa Farm Bureau Economic Summit
+2024-10-25 10:08:39,025 - speech_scraper - WARNING - Extract Austan D. Goolsbee May 16, 2024 Holding Company Symposium
+2024-10-25 10:08:46,813 - speech_scraper - WARNING - Extract Austan D. Goolsbee May 10, 2024 Economic Club of Minnesota Luncheon
+2024-10-25 10:08:56,996 - speech_scraper - WARNING - Extract Austan D. Goolsbee May 03, 2024 Hoover Institution Conference: Getting Global Monetary Policy on Track
+2024-10-25 10:09:05,137 - speech_scraper - WARNING - Extract Austan D. Goolsbee April 09, 2024 Society for Advancing Business Editing and Writing Annual Conference
+2024-10-25 10:09:13,408 - speech_scraper - WARNING - Extract Austan D. Goolsbee March 20, 2024 Social Finance Institute
+2024-10-25 10:09:21,265 - speech_scraper - WARNING - Extract Austan D. Goolsbee April 01, 2024 Multi-Chamber Economic Outlook Luncheon and Expo
+2024-10-25 10:09:32,134 - speech_scraper - WARNING - Extract Austan D. Goolsbee April 3, 2024 Preventing Elder Financial Exploitation: Research, Policies, and Strategies
+2024-10-25 10:09:39,853 - speech_scraper - WARNING - Extract Austan D. Goolsbee February 29, 2024 Markus' Academy: Princeton University Bendheim Center for Finance
+2024-10-25 10:09:48,112 - speech_scraper - WARNING - Extract Austan D. Goolsbee February 14, 2024 Council on Foreign Relations: C. Peter McColough Series on International Economics
+2024-10-25 10:09:48,114 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/chicago_fed_speeches/chicago_speeches_2024.json created.
+2024-10-25 10:09:48,171 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/chicago_fed_speeches/chicago_speeches.json created.
+2024-10-25 10:30:24,906 - speech_scraper - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-25 10:32:40,932 - speech_scraper - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-25 10:33:50,617 - speech_scraper - WARNING - Extract Austan D. Goolsbee August 01, 2023 Chicago¡¯s Business Smart Week
+2024-10-25 10:34:26,001 - speech_scraper - WARNING - Extract Austan D. Goolsbee October 17, 2024 Exploring Career Pathways
+2024-10-25 10:34:34,325 - speech_scraper - WARNING - Extract Austan D. Goolsbee October 11, 2024 Community Banking: Navigating a Changing Landscape
+2024-10-25 10:34:41,551 - speech_scraper - WARNING - Extract Austan D. Goolsbee September 23, 2024 National Association of State Treasurers Annual Conference
+2024-10-25 10:34:48,885 - speech_scraper - WARNING - Extract Austan D. Goolsbee August 16, 2024 Fireside Chat with Angeles Investors
+2024-10-25 10:34:52,443 - speech_scraper - WARNING - Extract Austan D. Goolsbee July 10, 2024 Fed Listens: Exploring Challenges Facing the Childcare Industry, Working Parents, and Employers
+2024-10-25 10:34:59,895 - speech_scraper - WARNING - Extract Austan D. Goolsbee June 12, 2024 The Marshall Forum
+2024-10-25 10:35:07,702 - speech_scraper - WARNING - Extract Austan D. Goolsbee May 28, 2024 Iowa Farm Bureau Economic Summit
+2024-10-25 10:35:15,039 - speech_scraper - WARNING - Extract Austan D. Goolsbee May 16, 2024 Holding Company Symposium
+2024-10-25 10:35:22,417 - speech_scraper - WARNING - Extract Austan D. Goolsbee May 10, 2024 Economic Club of Minnesota Luncheon
+2024-10-25 10:35:32,826 - speech_scraper - WARNING - Extract Austan D. Goolsbee May 03, 2024 Hoover Institution Conference: Getting Global Monetary Policy on Track
+2024-10-25 10:35:41,451 - speech_scraper - WARNING - Extract Austan D. Goolsbee April 09, 2024 Society for Advancing Business Editing and Writing Annual Conference
+2024-10-25 10:35:48,874 - speech_scraper - WARNING - Extract Austan D. Goolsbee March 20, 2024 Social Finance Institute
+2024-10-25 10:35:56,257 - speech_scraper - WARNING - Extract Austan D. Goolsbee April 01, 2024 Multi-Chamber Economic Outlook Luncheon and Expo
+2024-10-25 10:36:10,732 - speech_scraper - WARNING - Extract Austan D. Goolsbee April 3, 2024 Preventing Elder Financial Exploitation: Research, Policies, and Strategies
+2024-10-25 10:36:19,467 - speech_scraper - WARNING - Extract Austan D. Goolsbee February 29, 2024 Markus' Academy: Princeton University Bendheim Center for Finance
+2024-10-25 10:36:26,780 - speech_scraper - INFO - 2023 updated.
+2024-10-25 10:36:26,781 - speech_scraper - INFO - 2024 updated.
+2024-10-25 10:37:37,664 - speech_scraper - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-25 10:39:55,132 - speech_scraper - INFO - 2024 updated.
