@@ -19,8 +19,9 @@ date: 决议日期，为str类型，如17-19
 class SpeechScraper(object):
     URL: str = ""
 
-    def __init__(self, url: str = None):
-        self.driver = webdriver.Chrome()
+    def __init__(self, url: str = None, **kwargs):
+        options = kwargs.get("options", None)
+        self.driver = webdriver.Chrome(options=options)
         url = self.URL if url is None else url
         if not url:
             raise ValueError("No url provided.")

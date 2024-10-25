@@ -46,6 +46,7 @@ def parse_datestring(date_str: str, format: str=None) -> datetime:
         result = pd.to_datetime(date_str, format=format).to_pydatetime()
         return result
     except Exception as e:
+        print("date string {} transformed to datetime failed. {}".format(date_str, repr(e)))
         pass
 
     try:

@@ -12,16 +12,14 @@ import os
 import re
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.remote.webelement import WebElement
-from selenium.common.exceptions import (
-    TimeoutException,
-    WebDriverException,
-    NoSuchElementException,
-)
+# from selenium.common.exceptions import (
+#     TimeoutException,
+#     WebDriverException,
+#     NoSuchElementException,
+# )
 
-from bs4 import BeautifulSoup
 import time
 from datetime import datetime
 
@@ -59,7 +57,7 @@ class DallasSpeechScraper(SpeechScraper):
         # 日期
         date = ""
         for para in paras:
-            parse_date = parse_datestring(para.split('·')[0].strip(' \n'))
+            parse_date = parse_datestring(para.split("·")[0].strip(" \n"))
             if isinstance(parse_date, datetime):
                 date = para
             else:
@@ -85,8 +83,7 @@ class DallasSpeechScraper(SpeechScraper):
             result = match.group(1)
             return result.strip()
         else:
-            return 'Unknown'
-        
+            return "Unknown"
 
     def extract_speech_infos(self):
         """抽取演讲的信息"""
@@ -100,7 +97,7 @@ class DallasSpeechScraper(SpeechScraper):
         speech_infos_by_year = {}
         for title, link in links.items():
             # 提取主席作为speaker
-            speaker = self.extract_speaker_name(title) 
+            speaker = self.extract_speaker_name(title)
             # 只抽取历任主席的讲话
             if "President" not in title:
                 continue
@@ -132,7 +129,7 @@ class DallasSpeechScraper(SpeechScraper):
                     speech_info = self.fetch_single_speech_info(item)
                     speech_info.update({"speaker": speaker})
                     # 从日期中获取年份
-                    if speech_info["date"]!="":
+                    if speech_info["date"] != "":
                         true_year = str(parse_datestring(speech_info["date"]).year)
                     else:
                         true_year = year
@@ -277,7 +274,7 @@ class DallasSpeechScraper(SpeechScraper):
                 ]
             ).strftime("%b %d, %Y")
             logger.info("Speech Infos Data already exists, skip collecting infos.")
-            existed_lastest = "Jan 01, 2006"
+            existed_lastest = "Jan 01, 2024"
         else:
             speech_infos = self.extract_speech_infos()
             if self.save:
@@ -288,6 +285,9 @@ class DallasSpeechScraper(SpeechScraper):
             existed_lastest = "Jan 01, 2006"
 
         # 提取演讲正文内容
+        print("-" * 100)
+        print("Extract speeches start from {}".format(existed_lastest))
+        print("-" * 100)
         speeches = self.extract_speeches(speech_infos, existed_lastest)
         return speeches
 

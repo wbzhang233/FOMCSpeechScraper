@@ -14,6 +14,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import (
     TimeoutException,
     WebDriverException,
@@ -22,11 +23,49 @@ from selenium.common.exceptions import (
 
 from bs4 import BeautifulSoup
 import time
+import requests
 
 from data_scraper.scrapers.scraper import SpeechScraper
 from utils.common import parse_datestring
 from utils.file_saver import json_dump, json_load, json_update
 from utils.logger import logger
+from collections import OrderedDict
+from PyPDF2 import PdfReader
+
+
+def read_pdf_file(pdf_filename: str):
+    if os.path.exists(pdf_filename):
+        reader = PdfReader(pdf_filename)
+        print(">--|--<" * 20)
+        print("{} has been read.".format(pdf_filename))
+        return "\n\n".join([page.extract_text() for page in reader.pages]).strip("\n ")
+    else:
+        return ""
+
+
+def download_pdf(pdf_url: str, file_name: str, save_path: str):
+    response = requests.get(pdf_url)
+
+    if response.status_code == 200:
+        with open(f"{save_path}/{file_name}", "wb") as f:
+            f.write(response.content)
+        print("PDF {} downloaded successfully.".format(file_name))
+    else:
+        print("Failed to download PDF. Status code:", response.status_code)
+
+
+def is_download_complete(download_dir):
+    for file in os.listdir(download_dir):
+        if file.endswith(".crdownload"):
+            return False
+    return True
+
+
+def is_download_existed(filepath: str):
+    if os.path.exists(filepath):
+        return True
+    else:
+        return False
 
 
 class KansasCitySpeechScraper(SpeechScraper):
@@ -34,9 +73,21 @@ class KansasCitySpeechScraper(SpeechScraper):
     __fed_name__ = "kansascity"
     __name__ = f"{__fed_name__.title()}SpeechScraper"
     SAVE_PATH = f"../../data/fed_speeches/{__fed_name__}_fed_speeches/"
+    DOWNLOAD_PATH = "C:/Users/Administrator/Downloads/"
+
+    # PDF文件下载目录
+    prefs = {
+        "download.default_directory": SAVE_PATH,
+        "download.prompt_for_download": False,
+        "download.directory_upgrade": True,
+        "plugins.always_open_pdf_externally": True,  # 在外部程序中打开PDF文件
+    }
 
     def __init__(self, url: str = None, auto_save: bool = True):
-        super().__init__(url)
+        # 设置浏览器选项
+        chrome_options = Options()
+        chrome_options.add_experimental_option("prefs", self.prefs)
+        super().__init__(url, options=chrome_options)
         self.speech_infos_by_year = None
         self.speeches_by_year = None
         os.makedirs(self.SAVE_PATH, exist_ok=True)
@@ -46,97 +97,117 @@ class KansasCitySpeechScraper(SpeechScraper):
     def extract_speech_infos(self):
         """抽取演讲的信息"""
         try:
-            # 设置speaker和topics
-            filter_buttons = self.driver.find_element(
+            # 设置speakers
+            filter_buttons = self.driver.find_elements(
                 By.XPATH,
-                "//*[@id='search']/div/div/div/div[1]/form/div/div[@class='button-dropdown']",
+                "//div[@search-filter-category-group]/div[@class='button-dropdown']/button[@type='button']",
             )
-            speaker_filter = filter_buttons[0]
+            filter_buttons[0].click()
+            speaker_filter = self.driver.find_element(By.NAME, "6-12")
             select = Select(speaker_filter)
+            select.select_by_visible_text("Thomas M. Hoenig")
+            select.select_by_visible_text("Esther L. George")
+            select.select_by_visible_text("Jeffrey Schmid")
+            # 选取
+            person_elements = speaker_filter.find_elements(
+                By.XPATH,
+                "./following-sibling::div[@class='options']/ul[@select-name='6-12']/li/span",
+            )
+            for person_ele in person_elements:
+                if person_ele.text in [
+                    "Thomas M. Hoenig",
+                    "Esther L. George",
+                    "Jeffrey Schmid",
+                ]:
+                    person_ele.click()
+            # 设置话题
+            filter_buttons[1].click()
+            topic_filter = self.driver.find_element(By.NAME, "6-13")
+            select = Select(topic_filter)
             select.select_by_visible_text("All")
-            tpoic_filter = filter_buttons[0]
-            select = Select(tpoic_filter)
-            select.select_by_visible_text("All")
+            # 选中checkbox
+            all_element = topic_filter.find_element(
+                By.XPATH,
+                "./following-sibling::div[@class='options']/ul[@select-name='6-13']/li[@value='all']",
+            )
+            all_element.click()
             # 点击apply_filters
             apply_filter_button = self.driver.find_element(
                 By.XPATH,
-                "//*[@id='search']/div/div/div/div[2]/button[2]",
+                "//button[(@type='button') and (contains(text(), 'Apply Filters'))]",
             )
             apply_filter_button.click()
 
             # 等待页面
             WebDriverWait(self.driver, 10).until(
-                EC.presence_of_element_located(
-                    (By.XPATH, "//*[@id='mainContent']")
-                )
+                EC.presence_of_element_located((By.XPATH, "//*[@id='mainContent']"))
             )
-            time.sleep(2.0)
+            time.sleep(1.2)
 
             # 设置每页展示100个
             perpage_number_button = self.driver.find_element(
                 By.XPATH,
                 "//*[@id='search']/footer/div/form/div/div[2]/div/div/button",
             )
-            select = Select(perpage_number_button)
-            select.select_by_value("100")
-            
+            perpage_number_button.click()
+            # # 好像不起作用
+            # perpage = self.driver.find_element(By.NAME, "perpage")
+            # select = Select(perpage)
+            # select.select_by_value("100")
+            # 直接选择控件点击
+            perpage_100 = self.driver.find_element(
+                By.XPATH, "//ul[@select-name='perpage']/li[@value='100']"
+            )
+            perpage_100.click()
             # 等待页面
             WebDriverWait(self.driver, 10).until(
-                EC.visibility_of_element_located((By.XPATH, "//*[@id='mainContent']"))
+                EC.visibility_of_all_elements_located((By.CLASS_NAME, "clear"))
             )
+            time.sleep(5.0)
         except Exception as e:
             print(f"Error setting date range: {e}")
 
         # 主循环获取所有演讲信息
         speech_infos_by_year = {}
         while True:
-            soup = BeautifulSoup(self.driver.page_source, "html.parser")
-            speech_items = soup.find_all("li", class_="result-item")
-
+            speech_items = self.driver.find_elements(
+                By.XPATH, "//div[@class='result-list']/div[@class='clear']"
+            )
             for item in speech_items:
                 # 提取日期
-                date = (
-                    item.find("div", class_="date-reference")
-                    .text.split(" | ")[0]
-                    .strip()
-                )
-                year = int(date.split(".")[2])
+                date = item.find_element(
+                    By.XPATH, ".//span[contains(@class, 'date')]/time"
+                ).text.strip()
+                year = int(date.split(",")[-1].strip())
                 if year not in speech_infos_by_year:
                     speech_infos_by_year[year] = []
-                date = datetime.strptime(date, "%m.%d.%Y").strftime("%B %d, %Y")
                 # 提取演讲者
-                speaker = item.find("span", class_="author-name").text.strip()
+                speaker = item.find_element(
+                    By.XPATH, ".//a[@class='mnt-tag-group-staff-link' and @href]"
+                ).text.strip()
 
                 # 提取标题和链接
-                title_link = item.find("a", href=True)
+                title_link = item.find_element(By.XPATH, ".//h3/a[@href]")
                 title = title_link.text.strip()
-                href = title_link["href"]
-
-                # 提取描述
-                description = (
-                    item.find("div", class_="page-description").find("p").text.strip()
-                    if item.find("div", class_="page-description")
-                    else ""
-                )
+                href = title_link.get_attribute("href")
 
                 speech_infos_by_year[year].append(
                     {
                         "date": date,
                         "speaker": speaker,
                         "title": title,
-                        "href": f"https://www.clevelandfed.org{href}",
-                        "highlights": description,
+                        "href": href,
                     }
                 )
 
-            # # Try to find and click the "Next" button
             try:
-                next_button = self.driver.find_element(
-                    By.CSS_SELECTOR, "li.page-selector-item-next:not(.disabled) a"
+                next_page_button = self.driver.find_element(
+                    By.CSS_SELECTOR,
+                    "a[href][search-pagination-form-next-page-button][aria-label='Go to Next Page']",
                 )
-                self.driver.execute_script("arguments[0].click();", next_button)
+                next_page_button.click()
                 # 等待页面加载
-                time.sleep(2.0)
+                time.sleep(1.2)
             except NoSuchElementException as e:
                 print(
                     f"Next button not found or disabled. Reached last page. {repr(e)}"
@@ -153,55 +224,41 @@ class KansasCitySpeechScraper(SpeechScraper):
                 )
                 break
 
+        speech_infos_by_year = OrderedDict(speech_infos_by_year.items())
         self.speech_infos_by_year = speech_infos_by_year
         return speech_infos_by_year
 
     def extract_single_speech(self, speech_info: dict):
-        speech = {"speaker": "", "position": "", "highlights": "", "content": ""}
+        speech = {"speaker": "", "content": ""}
         try:
-            self.driver.get(speech_info["href"])
-            # 等待加载完
-            WebDriverWait(self.driver, 10).until(
-                EC.presence_of_element_located((By.ID, "content"))
-            )
-
-            # 主内容元素
-            main_content = self.driver.find_element(By.ID, "content")
-            rich_text = main_content.find_element(
-                By.CSS_SELECTOR,
-                "div.row.component.column-splitter > div.col-12.col-lg-8.cf-indent--left.cf-indent--right.cf-section__main > div > div:nth-child(1) > div > div.component.rich-text > div",
-            )
-            if rich_text:
-                content = "\n\n".join(
-                    [
-                        p.text.strip()
-                        for p in rich_text.find_elements(By.CSS_SELECTOR, "p, h2")
-                    ]
-                )
-                print(
-                    "{} {} {} content extracted.".format(
-                        speech_info["speaker"],
-                        speech_info["date"],
-                        speech_info["title"],
-                    )
-                )
+            href = speech_info["href"]
+            if href.endswith(".pdf"):
+                # 下载PDF文件
+                pdf_filename = href.split("/")[-1]
+                if not is_download_existed(self.DOWNLOAD_PATH + pdf_filename):
+                    self.driver.get(href)
+                    time.sleep(1.0)
+                if is_download_existed(self.DOWNLOAD_PATH + pdf_filename):
+                    # 解析pdf
+                    content = read_pdf_file(self.DOWNLOAD_PATH + pdf_filename)
+                else:
+                    content = f"$PDF$: {pdf_filename}"
+                speech = {
+                    "content": content,
+                }
+            elif href.startswith("https://www.youtube.com/"):
+                speech = {
+                    "content": f"$YOUTUBE$: {href}",
+                }
             else:
-                content = ""
-                print(
-                    "{} {} {} content failed.".format(
-                        speech_info["speaker"],
-                        speech_info["date"],
-                        speech_info["title"],
-                    )
-                )
-
-            speech = {
-                "content": content,
-            }
+                # 爬取所有p元素
+                speech = {
+                    "content": f"$UNSUPPORTED$: {href}",
+                }
         except Exception as e:
             print(
                 "Error when extracting speech content from {href}. {error}".format(
-                    href=speech_info["href"], error=repr(e)
+                    href=href, error=repr(e)
                 )
             )
             speech = {"content": ""}
@@ -292,6 +349,7 @@ class KansasCitySpeechScraper(SpeechScraper):
                 ]
             ).strftime("%b %d, %Y")
             logger.info("Speech Infos Data already exists, skip collecting infos.")
+            existed_lastest = "Jan 01, 2006"
         else:
             speech_infos = self.extract_speech_infos()
             if self.save:
@@ -302,75 +360,9 @@ class KansasCitySpeechScraper(SpeechScraper):
             existed_lastest = "Jan 01, 2006"
 
         # 提取演讲正文内容
+        speech_infos = OrderedDict(speech_infos.items())
         speeches = self.extract_speeches(speech_infos, existed_lastest)
         return speeches
-
-    def extract_lastest_speech_date(self):
-        """获取最近演讲的信息"""
-        try:
-            # 设置时间范围为最早和最晚
-            from_years_element = self.driver.find_element(By.ID, "fromYears")
-            from_years_options = [
-                int(option.text)
-                for option in Select(from_years_element).options
-                if option.text.isdigit()
-            ]
-            from_years_element.send_keys(str(min(from_years_options)))
-
-            to_years_element = self.driver.find_element(By.ID, "toYears")
-            to_years_options = [
-                int(option.text)
-                for option in Select(to_years_element).options
-                if option and option.text.isdigit()
-            ]
-            to_years_element.send_keys(str(max(to_years_options)))
-            # 点击搜寻按键
-            search_button = self.driver.find_element(
-                By.CSS_SELECTOR, "button.btn.btn-link[aria-label='Submit Filters']"
-            )
-            search_button.click()
-            # 等待页面
-            WebDriverWait(self.driver, 10).until(
-                EC.presence_of_element_located(
-                    (By.XPATH, "//*[@id='content']/div[3]/div[1]/search-results/div")
-                )
-            )
-            time.sleep(2.0)
-        except Exception as e:
-            print(f"Error setting date range: {e}")
-
-        soup = BeautifulSoup(self.driver.page_source, "html.parser")
-        speech_items = soup.find_all("li", class_="result-item")
-        # 提取最早的演讲的日期，锁定第一个演讲元素
-        latest_date = (
-            speech_items[0]
-            .find("div", class_="date-reference")
-            .text.split(" | ")[0]
-            .strip()
-        )
-        return parse_datestring(latest_date)
-
-    def update(self):
-        """更新报告
-
-        Returns:
-            _type_: _description_
-        """
-        # 读取本地演讲信息
-        speech_infos = json_load(
-            self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
-        )
-        # 查看最新的演讲日期
-        latest_year = max([k for k, _ in speech_infos.items()])
-        existed_lastest = max(
-            [
-                parse_datestring(speech_info["date"])
-                for speech_info in speech_infos[latest_year]
-            ]
-        )
-        # 获取网页上最新的报告日期
-        latest_speech_date = self.extract_lastest_speech_date()
-        return latest_speech_date > existed_lastest
 
 
 def test_extract_single_speech():
