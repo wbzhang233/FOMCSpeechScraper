@@ -1,0 +1,45 @@
+September 18, 2024
+
+Implementation Note issued September 18, 2024
+Decisions Regarding Monetary Policy Implementation
+
+The Federal Reserve has made the following decisions to implement the monetary policy stance announced by the Federal Open Market Committee in its statement on September 18, 2024:
+
+The Board of Governors of the Federal Reserve System voted unanimously to lower the interest rate paid on reserve balances to 4.9 percent, effective September 19, 2024.
+As part of its policy decision, the Federal Open Market Committee voted to direct the Open Market Desk at the Federal Reserve Bank of New York, until instructed otherwise, to execute transactions in the System Open Market Account in accordance with the following domestic policy directive:
+"Effective September 19, 2024, the Federal Open Market Committee directs the Desk to:
+
+Undertake open market operations as necessary to maintain the federal funds rate in a target range of 4‑3/4 to 5 percent.
+Conduct standing overnight repurchase agreement operations with a minimum bid rate of 5 percent and with an aggregate operation limit of $500 billion.
+Conduct standing overnight reverse repurchase agreement operations at an offering rate of 4.8 percent and with a per-counterparty limit of $160 billion per day.
+Roll over at auction the amount of principal payments from the Federal Reserve's holdings of Treasury securities maturing in each calendar month that exceeds a cap of $25 billion per month. Redeem Treasury coupon securities up to this monthly cap and Treasury bills to the extent that coupon principal payments are less than the monthly cap.
+Reinvest the amount of principal payments from the Federal Reserve's holdings of agency debt and agency mortgage‑backed securities (MBS) received in each calendar month that exceeds a cap of $35 billion per month into Treasury securities to roughly match the maturity composition of Treasury securities outstanding.
+Allow modest deviations from stated amounts for reinvestments, if needed for operational reasons.
+Engage in dollar roll and coupon swap transactions as necessary to facilitate settlement of the Federal Reserve's agency MBS transactions."
+In a related action, the Board of Governors of the Federal Reserve System voted unanimously to approve a 1/2 percentage point decrease in the primary credit rate to 5 percent, effective September 19, 2024. In taking this action, the Board approved requests to establish that rate submitted by the Board of Directors of the Federal Reserve Bank of Atlanta.
+This information will be updated as appropriate to reflect decisions of the Federal Open Market Committee or the Board of Governors regarding details of the Federal Reserve's operational tools and approach used to implement monetary policy.
+
+More information regarding open market operations and reinvestments may be found on the Federal Reserve Bank of New York's website.
+-----------------------------------------------------
+2024 年 9 月 18 日
+
+实施说明于 2024 年 9 月 18 日发布
+关于货币政策实施的决定
+
+美联储做出以下决定，以执行联邦公开市场委员会在2024年9月18日声明中宣布的货币政策立场：
+
+美联储理事会一致投票决定将准备金余额支付的利率下调至 4.9%，自 2024 年 9 月 19 日起生效。
+作为其政策决定的一部分，联邦公开市场委员会投票决定指示纽约联邦储备银行的公开市场部门在收到其他指示之前，按照以下国内政策指令执行系统公开市场账户中的交易：
+“自 2024 年 9 月 19 日起，联邦公开市场委员会指示交易部门：
+
+根据需要开展公开市场操作，将联邦基金利率维持在4-3/4%至5%的目标区间内。
+开展常备隔夜回购协议操作，最低中标利率为5%，总操作限额为5000亿美元。
+开展常备隔夜逆回购协议操作，发行利率为4.8%，每个交易对手方每日限额为1600亿美元。
+通过拍卖展期美联储持有的每月到期国债的本金支付金额，超出每月 250 亿美元的上限。赎回不超过每月上限的国债息票证券，并在息票本金支付低于每月上限的范围内赎回国库券。
+将美联储每月持有的机构债和机构抵押贷款支持证券（MBS）的本金支付超过350亿美元的部分再投资于美国国债，以与未偿还美国国债的期限结构大致匹配。
+如果由于运营原因需要，允许再投资金额与规定金额有适度偏差。
+根据需要进行美元展期和息票掉期交易，以促进美联储机构MBS交易的结算。”
+在相关行动中，美联储系统理事会一致投票批准将主要信贷利率下调半个百分点至 5%，自 2024 年 9 月 19 日起生效。在采取这一行动时，理事会批准了亚特兰大联邦储备银行董事会提交的确定该利率的请求。
+该信息将会适时更新，以反映联邦公开市场委员会或理事会关于美联储用于实施货币政策的操作工具和方法的细节的决定。
+
+有关公开市场操作和再投资的更多信息，请参阅纽约联邦储备银行的网站。
