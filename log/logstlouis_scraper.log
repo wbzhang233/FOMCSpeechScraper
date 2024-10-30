@@ -1,0 +1,139 @@
+2024-10-30 10:31:31,807 - stlouis - INFO - 11 titles found.
+2024-10-30 10:32:10,340 - stlouis - INFO - William McChesney Martin, Sr. has 9 speeches collected.
+2024-10-30 10:32:38,020 - stlouis - INFO - Chester C. Davis has 4 speeches collected.
+2024-10-30 10:33:10,636 - stlouis - INFO - Delos C. Johns has 7 speeches collected.
+2024-10-30 10:33:27,420 - stlouis - INFO - Harry A. Shuford has 3 speeches collected.
+2024-10-30 10:42:44,245 - stlouis - INFO - 11 titles found.
+2024-10-30 10:51:32,769 - stlouis - INFO - 11 titles found.
+2024-10-30 10:52:14,716 - stlouis - INFO - William McChesney Martin, Sr. has 9 speeches collected.
+2024-10-30 10:52:46,756 - stlouis - INFO - Chester C. Davis has 4 speeches collected.
+2024-10-30 10:53:43,970 - stlouis - INFO - Delos C. Johns has 7 speeches collected.
+2024-10-30 10:53:57,311 - stlouis - INFO - Harry A. Shuford has 3 speeches collected.
+2024-10-30 10:55:01,080 - stlouis - INFO - item <selenium.webdriver.remote.webelement.WebElement (session="626f9650d6cbf9b25271e6dc02de9f7f", element="f.79E438FD32661AF7758371AE620B0E85.d.2EA185D0E4B54CC5D666859D8C07DAB8.e.289")> failed. StaleElementReferenceException()
+2024-10-30 10:55:01,090 - stlouis - INFO - item <selenium.webdriver.remote.webelement.WebElement (session="626f9650d6cbf9b25271e6dc02de9f7f", element="f.79E438FD32661AF7758371AE620B0E85.d.2EA185D0E4B54CC5D666859D8C07DAB8.e.290")> failed. StaleElementReferenceException()
+2024-10-30 10:55:01,096 - stlouis - INFO - item <selenium.webdriver.remote.webelement.WebElement (session="626f9650d6cbf9b25271e6dc02de9f7f", element="f.79E438FD32661AF7758371AE620B0E85.d.2EA185D0E4B54CC5D666859D8C07DAB8.e.291")> failed. StaleElementReferenceException()
+2024-10-30 10:55:01,106 - stlouis - INFO - item <selenium.webdriver.remote.webelement.WebElement (session="626f9650d6cbf9b25271e6dc02de9f7f", element="f.79E438FD32661AF7758371AE620B0E85.d.2EA185D0E4B54CC5D666859D8C07DAB8.e.292")> failed. StaleElementReferenceException()
+2024-10-30 10:55:01,114 - stlouis - INFO - item <selenium.webdriver.remote.webelement.WebElement (session="626f9650d6cbf9b25271e6dc02de9f7f", element="f.79E438FD32661AF7758371AE620B0E85.d.2EA185D0E4B54CC5D666859D8C07DAB8.e.293")> failed. StaleElementReferenceException()
+2024-10-30 10:55:01,125 - stlouis - INFO - item <selenium.webdriver.remote.webelement.WebElement (session="626f9650d6cbf9b25271e6dc02de9f7f", element="f.79E438FD32661AF7758371AE620B0E85.d.2EA185D0E4B54CC5D666859D8C07DAB8.e.294")> failed. StaleElementReferenceException()
+2024-10-30 10:55:01,135 - stlouis - INFO - item <selenium.webdriver.remote.webelement.WebElement (session="626f9650d6cbf9b25271e6dc02de9f7f", element="f.79E438FD32661AF7758371AE620B0E85.d.2EA185D0E4B54CC5D666859D8C07DAB8.e.295")> failed. StaleElementReferenceException()
+2024-10-30 10:55:01,145 - stlouis - INFO - item <selenium.webdriver.remote.webelement.WebElement (session="626f9650d6cbf9b25271e6dc02de9f7f", element="f.79E438FD32661AF7758371AE620B0E85.d.2EA185D0E4B54CC5D666859D8C07DAB8.e.296")> failed. StaleElementReferenceException()
+2024-10-30 10:55:01,157 - stlouis - INFO - item <selenium.webdriver.remote.webelement.WebElement (session="626f9650d6cbf9b25271e6dc02de9f7f", element="f.79E438FD32661AF7758371AE620B0E85.d.2EA185D0E4B54CC5D666859D8C07DAB8.e.297")> failed. StaleElementReferenceException()
+2024-10-30 10:55:01,167 - stlouis - INFO - item <selenium.webdriver.remote.webelement.WebElement (session="626f9650d6cbf9b25271e6dc02de9f7f", element="f.79E438FD32661AF7758371AE620B0E85.d.2EA185D0E4B54CC5D666859D8C07DAB8.e.298")> failed. StaleElementReferenceException()
+2024-10-30 10:55:01,177 - stlouis - INFO - item <selenium.webdriver.remote.webelement.WebElement (session="626f9650d6cbf9b25271e6dc02de9f7f", element="f.79E438FD32661AF7758371AE620B0E85.d.2EA185D0E4B54CC5D666859D8C07DAB8.e.299")> failed. StaleElementReferenceException()
+2024-10-30 10:55:01,206 - stlouis - INFO - item <selenium.webdriver.remote.webelement.WebElement (session="626f9650d6cbf9b25271e6dc02de9f7f", element="f.79E438FD32661AF7758371AE620B0E85.d.2EA185D0E4B54CC5D666859D8C07DAB8.e.300")> failed. StaleElementReferenceException()
+2024-10-30 10:55:01,216 - stlouis - INFO - item <selenium.webdriver.remote.webelement.WebElement (session="626f9650d6cbf9b25271e6dc02de9f7f", element="f.79E438FD32661AF7758371AE620B0E85.d.2EA185D0E4B54CC5D666859D8C07DAB8.e.301")> failed. StaleElementReferenceException()
+2024-10-30 10:55:01,230 - stlouis - INFO - item <selenium.webdriver.remote.webelement.WebElement (session="626f9650d6cbf9b25271e6dc02de9f7f", element="f.79E438FD32661AF7758371AE620B0E85.d.2EA185D0E4B54CC5D666859D8C07DAB8.e.302")> failed. StaleElementReferenceException()
+2024-10-30 10:55:01,239 - stlouis - INFO - item <selenium.webdriver.remote.webelement.WebElement (session="626f9650d6cbf9b25271e6dc02de9f7f", element="f.79E438FD32661AF7758371AE620B0E85.d.2EA185D0E4B54CC5D666859D8C07DAB8.e.303")> failed. StaleElementReferenceException()
+2024-10-30 10:55:01,250 - stlouis - INFO - item <selenium.webdriver.remote.webelement.WebElement (session="626f9650d6cbf9b25271e6dc02de9f7f", element="f.79E438FD32661AF7758371AE620B0E85.d.2EA185D0E4B54CC5D666859D8C07DAB8.e.304")> failed. StaleElementReferenceException()
+2024-10-30 10:55:01,261 - stlouis - INFO - item <selenium.webdriver.remote.webelement.WebElement (session="626f9650d6cbf9b25271e6dc02de9f7f", element="f.79E438FD32661AF7758371AE620B0E85.d.2EA185D0E4B54CC5D666859D8C07DAB8.e.305")> failed. StaleElementReferenceException()
+2024-10-30 10:55:01,271 - stlouis - INFO - item <selenium.webdriver.remote.webelement.WebElement (session="626f9650d6cbf9b25271e6dc02de9f7f", element="f.79E438FD32661AF7758371AE620B0E85.d.2EA185D0E4B54CC5D666859D8C07DAB8.e.306")> failed. StaleElementReferenceException()
+2024-10-30 10:55:01,282 - stlouis - INFO - item <selenium.webdriver.remote.webelement.WebElement (session="626f9650d6cbf9b25271e6dc02de9f7f", element="f.79E438FD32661AF7758371AE620B0E85.d.2EA185D0E4B54CC5D666859D8C07DAB8.e.307")> failed. StaleElementReferenceException()
+2024-10-30 10:55:01,293 - stlouis - INFO - item <selenium.webdriver.remote.webelement.WebElement (session="626f9650d6cbf9b25271e6dc02de9f7f", element="f.79E438FD32661AF7758371AE620B0E85.d.2EA185D0E4B54CC5D666859D8C07DAB8.e.308")> failed. StaleElementReferenceException()
+2024-10-30 10:55:01,293 - stlouis - INFO - Darryl R. Francis has 3 speeches collected.
+2024-10-30 10:55:29,347 - stlouis - INFO - Lawrence K. Roos has 4 speeches collected.
+2024-10-30 10:55:41,004 - stlouis - INFO - Theodore H. Roberts has 2 speeches collected.
+2024-10-30 10:57:00,087 - stlouis - INFO - Thomas C. Melzer has 5 speeches collected.
+2024-10-30 10:57:31,542 - stlouis - INFO - William Poole has 2 speeches collected.
+2024-10-30 10:58:34,459 - stlouis - INFO - Error KeyError('records') occured when fetching item content
+2024-10-30 10:59:01,184 - stlouis - INFO - James Bullard has 3 speeches collected.
+2024-10-30 10:59:14,140 - stlouis - INFO - Kathleen O'Neill has 1 speeches collected.
+2024-10-30 11:11:29,560 - stlouis - INFO - 11 titles found.
+2024-10-30 11:11:48,581 - stlouis - INFO - William McChesney Martin, Sr. has 9 speeches collected.
+2024-10-30 11:12:28,040 - stlouis - INFO - Chester C. Davis has 4 speeches collected.
+2024-10-30 11:13:05,276 - stlouis - INFO - Delos C. Johns has 7 speeches collected.
+2024-10-30 11:13:27,320 - stlouis - INFO - Harry A. Shuford has 3 speeches collected.
+2024-10-30 11:14:42,229 - stlouis - INFO - Darryl R. Francis has 4 speeches collected.
+2024-10-30 11:15:24,398 - stlouis - INFO - Lawrence K. Roos has 4 speeches collected.
+2024-10-30 11:15:34,447 - stlouis - INFO - Theodore H. Roberts has 2 speeches collected.
+2024-10-30 11:16:34,697 - stlouis - INFO - Thomas C. Melzer has 5 speeches collected.
+2024-10-30 11:17:04,166 - stlouis - INFO - William Poole has 2 speeches collected.
+2024-10-30 11:17:31,232 - stlouis - WARNING - item failed. StaleElementReferenceException()
+2024-10-30 11:17:31,240 - stlouis - WARNING - item failed. StaleElementReferenceException()
+2024-10-30 11:17:31,251 - stlouis - WARNING - item failed. StaleElementReferenceException()
+2024-10-30 11:17:31,264 - stlouis - WARNING - item failed. StaleElementReferenceException()
+2024-10-30 11:17:31,272 - stlouis - WARNING - item failed. StaleElementReferenceException()
+2024-10-30 11:17:31,282 - stlouis - WARNING - item failed. StaleElementReferenceException()
+2024-10-30 11:17:31,295 - stlouis - WARNING - item failed. StaleElementReferenceException()
+2024-10-30 11:17:31,302 - stlouis - WARNING - item failed. StaleElementReferenceException()
+2024-10-30 11:17:31,313 - stlouis - WARNING - item failed. StaleElementReferenceException()
+2024-10-30 11:17:31,320 - stlouis - WARNING - item failed. StaleElementReferenceException()
+2024-10-30 11:17:31,331 - stlouis - WARNING - item failed. StaleElementReferenceException()
+2024-10-30 11:17:31,341 - stlouis - WARNING - item failed. StaleElementReferenceException()
+2024-10-30 11:17:31,342 - stlouis - INFO - James Bullard has 2 speeches collected.
+2024-10-30 11:17:38,778 - stlouis - INFO - Kathleen O'Neill has 1 speeches collected.
+2024-10-30 11:33:27,920 - stlouis - INFO - 11 titles found.
+2024-10-30 11:33:33,083 - stlouis - INFO - William McChesney Martin, Sr. has 0 speeches collected.
+2024-10-30 11:33:37,477 - stlouis - INFO - Chester C. Davis has 0 speeches collected.
+2024-10-30 11:33:42,278 - stlouis - INFO - Delos C. Johns has 0 speeches collected.
+2024-10-30 11:33:46,541 - stlouis - INFO - Harry A. Shuford has 0 speeches collected.
+2024-10-30 11:33:51,545 - stlouis - INFO - Darryl R. Francis has 0 speeches collected.
+2024-10-30 11:33:55,430 - stlouis - INFO - Lawrence K. Roos has 0 speeches collected.
+2024-10-30 11:33:59,342 - stlouis - INFO - Theodore H. Roberts has 0 speeches collected.
+2024-10-30 11:34:04,129 - stlouis - INFO - Thomas C. Melzer has 0 speeches collected.
+2024-10-30 11:34:08,233 - stlouis - INFO - William Poole has 0 speeches collected.
+2024-10-30 11:34:12,957 - stlouis - INFO - James Bullard has 0 speeches collected.
+2024-10-30 11:34:17,097 - stlouis - INFO - Kathleen O'Neill has 0 speeches collected.
+2024-10-30 11:37:03,241 - stlouis - INFO - 11 titles found.
+2024-10-30 11:40:18,212 - stlouis - INFO - 11 titles found.
+2024-10-30 11:45:17,311 - stlouis - INFO - William McChesney Martin, Sr. has 9 speeches collected.
+2024-10-30 11:45:39,125 - stlouis - INFO - Error KeyError('records') occured when fetching item content
+2024-10-30 11:46:00,077 - stlouis - INFO - Error KeyError('records') occured when fetching item content
+2024-10-30 11:46:05,985 - stlouis - INFO - Error KeyError('records') occured when fetching item content
+2024-10-30 11:47:03,966 - stlouis - INFO - Error KeyError('records') occured when fetching item content
+2024-10-30 11:47:09,062 - stlouis - INFO - Error KeyError('records') occured when fetching item content
+2024-10-30 11:47:14,153 - stlouis - INFO - Error KeyError('records') occured when fetching item content
+2024-10-30 11:47:21,005 - stlouis - INFO - Error KeyError('records') occured when fetching item content
+2024-10-30 11:47:33,124 - stlouis - INFO - Chester C. Davis has 16 speeches collected.
+2024-10-30 11:47:44,511 - stlouis - INFO - Error KeyError('records') occured when fetching item content
+2024-10-30 11:47:54,220 - stlouis - INFO - Error KeyError('records') occured when fetching item content
+2024-10-30 11:48:13,491 - stlouis - INFO - Error KeyError('records') occured when fetching item content
+2024-10-30 11:48:18,577 - stlouis - INFO - Error KeyError('records') occured when fetching item content
+2024-10-30 11:48:24,227 - stlouis - INFO - Error KeyError('records') occured when fetching item content
+2024-10-30 11:48:24,229 - stlouis - INFO - Delos C. Johns has 7 speeches collected.
+2024-10-30 11:48:43,440 - stlouis - INFO - Harry A. Shuford has 3 speeches collected.
+2024-10-30 11:50:59,217 - stlouis - INFO - Error KeyError('records') occured when fetching item content
+2024-10-30 11:51:19,362 - stlouis - INFO - Darryl R. Francis has 12 speeches collected.
+2024-10-30 11:52:02,123 - stlouis - INFO - Lawrence K. Roos has 7 speeches collected.
+2024-10-30 11:52:13,622 - stlouis - INFO - Theodore H. Roberts has 2 speeches collected.
+2024-10-30 11:54:15,434 - stlouis - INFO - Thomas C. Melzer has 14 speeches collected.
+2024-10-30 11:57:03,706 - stlouis - INFO - William Poole has 11 speeches collected.
+2024-10-30 12:04:21,842 - stlouis - INFO - James Bullard has 16 speeches collected.
+2024-10-30 12:04:28,860 - stlouis - INFO - Kathleen O'Neill has 1 speeches collected.
+2024-10-30 12:41:50,972 - stlouis - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-30 12:42:16,595 - stlouis - WARNING - Extract James Bullard October 10, 2008 The Optimal Inflation Target in an Economy with Limited Enforcement : New Perspectives on Monetary Policy Design, Sponsored by the Bank of Canada and the Centre De Recerca en Economia Internacional, Barcelona, Spain
+2024-10-30 12:42:21,687 - stlouis - WARNING - Extract James Bullard October 14, 2008 The U.S. Economy and Financial Market Turmoil : Delivered at the Economic Club of Memphis, Memphis, Tenn.
+2024-10-30 12:42:51,626 - stlouis - WARNING - Extract James Bullard May 01, 2009 The U.S. Financial System and Macroeconomic Performance : Delivered at the 119th Annual Arkansas Bankers Association & Tradeshow, Day with the Commissioner, Hot Springs, AR
+2024-10-30 12:43:39,805 - stlouis - WARNING - Extract James Bullard October 21, 2010 Opening Remarks : Given at the 35th Annual Economic Policy Conference Frictions in Financial and Labor Markets, Federal Reserve Bank of St. Louis
+2024-10-30 12:43:44,990 - stlouis - WARNING - Extract James Bullard October 25, 2010 Opening Remarks : Given at "The Financial Stability Oversight Council: Can Systemic Risk be Contained?"
+2024-10-30 12:43:55,523 - stlouis - WARNING - Extract James Bullard February 24, 2011 Quantitative Easing, Global Inflation, and Commodity Standards : Bowling Green Area Chamber of Commerce
+2024-10-30 12:44:00,614 - stlouis - WARNING - Extract James Bullard March 17, 2011 Research in Macroeconomics after the Crisis : 19th Symposium of the Society for Nonlinear Dynamics and Econometrics, the Institute for International Economic Policy, Elliott School of International Affairs, The George Washington University, Washington, D.C.
+2024-10-30 12:44:05,702 - stlouis - WARNING - Extract James Bullard March 26, 2011 Reducing Deflationary Risk in the U.S. : Asset Prices, Credit and Macroeconomic Policies, Marseille, France
+2024-10-30 12:44:26,096 - stlouis - WARNING - Extract James Bullard June 30, 2011 QE2: An Assessment : Opening Remarks Given at the Quantitative Easing (QE) Conference, St. Louis
+2024-10-30 12:45:30,198 - stlouis - WARNING - Extract James Bullard December 03, 2012 Making Sense of Thresholds, Triggers, Twists, and Timelines : 147th Annual Meeting of the Little Rock Regional Chamber of Commerce, Little Rock, Arkansas
+2024-10-30 12:46:22,643 - stlouis - WARNING - Extract James Bullard June 26, 2014 Income Inequality and Monetary Policy : C. Peter McColough Series on International Economics, Council on Foreign Relations, New York, N.Y.
+2024-10-30 12:49:36,450 - stlouis - WARNING - Extract James Bullard May 23, 2019 Classic Policy Benchmarks for Heterogeneous Agent Economies : Monetary Policy and Heterogeneity Conference, Hong Kong Monetary Authority and Federal Reserve Bank of New York, Hong Kong, China
+2024-10-30 12:49:36,920 - stlouis - WARNING - Extract James Bullard June 03, 2019 Remarks on the Current Stance of U.S. Monetary Policy : Union League Club of Chicago, Chicago, Ill.
+2024-10-30 12:49:37,182 - stlouis - WARNING - Extract James Bullard June 22, 2019 Classic Policy Benchmarks for Heterogeneous-Agent Economies : Expectations in Dynamic Macroeconomic Models 2019, Barcelona GSE and MOVE (Markets, Organizations and Votes in Economics), Barcelona, Spain
+2024-10-30 12:49:37,446 - stlouis - WARNING - Extract James Bullard June 25, 2019 Welcoming Remarks : Given at the Homer Jones Memorial Lecture, Federal Reserve Bank of St. Louis
+2024-10-30 12:49:37,736 - stlouis - WARNING - Extract James Bullard July 08, 2019 Classic Policy Benchmarks for Heterogeneous-Agent Economies : Modelling the Macroeconomy in Risky Times, National Institute of Economic and Social Research, St. Louis, Mo.
+2024-10-30 12:49:38,007 - stlouis - WARNING - Extract James Bullard July 10, 2019 Moderated Q&A : OMFIF Foundation Main Meeting
+2024-10-30 12:49:38,268 - stlouis - WARNING - Extract James Bullard July 19, 2019 Public and Private Currency Competition : Central Bank Research Association 2019 Annual Meeting, Columbia University and Federal Reserve Bank of New York, New York, N.Y.
+2024-10-30 12:49:38,898 - stlouis - WARNING - Extract James Bullard August 06, 2019 A Sea Change in U.S. Monetary Policy : National Economists Club, Summer Signature Luncheon, Washington, D.C.
+2024-10-30 12:58:10,905 - stlouis - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-30 17:20:09,437 - stlouis - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-30 17:22:16,700 - stlouis - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-30 17:22:21,359 - stlouis - INFO - Skip speech James Bullard January 05, 2023 The Prospects for Disinflation in 2023 : CFA Society St. Louis cause' it's earlier than start_date.
+2024-10-30 17:22:21,360 - stlouis - INFO - Skip speech James Bullard January 12, 2023 Bullard Discusses Inflation and the Economic Outlook : Wisconsin Bankers Association cause' it's earlier than start_date.
+2024-10-30 17:22:21,361 - stlouis - INFO - Skip speech James Bullard February 04, 2023 Social Learning for the Masses : Computational & Experimental Economics Workshop, Simon Fraser University, Vancouver, British Columbia cause' it's earlier than start_date.
+2024-10-30 17:22:21,361 - stlouis - INFO - Skip speech James Bullard February 16, 2023 Disinflation: Progress and Prospects : Greater Jackson Chamber, Jackson, Tenn. cause' it's earlier than start_date.
+2024-10-30 17:22:21,362 - stlouis - INFO - Skip speech James Bullard February 24, 2023 Credible and Incredible Disinflations : The Credibility of Government Policies: Conference in Honor of Guillermo Calvo, Panel Discussion: Back to 2% Inflation? Columbia University, New York, N.Y. cause' it's earlier than start_date.
+2024-10-30 17:22:21,363 - stlouis - INFO - Skip speech James Bullard March 24, 2023 Financial Stress and the Current Macroeconomic Outlook : Greater St. Louis Inc., St. Louis cause' it's earlier than start_date.
+2024-10-30 17:22:21,365 - stlouis - INFO - Skip speech James Bullard April 06, 2023 Financial Stress and the Economy : Arkansas Bankers Association's 133rd Annual Convention, Day with the Commissioner, Little Rock, Ark. cause' it's earlier than start_date.
+2024-10-30 17:22:21,367 - stlouis - INFO - Skip speech James Bullard May 05, 2023 Bullard Discusses Recent Policy Rate Increase, Outlook for U.S. Economy in Fireside Chat : The Economic Club of Minnesota cause' it's earlier than start_date.
+2024-10-30 17:22:21,368 - stlouis - INFO - Skip speech James Bullard May 12, 2023 The Monetary-Fiscal Policy Mix and Central Bank Strategy : Toward a Monetary Policy Strategy, Hoover Institution at Stanford University, Stanford, Calif. cause' it's earlier than start_date.
+2024-10-30 17:22:21,369 - stlouis - INFO - Skip speech James Bullard June 16, 2023 Optimal Macroeconomic Policies in a Heterogeneous World : Presented at The Future of Macroeconomic Policy, Norges Bank, the IMF and IMF Economic Review, Oslo, Norway cause' it's earlier than start_date.
+2024-10-30 17:22:21,369 - stlouis - INFO - Skip speech James Bullard June 17, 2023 Optimal Macroeconomic Policies in a Heterogeneous World : Presented at Recent Developments in Macroeconomic Policy and Theory, Santorini, Greece cause' it's earlier than start_date.
+2024-10-30 17:22:21,370 - stlouis - INFO - Skip speech James Bullard June 20, 2023 Optimal Macroeconomic Policies in a Heterogeneous World : Presented at the BSE Summer Forum, Expectations in Dynamic Macroeconomic Models, Barcelona, Spain cause' it's earlier than start_date.
+2024-10-30 17:22:21,371 - stlouis - INFO - Skip speech James Bullard June 23, 2023 Optimal Macroeconomic Policies in a Heterogeneous World : 2023 IJCB Conference, International Journal of Central Banking and Central Bank of Ireland, Dublin, Ireland cause' it's earlier than start_date.
+2024-10-30 17:27:53,698 - stlouis - INFO - 11 titles found.
+2024-10-30 17:28:21,074 - stlouis - INFO - Kathleen O'Neill has 1 speeches collected.

@@ -1,0 +1,6 @@
+2024-10-30 17:05:26,054 - speech_scraper - WARNING - Records update failed. Error: KeyError('speaker')
+2024-10-30 17:05:26,056 - speech_scraper - INFO - 2019 updated.
+2024-10-30 17:07:14,210 - speech_scraper - WARNING - Records update failed. Error: KeyError('speaker')
+2024-10-30 17:07:14,213 - speech_scraper - INFO - 2019 updated.
+2024-10-30 17:12:38,450 - speech_scraper - WARNING - Records update failed. Error: KeyError('speaker')
+2024-10-30 17:12:38,451 - speech_scraper - INFO - 2019 updated.

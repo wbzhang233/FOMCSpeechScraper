@@ -10,7 +10,66 @@
 
 import json
 
+from collections import OrderedDict
+from utils.common import parse_datestring
 from utils.logger import logger
+
+
+
+def update_records(
+    records: list[dict],
+    new: list[dict],
+    tag_fields: list[str] = None,
+    sort_field: str = "date",
+):
+    """对records格式的list进行去重
+    Args:
+        records (list[dict]): list[dict]格式的变量
+        tag_field (str): 每个元素的标签元素
+
+
+    """
+    if not tag_fields:
+        tag_fields = ["speaker", "date", "title"]
+    records.extend(new)
+    try:
+        # 使用字典去重，确保每个 field 只出现一次. 第一次的值会被第二次的值覆盖
+        unique_data = {}
+        for item in records:
+            tag = " ".join([str(item[field]) for field in tag_fields])
+            unique_data[tag] = item
+
+        # 将去重后的字典转换回列表
+        unique_list = list(unique_data.values())
+
+        # 使用 `sorted()` 函数根据 `date` 字段进行升序排序
+        if sort_field == "date":
+            sorted_records = sorted(
+                unique_list, key=lambda x: parse_datestring(x["date"])
+            )
+        else:
+            sorted_records = sorted(unique_list, key=lambda x: x[sort_field])
+        return sorted_records
+    except Exception as e:
+        msg = f"Records update failed. Error: {repr(e)}"
+        logger.warning(msg)
+        return records
+
+
+def update_dict(existed: dict, obj: dict, **kwargs):
+    """对<key, records>格式的dict进行更新"""
+    try:
+        for k, v in obj.items():
+            if k in existed:
+                existed[k] = update_records(existed[k], v, **kwargs)
+                logger.info(f"{k} updated.")
+            else:
+                existed[k] = v
+        existed = OrderedDict(sorted(existed.items()))
+    except Exception as e:
+        msg = "Error {} occurred when update dict.".format(repr(e))
+        logger.error(msg)
+    return existed
 
 
 def json_dump(obj, filepath: str):
@@ -45,36 +104,6 @@ def json_load(filepath: str):
         return None
 
 
-def records_update(records: list[dict], new: list[dict],
-                   tag_fields: list[str] = None, sort_field: str= 'date'):
-    """对records格式的list进行去重
-    Args:
-        records (list[dict]): list[dict]格式的变量
-        tag_field (str): 每个元素的标签元素
-
-    
-    """
-    if not tag_fields:
-        tag_fields = ['speaker', 'date', 'title']
-    records.extend(new)
-    try:
-        # 使用字典去重，确保每个 field 只出现一次
-        unique_data = {}
-        for item in records:
-            tag = " ".join([str(item[field]) for field in tag_fields])
-            unique_data[tag] = item
-
-        # 将去重后的字典转换回列表
-        unique_list = list(unique_data.values())
-
-        # 使用 `sorted()` 函数根据 `date` 字段进行升序排序
-        sorted_records = sorted(unique_list, key=lambda x: x[sort_field])
-        return sorted_records
-    except Exception as e:
-        msg = f"Records update failed. Error: {repr(e)}"
-        logger.warning(msg)
-        return records
-
 def json_update(filepath: str, obj, **kwargs):
     """更新已存储的json文件
 
@@ -85,13 +114,13 @@ def json_update(filepath: str, obj, **kwargs):
     if isinstance(exist_obj, dict):
         for k, v in obj.items():
             if k in exist_obj:
-                exist_obj[k] = records_update(exist_obj[k], v, **kwargs)
+                exist_obj[k] = update_records(exist_obj[k], v, **kwargs)
                 logger.info(f"{k} updated.")
             else:
                 exist_obj[k] = v
         json_dump(exist_obj, filepath)
     elif isinstance(exist_obj, list):
-        exist_obj = records_update(exist_obj, obj, **kwargs)
+        exist_obj = update_records(exist_obj, obj, **kwargs)
         json_dump(exist_obj, filepath)
     elif not exist_obj:
         json_dump(obj, filepath)
@@ -100,6 +129,34 @@ def json_update(filepath: str, obj, **kwargs):
     else:
         msg = f"JSON update failed. Unknown object type: {type(exist_obj)}"
         logger.error(msg)
+
+def test_update_dict():
+    existed = {
+        "2018": [
+            {"a": 1, "b": 2, "c": 3},
+            {"a": 3, "b": 6, "c": 9},
+            {"a": 4, "b": 8, "c": 12},
+        ],
+        "2019": [
+            {"a": 1, "b": 2, "c": 3},
+            {"a": 3, "b": 6, "c": 9},
+            {"a": 4, "b": 8, "c": 12},
+        ],
+    }
+    new = {
+        "2017": [
+            {"a": 11, "b": 22, "c": 63},
+            {"a": 31, "b": 16, "c": 89},
+            {"a": 41, "b": 18, "c": 912},
+        ],
+        "2019": [
+            {"a": 81, "b": 52, "c": 73},
+            {"a": 63, "b": 96, "c": 79},
+            {"a": 54, "b": 78, "c": 25},
+        ],
+    }
+    union_dict = update_dict(existed=existed, obj=new)
+    print(union_dict)
 
 
 def test_json_load():
@@ -112,4 +169,5 @@ def test_json_load():
 
 
 if __name__ == "__main__":
-    test_json_load()
+    # test_json_load()
+    test_update_dict()

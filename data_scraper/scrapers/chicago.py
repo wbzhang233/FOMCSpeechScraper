@@ -28,7 +28,7 @@ from datetime import datetime
 
 from data_scraper.scrapers.scraper import SpeechScraper
 from utils.common import parse_datestring
-from utils.file_saver import json_dump, json_load, json_update, records_update
+from utils.file_saver import json_dump, json_load, json_update, update_records
 from utils.logger import logger
 
 today = datetime.today()
@@ -172,7 +172,7 @@ class ChicagoSpeechScraper(SpeechScraper):
             infos = self.extract_president_speech_infos(president_info)
             for year, new_speech_infos in infos.items():
                 if year in speech_infos_by_year:
-                    speech_infos_by_year[year] = records_update(
+                    speech_infos_by_year[year] = update_records(
                         speech_infos_by_year[year],
                         new_speech_infos,
                         tag_fields=["speaker", "title"],

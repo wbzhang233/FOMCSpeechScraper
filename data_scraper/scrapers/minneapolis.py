@@ -26,7 +26,7 @@ from datetime import datetime
 
 from data_scraper.scrapers.scraper import SpeechScraper
 from utils.common import parse_datestring
-from utils.file_saver import json_dump, json_load, json_update, records_update
+from utils.file_saver import json_dump, json_load, json_update, update_records
 from utils.logger import logger
 
 today = datetime.today()

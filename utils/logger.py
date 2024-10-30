@@ -1,5 +1,17 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+'''
+@File    :   logger.py
+@Time    :   2024/10/30 10:14:00
+@Author  :   wbzhang 
+@Version :   1.0
+@Desc    :   日志记录
+'''
+
+
 import logging
 from logging import Logger
+import os
 
 
 class ScraperLogger(Logger):
@@ -45,12 +57,15 @@ def setup_logger(name: str, log_file: str = None, level=logging.INFO):
     return logger
 
 
-def get_logger(logger_name: str = "speech_scraper"):
+def get_logger(logger_name: str = "speech_scraper", log_filepath: str = None):
     logger = logging.getLogger(logger_name)
     logger.setLevel(logging.DEBUG)
 
     # 创建一个handler，用于写入日志文件
-    fh = logging.FileHandler("{}_scraper.log".format(logger_name))
+    if not log_filepath:
+        log_filepath = "../log/"
+        os.makedirs(log_filepath, exist_ok=True)
+    fh = logging.FileHandler(log_filepath + "{}_scraper.log".format(logger_name))
     fh.setLevel(logging.DEBUG)
 
     # 再创建一个handler，用于输出到控制台

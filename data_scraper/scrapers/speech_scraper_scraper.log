@@ -119,3 +119,287 @@
 2024-10-25 10:36:26,781 - speech_scraper - INFO - 2024 updated.
 2024-10-25 10:37:37,664 - speech_scraper - INFO - Speech Infos Data already exists, skip collecting infos.
 2024-10-25 10:39:55,132 - speech_scraper - INFO - 2024 updated.
+2024-10-25 15:31:15,405 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/kansascity_fed_speeches/kansascity_speeches_2016.json created.
+2024-10-25 15:31:17,181 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/kansascity_fed_speeches/kansascity_speeches_2017.json created.
+2024-10-25 15:31:17,190 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/kansascity_fed_speeches/kansascity_speeches.json created.
+2024-10-25 15:32:42,792 - speech_scraper - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-25 15:32:42,796 - speech_scraper - INFO - Skip speech Esther L. George May 08, 2017 Evaluating the Balance of Economic Risks and Monetary Policy cause' it's earlier than start_date.
+2024-10-25 15:32:42,798 - speech_scraper - INFO - Skip speech Esther L. George February 28, 2017 A Monetary Policy for Long-Run Economic Stability cause' it's earlier than start_date.
+2024-10-25 15:32:42,799 - speech_scraper - INFO - Skip speech Esther L. George April 06, 2017 Why Community Banks Matter cause' it's earlier than start_date.
+2024-10-25 15:32:42,803 - speech_scraper - INFO - 2017 updated.
+2024-10-25 15:34:32,860 - speech_scraper - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-25 15:34:32,863 - speech_scraper - INFO - Skip speech Esther L. George May 08, 2017 Evaluating the Balance of Economic Risks and Monetary Policy cause' it's earlier than start_date.
+2024-10-25 15:34:32,863 - speech_scraper - INFO - Skip speech Esther L. George February 28, 2017 A Monetary Policy for Long-Run Economic Stability cause' it's earlier than start_date.
+2024-10-25 15:34:32,864 - speech_scraper - INFO - Skip speech Esther L. George April 06, 2017 Why Community Banks Matter cause' it's earlier than start_date.
+2024-10-25 15:34:32,867 - speech_scraper - INFO - 2017 updated.
+2024-10-25 15:56:11,781 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/kansascity_fed_speeches/kansascity_speeches_2018.json created.
+2024-10-25 15:56:17,634 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/kansascity_fed_speeches/kansascity_speeches_2020.json created.
+2024-10-25 15:56:21,093 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/kansascity_fed_speeches/kansascity_speeches_2021.json created.
+2024-10-25 15:56:30,753 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/kansascity_fed_speeches/kansascity_speeches_2019.json created.
+2024-10-25 15:56:34,834 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/kansascity_fed_speeches/kansascity_speeches_2014.json created.
+2024-10-25 15:56:37,701 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/kansascity_fed_speeches/kansascity_speeches_2013.json created.
+2024-10-25 15:56:41,499 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/kansascity_fed_speeches/kansascity_speeches_2012.json created.
+2024-10-25 15:56:43,331 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/kansascity_fed_speeches/kansascity_speeches_2011.json created.
+2024-10-25 15:56:46,715 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/kansascity_fed_speeches/kansascity_speeches_2010.json created.
+2024-10-25 15:56:50,003 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/kansascity_fed_speeches/kansascity_speeches_2009.json created.
+2024-10-25 15:56:53,091 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/kansascity_fed_speeches/kansascity_speeches_2007.json created.
+2024-10-25 15:56:54,968 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/kansascity_fed_speeches/kansascity_speeches_2006.json created.
+2024-10-25 15:56:58,581 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/kansascity_fed_speeches/kansascity_speeches_2015.json created.
+2024-10-25 15:57:01,885 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/kansascity_fed_speeches/kansascity_speeches_2024.json created.
+2024-10-25 17:06:18,075 - speech_scraper - ERROR - JSON file was not existed. New file C:/Users/Administrator/Downloads/kansascity_speeches_2016.json created.
+2024-10-25 17:06:30,581 - speech_scraper - ERROR - JSON file was not existed. New file C:/Users/Administrator/Downloads/kansascity_speeches_2017.json created.
+2024-10-25 17:06:36,774 - speech_scraper - ERROR - JSON file was not existed. New file C:/Users/Administrator/Downloads/kansascity_speeches_2018.json created.
+2024-10-25 17:06:45,834 - speech_scraper - ERROR - JSON file was not existed. New file C:/Users/Administrator/Downloads/kansascity_speeches_2020.json created.
+2024-10-25 17:06:52,363 - speech_scraper - ERROR - JSON file was not existed. New file C:/Users/Administrator/Downloads/kansascity_speeches_2021.json created.
+2024-10-25 17:07:05,905 - speech_scraper - ERROR - JSON file was not existed. New file C:/Users/Administrator/Downloads/kansascity_speeches_2019.json created.
+2024-10-25 17:07:12,998 - speech_scraper - ERROR - JSON file was not existed. New file C:/Users/Administrator/Downloads/kansascity_speeches_2014.json created.
+2024-10-25 17:07:16,940 - speech_scraper - ERROR - JSON file was not existed. New file C:/Users/Administrator/Downloads/kansascity_speeches_2013.json created.
+2024-10-25 17:07:21,887 - speech_scraper - ERROR - JSON file was not existed. New file C:/Users/Administrator/Downloads/kansascity_speeches_2012.json created.
+2024-10-25 17:07:24,293 - speech_scraper - ERROR - JSON file was not existed. New file C:/Users/Administrator/Downloads/kansascity_speeches_2011.json created.
+2024-10-25 17:07:30,390 - speech_scraper - ERROR - JSON file was not existed. New file C:/Users/Administrator/Downloads/kansascity_speeches_2010.json created.
+2024-10-25 17:07:35,245 - speech_scraper - ERROR - JSON file was not existed. New file C:/Users/Administrator/Downloads/kansascity_speeches_2009.json created.
+2024-10-25 17:07:39,158 - speech_scraper - ERROR - JSON file was not existed. New file C:/Users/Administrator/Downloads/kansascity_speeches_2007.json created.
+2024-10-25 17:07:41,652 - speech_scraper - ERROR - JSON file was not existed. New file C:/Users/Administrator/Downloads/kansascity_speeches_2006.json created.
+2024-10-25 17:07:47,909 - speech_scraper - ERROR - JSON file was not existed. New file C:/Users/Administrator/Downloads/kansascity_speeches_2015.json created.
+2024-10-25 17:07:53,872 - speech_scraper - ERROR - JSON file was not existed. New file C:/Users/Administrator/Downloads/kansascity_speeches_2024.json created.
+2024-10-25 17:07:53,876 - speech_scraper - ERROR - JSON file was not existed. New file C:/Users/Administrator/Downloads/kansascity_speeches.json created.
+2024-10-25 17:20:54,670 - speech_scraper - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-25 17:20:54,673 - speech_scraper - INFO - Skip speech Jeffrey Schmid April 02, 2024 A Workshop on the Future of Banking, Opening Remarks cause' it's earlier than start_date.
+2024-10-25 17:20:54,673 - speech_scraper - INFO - Skip speech Jeffrey Schmid April 12, 2024 The Importance of Prices and Price Stability cause' it's earlier than start_date.
+2024-10-25 17:20:54,674 - speech_scraper - INFO - Skip speech Jeffrey Schmid May 14, 2024 The Outlook for the Economy and Monetary Policy cause' it's earlier than start_date.
+2024-10-25 17:20:54,676 - speech_scraper - INFO - Skip speech Jeffrey Schmid August 08, 2024 Kansas Bankers Association Annual Meeting, Opening Remarks cause' it's earlier than start_date.
+2024-10-25 17:20:54,678 - speech_scraper - INFO - Skip speech Jeffrey Schmid October 21, 2024 Chartered Financial Analysts Society, Opening Remarks cause' it's earlier than start_date.
+2024-10-25 17:20:54,684 - speech_scraper - INFO - 2024 updated.
+2024-10-25 17:23:04,555 - speech_scraper - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-25 17:24:15,191 - speech_scraper - INFO - Skip speech Jeffrey Schmid April 02, 2024 A Workshop on the Future of Banking, Opening Remarks cause' it's earlier than start_date.
+2024-10-25 17:24:15,193 - speech_scraper - INFO - Skip speech Jeffrey Schmid April 12, 2024 The Importance of Prices and Price Stability cause' it's earlier than start_date.
+2024-10-25 17:24:15,194 - speech_scraper - INFO - Skip speech Jeffrey Schmid May 14, 2024 The Outlook for the Economy and Monetary Policy cause' it's earlier than start_date.
+2024-10-25 17:24:15,195 - speech_scraper - INFO - Skip speech Jeffrey Schmid August 08, 2024 Kansas Bankers Association Annual Meeting, Opening Remarks cause' it's earlier than start_date.
+2024-10-25 17:24:15,196 - speech_scraper - INFO - Skip speech Jeffrey Schmid October 21, 2024 Chartered Financial Analysts Society, Opening Remarks cause' it's earlier than start_date.
+2024-10-25 17:24:15,201 - speech_scraper - INFO - 2024 updated.
+2024-10-25 17:24:42,830 - speech_scraper - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-25 17:25:39,680 - speech_scraper - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-25 17:28:39,814 - speech_scraper - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-25 17:29:07,649 - speech_scraper - WARNING - Extract Thomas M. Hoenig June 10, 2010 Letter to Senator Lincoln
+2024-10-25 17:29:11,943 - speech_scraper - INFO - 2016 updated.
+2024-10-25 17:29:11,943 - speech_scraper - INFO - 2017 updated.
+2024-10-25 17:29:11,943 - speech_scraper - INFO - 2018 updated.
+2024-10-25 17:29:11,943 - speech_scraper - INFO - 2020 updated.
+2024-10-25 17:29:11,943 - speech_scraper - INFO - 2021 updated.
+2024-10-25 17:29:11,944 - speech_scraper - INFO - 2019 updated.
+2024-10-25 17:29:11,944 - speech_scraper - INFO - 2014 updated.
+2024-10-25 17:29:11,944 - speech_scraper - INFO - 2013 updated.
+2024-10-25 17:29:11,944 - speech_scraper - INFO - 2012 updated.
+2024-10-25 17:29:11,944 - speech_scraper - INFO - 2011 updated.
+2024-10-25 17:29:11,944 - speech_scraper - INFO - 2010 updated.
+2024-10-25 17:29:11,944 - speech_scraper - INFO - 2009 updated.
+2024-10-25 17:29:11,944 - speech_scraper - INFO - 2007 updated.
+2024-10-25 17:29:11,944 - speech_scraper - INFO - 2006 updated.
+2024-10-25 17:29:11,945 - speech_scraper - INFO - 2015 updated.
+2024-10-25 17:29:11,945 - speech_scraper - INFO - 2024 updated.
+2024-10-28 16:36:43,350 - speech_scraper - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-28 16:38:59,347 - speech_scraper - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-28 16:40:27,839 - speech_scraper - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-28 16:40:36,497 - speech_scraper - WARNING - Extract October 21, 2024 Town hall with Neel Kashkari at the Chippewa Falls Area Chamber of Commerce
+2024-10-28 16:40:45,919 - speech_scraper - WARNING - Extract October 10, 2024 Neel Kashkari recorded remarks for Minnesota Business Partnership in Minneapolis
+2024-10-28 16:40:49,981 - speech_scraper - WARNING - Extract October 7, 2024 Neel Kashkari Q&A at the Bank Holding Company Association Fall Seminar
+2024-10-28 16:40:53,009 - speech_scraper - WARNING - Extract September 26, 2024 Fireside chat featuring Neel Kashkari and Michael Barr at Boston Fed workshop: Financial Inclusion and Banking Supervision
+2024-10-28 16:40:57,182 - speech_scraper - WARNING - Extract September 23, 2024 Neel Kashkari Q&A at the 2024 Greater Kansas City Chamber of Commerce Leadership Exchange
+2024-10-28 16:41:00,686 - speech_scraper - WARNING - Extract June 20, 2024 Neel Kashkari at the 2024 Michigan Bankers Association Convention
+2024-10-28 16:41:07,157 - speech_scraper - WARNING - Extract May 15, 2024 Neel Kashkari participates in fireside chat on the economy at the 2024 Williston Basin Petroleum Conference
+2024-10-28 16:41:15,611 - speech_scraper - WARNING - Extract April 8, 2024 Neel Kashkari town hall at the University of Montana
+2024-10-28 16:41:20,880 - speech_scraper - WARNING - Extract February 22, 2024 Neel Kashkari participates in Northside Economic Opportunity Network (NEON) Community Conversations series
+2024-10-28 16:41:26,233 - speech_scraper - WARNING - Extract February 12, 2024 Neel Kashkari in conversation with Ginni Rometty at the Economic Club of Minnesota
+2024-10-28 16:41:31,664 - speech_scraper - WARNING - Extract February 6, 2024 Neel Kashkari Q&A at Greater Mankato Growth event
+2024-10-28 16:41:36,681 - speech_scraper - WARNING - Extract April 8, 2024 Neel Kashkari town hall at the University of Montana
+2024-10-28 16:41:41,636 - speech_scraper - WARNING - Extract February 22, 2024 Neel Kashkari participates in Northside Economic Opportunity Network (NEON) Community Conversations series
+2024-10-28 16:41:46,613 - speech_scraper - WARNING - Extract February 12, 2024 Neel Kashkari in conversation with Ginni Rometty at the Economic Club of Minnesota
+2024-10-28 16:41:52,137 - speech_scraper - WARNING - Extract February 6, 2024 Neel Kashkari Q&A at Greater Mankato Growth event
+2024-10-28 16:41:57,376 - speech_scraper - WARNING - Extract April 8, 2024 Neel Kashkari town hall at the University of Montana
+2024-10-28 16:42:02,737 - speech_scraper - WARNING - Extract February 22, 2024 Neel Kashkari participates in Northside Economic Opportunity Network (NEON) Community Conversations series
+2024-10-28 16:42:08,033 - speech_scraper - WARNING - Extract February 12, 2024 Neel Kashkari in conversation with Ginni Rometty at the Economic Club of Minnesota
+2024-10-28 16:42:13,333 - speech_scraper - WARNING - Extract February 6, 2024 Neel Kashkari Q&A at Greater Mankato Growth event
+2024-10-28 16:42:13,335 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/minneapolis_fed_speeches/minneapolis_speeches_2024.json created.
+2024-10-28 16:42:13,340 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/minneapolis_fed_speeches/minneapolis_speeches.json created.
+2024-10-28 16:47:09,137 - speech_scraper - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-28 16:48:45,329 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/minneapolis_fed_speeches/minneapolis_speeches_2007.json created.
+2024-10-28 16:49:40,185 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/minneapolis_fed_speeches/minneapolis_speeches_2008.json created.
+2024-10-28 16:54:58,500 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/minneapolis_fed_speeches/minneapolis_speeches_2009.json created.
+2024-10-28 16:55:45,281 - speech_scraper - WARNING - Extract November 22, 2010 Monetary Policy, Labor Markets, and Uncertainty
+2024-10-28 16:57:19,481 - speech_scraper - WARNING - Extract November 22, 2010 Monetary Policy, Labor Markets, and Uncertainty
+2024-10-28 17:00:30,164 - speech_scraper - WARNING - Extract June 11, 2010 Entrepreneurs and the Economy
+2024-10-28 17:01:17,226 - speech_scraper - WARNING - Extract May 13, 2010 Economic Outlook and Economic Choices
+2024-10-28 17:02:43,957 - speech_scraper - WARNING - Extract April 6, 2010 Economic Recovery and Balance Sheet Normalization
+2024-10-28 17:03:07,354 - speech_scraper - WARNING - Extract March 2, 2010 The Economy and Why the Federal Reserve Needs to Supervise Banks
+2024-10-28 17:03:55,815 - speech_scraper - WARNING - Extract February 16, 2010 The Economy and Why the Federal Reserve Needs to Supervise Banks
+2024-10-28 17:03:55,834 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/minneapolis_fed_speeches/minneapolis_speeches_2010.json created.
+2024-10-28 17:04:29,748 - speech_scraper - WARNING - Extract November 29, 2011 Making Monetary Policy: Public Contingency Planning Using a Mandate Dashboard
+2024-10-28 17:05:43,072 - speech_scraper - WARNING - Extract November 8, 2011 Looking Back at Four Years of Federal Reserve Actions
+2024-10-28 17:06:08,641 - speech_scraper - WARNING - Extract October 21, 2011 Further Thoughts on Making Monetary Policy
+2024-10-28 17:06:36,195 - speech_scraper - WARNING - Extract October 20, 2011 The Importance of Teaching Teachers
+2024-10-28 17:07:59,474 - speech_scraper - WARNING - Extract September 6, 2011 Communication, Credibility and Implementation: Some Thoughts on Current, Past and Future Monetary Policy
+2024-10-28 17:08:25,350 - speech_scraper - WARNING - Extract August 30, 2011 Communication, Credibility and Implementation: Some Thoughts on Current, Past and Future Monetary Policy
+2024-10-28 17:08:52,824 - speech_scraper - WARNING - Extract June 27, 2011 Re-thinking Leverage Subsidies
+2024-10-28 17:09:44,479 - speech_scraper - WARNING - Extract May 25, 2011 Some Contingent Planning for Monetary Policy
+2024-10-28 17:10:09,876 - speech_scraper - WARNING - Extract May 11, 2011 Some Contingent Planning for Monetary Policy
+2024-10-28 17:10:59,571 - speech_scraper - WARNING - Extract May 5, 2011 Some Contingent Planning for Monetary Policy
+2024-10-28 17:13:04,776 - speech_scraper - WARNING - Extract March 3, 2011 Labor Markets and Monetary Policy
+2024-10-28 17:13:57,356 - speech_scraper - WARNING - Extract February 3, 2011 It¡¯s a Wonderful Fed
+2024-10-28 17:14:21,940 - speech_scraper - WARNING - Extract January 11, 2011 It¡¯s a Wonderful Fed
+2024-10-28 17:14:45,122 - speech_scraper - WARNING - Extract September 6, 2011 Communication, Credibility and Implementation: Some Thoughts on Current, Past and Future Monetary Policy
+2024-10-28 17:15:08,645 - speech_scraper - WARNING - Extract August 30, 2011 Communication, Credibility and Implementation: Some Thoughts on Current, Past and Future Monetary Policy
+2024-10-28 17:15:31,788 - speech_scraper - WARNING - Extract June 27, 2011 Re-thinking Leverage Subsidies
+2024-10-28 17:16:18,118 - speech_scraper - WARNING - Extract May 25, 2011 Some Contingent Planning for Monetary Policy
+2024-10-28 17:16:41,635 - speech_scraper - WARNING - Extract May 11, 2011 Some Contingent Planning for Monetary Policy
+2024-10-28 17:17:29,126 - speech_scraper - WARNING - Extract May 5, 2011 Some Contingent Planning for Monetary Policy
+2024-10-28 17:19:25,862 - speech_scraper - WARNING - Extract March 3, 2011 Labor Markets and Monetary Policy
+2024-10-28 17:20:12,184 - speech_scraper - WARNING - Extract February 3, 2011 It¡¯s a Wonderful Fed
+2024-10-28 17:20:35,348 - speech_scraper - WARNING - Extract January 11, 2011 It¡¯s a Wonderful Fed
+2024-10-28 17:20:35,365 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/minneapolis_fed_speeches/minneapolis_speeches_2011.json created.
+2024-10-28 17:22:32,008 - speech_scraper - WARNING - Extract May 23, 2012 Monetary Policy Transparency: Changes and Challenges
+2024-10-28 17:25:16,645 - speech_scraper - WARNING - Extract March 20, 2012 On the Limits to Monetary Policy - Executive Summary
+2024-10-28 17:25:16,688 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/minneapolis_fed_speeches/minneapolis_speeches_2012.json created.
+2024-10-28 17:29:58,948 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/minneapolis_fed_speeches/minneapolis_speeches_2013.json created.
+2024-10-28 17:31:55,929 - speech_scraper - WARNING - Extract November 5, 2014 Clarifying the Objectives of Monetary Policy
+2024-10-28 17:37:48,665 - speech_scraper - WARNING - Extract February 28, 2014 Discussion of 2014 USMPF Monetary Policy Report
+2024-10-28 17:38:36,024 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/minneapolis_fed_speeches/minneapolis_speeches_2014.json created.
+2024-10-28 17:40:57,634 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/minneapolis_fed_speeches/minneapolis_speeches_2015.json created.
+2024-10-28 17:42:07,660 - speech_scraper - WARNING - Extract November 9, 2016 Q&A with Neel Kashkari
+2024-10-28 17:42:32,538 - speech_scraper - WARNING - Extract October 13, 2016 An Evening with Neel Kashkari at the University of Montana
+2024-10-28 17:42:55,785 - speech_scraper - WARNING - Extract October 11, 2016 Q&A with Neel Kashkari at Bethel University
+2024-10-28 17:43:42,424 - speech_scraper - WARNING - Extract September 29, 2016 Town Hall Event Featuring President Kashkari
+2024-10-28 17:44:05,651 - speech_scraper - WARNING - Extract September 28, 2016 Fireside Chat with Neel Kashkari at Institutional Investor Conference
+2024-10-28 17:44:28,873 - speech_scraper - WARNING - Extract September 12, 2016 Neel Kashkari Q&A at BOMA's Thought Leader Seminar in Saint Paul, MN
+2024-10-28 17:44:52,879 - speech_scraper - WARNING - Extract July 15, 2016 Conversation with Federal Reserve Bank Presidents James Bullard and Neel Kashkari
+2024-10-28 17:44:52,882 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/minneapolis_fed_speeches/minneapolis_speeches_2016.json created.
+2024-10-28 17:45:16,484 - speech_scraper - WARNING - Extract December 19, 2017 Neel Kashkari at Lambda Alpha International
+2024-10-28 17:45:39,658 - speech_scraper - WARNING - Extract November 27, 2017 Neel Kashkari's Town Hall Forum in Winona, Minnesota
+2024-10-28 17:46:03,222 - speech_scraper - WARNING - Extract November 20, 2017 The History of Diversity and the Importance of Inclusion in the Workplace
+2024-10-28 17:46:50,082 - speech_scraper - WARNING - Extract September 25, 2017 Neel Kashkari's Town Hall Forum in Grand Forks, North Dakota
+2024-10-28 17:47:13,248 - speech_scraper - WARNING - Extract September 5, 2017 Neel Kashkari Speaking at the Carlson School of Management at the University of Minnesota
+2024-10-28 17:47:36,785 - speech_scraper - WARNING - Extract August 17, 2017 Neel Kashkari with the Edina Rotary Club
+2024-10-28 17:48:00,343 - speech_scraper - WARNING - Extract August 11, 2017 Neel Kashkari at the Independent Community Bankers of Minnesota Annual Convention
+2024-10-28 17:48:23,925 - speech_scraper - WARNING - Extract August 7, 2017 Neel Kashkari at the Rotary Club of Downtown Sioux Falls
+2024-10-28 17:48:47,553 - speech_scraper - WARNING - Extract July 28, 2017 Neel Kashkari Speaking at the Business Networking Luncheon in Woodbury
+2024-10-28 17:49:35,353 - speech_scraper - WARNING - Extract July 11, 2017 Neel Kashkari at the Minnesota Women's Economic Roundtable luncheon
+2024-10-28 17:49:58,818 - speech_scraper - WARNING - Extract June 27, 2017 Neel Kashkari's Town Hall Forum in Houghton, Michigan
+2024-10-28 17:50:22,222 - speech_scraper - WARNING - Extract May 24, 2017 Neel Kashkari's Town Hall Forum in Ashland, Wisconsin
+2024-10-28 17:50:46,084 - speech_scraper - WARNING - Extract May 23, 2017 Neel Kashkari with Paul Weech at a CICD Roundtable
+2024-10-28 17:51:09,550 - speech_scraper - WARNING - Extract May 10, 2017 Conversation with Neel Kashkari at the Minnesota Business Ethics Awards
+2024-10-28 17:51:32,958 - speech_scraper - WARNING - Extract December 19, 2017 Neel Kashkari at Lambda Alpha International
+2024-10-28 17:51:56,560 - speech_scraper - WARNING - Extract November 27, 2017 Neel Kashkari's Town Hall Forum in Winona, Minnesota
+2024-10-28 17:52:20,297 - speech_scraper - WARNING - Extract November 20, 2017 The History of Diversity and the Importance of Inclusion in the Workplace
+2024-10-28 17:53:07,608 - speech_scraper - WARNING - Extract September 25, 2017 Neel Kashkari's Town Hall Forum in Grand Forks, North Dakota
+2024-10-28 17:53:31,327 - speech_scraper - WARNING - Extract September 5, 2017 Neel Kashkari Speaking at the Carlson School of Management at the University of Minnesota
+2024-10-28 17:53:54,897 - speech_scraper - WARNING - Extract August 17, 2017 Neel Kashkari with the Edina Rotary Club
+2024-10-28 17:54:18,248 - speech_scraper - WARNING - Extract August 11, 2017 Neel Kashkari at the Independent Community Bankers of Minnesota Annual Convention
+2024-10-28 17:54:41,662 - speech_scraper - WARNING - Extract August 7, 2017 Neel Kashkari at the Rotary Club of Downtown Sioux Falls
+2024-10-28 17:55:05,469 - speech_scraper - WARNING - Extract July 28, 2017 Neel Kashkari Speaking at the Business Networking Luncheon in Woodbury
+2024-10-28 17:55:53,126 - speech_scraper - WARNING - Extract July 11, 2017 Neel Kashkari at the Minnesota Women's Economic Roundtable luncheon
+2024-10-28 17:56:16,533 - speech_scraper - WARNING - Extract June 27, 2017 Neel Kashkari's Town Hall Forum in Houghton, Michigan
+2024-10-28 17:56:40,037 - speech_scraper - WARNING - Extract May 24, 2017 Neel Kashkari's Town Hall Forum in Ashland, Wisconsin
+2024-10-28 17:57:03,497 - speech_scraper - WARNING - Extract May 23, 2017 Neel Kashkari with Paul Weech at a CICD Roundtable
+2024-10-28 17:57:27,182 - speech_scraper - WARNING - Extract May 10, 2017 Conversation with Neel Kashkari at the Minnesota Business Ethics Awards
+2024-10-28 17:57:50,731 - speech_scraper - WARNING - Extract May 9, 2017 Neel Kashkari at the MN High Tech Association 2017 Spring Conference
+2024-10-28 17:58:14,430 - speech_scraper - WARNING - Extract April 24, 2017 Q&A with Neel Kashkari at Claremont McKenna College
+2024-10-28 17:59:01,582 - speech_scraper - WARNING - Extract April 21, 2017 Neel Kashkari at the Community Economic Development Symposium
+2024-10-28 17:59:49,311 - speech_scraper - WARNING - Extract March 31, 2017 Q&A with Neel Kashkari at the 2017 Banking Law Institute
+2024-10-28 18:00:13,216 - speech_scraper - WARNING - Extract March 23, 2017 Transforming Education
+2024-10-28 18:01:01,261 - speech_scraper - WARNING - Extract February 21, 2017 Q&A with Neel Kashkari in Golden Valley
+2024-10-28 18:01:25,070 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/minneapolis_fed_speeches/minneapolis_speeches_2017.json created.
+2024-10-28 18:01:48,606 - speech_scraper - WARNING - Extract November 15, 2018 Neel Kashkari at Minnesota Ag & Food Summit
+2024-10-28 18:02:12,101 - speech_scraper - WARNING - Extract October 1, 2018 Neel Kashkari at Carlson Wagonlit
+2024-10-28 18:03:00,051 - speech_scraper - WARNING - Extract July 12, 2018 Neel Kashkari at Immigration Panel Discussion in Worthington, MN
+2024-10-28 18:03:47,184 - speech_scraper - WARNING - Extract June 21, 2018 Neel Kashkari at African Development Center of Minnesota
+2024-10-28 18:04:10,631 - speech_scraper - WARNING - Extract June 1, 2018 Neel Kashkari at AchieveMpls
+2024-10-28 18:04:34,106 - speech_scraper - WARNING - Extract May 23, 2018 Outlook for U.S. Monetary Policy & Implications on Energy Sector
+2024-10-28 18:04:57,494 - speech_scraper - WARNING - Extract May 17, 2018 Neel Kashkari at MN Housing
+2024-10-28 18:05:45,229 - speech_scraper - WARNING - Extract April 12, 2018 Neel Kashkari at Associated General Contractors of Minnesota
+2024-10-28 18:06:08,660 - speech_scraper - WARNING - Extract April 3, 2018 Neel Kashkari at the Regional Economic Indicators Forum
+2024-10-28 18:06:32,453 - speech_scraper - WARNING - Extract March 23, 2018 Neel Kashkari remarks from events in NYC, NY (audio only)
+2024-10-28 18:06:56,044 - speech_scraper - WARNING - Extract February 21, 2018 Neel Kashkari at Bloomberg Business Executive Dinner
+2024-10-28 18:07:19,725 - speech_scraper - WARNING - Extract February 8, 2018 Neel Kashkari's Town Hall Forum in Pierre South Dakota
+2024-10-28 18:07:43,214 - speech_scraper - WARNING - Extract January 9, 2018 Neel Kashkari speaking at Cargill
+2024-10-28 18:08:06,692 - speech_scraper - WARNING - Extract November 15, 2018 Neel Kashkari at Minnesota Ag & Food Summit
+2024-10-28 18:08:30,294 - speech_scraper - WARNING - Extract October 1, 2018 Neel Kashkari at Carlson Wagonlit
+2024-10-28 18:09:17,799 - speech_scraper - WARNING - Extract July 12, 2018 Neel Kashkari at Immigration Panel Discussion in Worthington, MN
+2024-10-28 18:10:04,867 - speech_scraper - WARNING - Extract June 21, 2018 Neel Kashkari at African Development Center of Minnesota
+2024-10-28 18:10:28,312 - speech_scraper - WARNING - Extract June 1, 2018 Neel Kashkari at AchieveMpls
+2024-10-28 18:10:51,890 - speech_scraper - WARNING - Extract May 23, 2018 Outlook for U.S. Monetary Policy & Implications on Energy Sector
+2024-10-28 18:11:15,253 - speech_scraper - WARNING - Extract May 17, 2018 Neel Kashkari at MN Housing
+2024-10-28 18:12:02,718 - speech_scraper - WARNING - Extract April 12, 2018 Neel Kashkari at Associated General Contractors of Minnesota
+2024-10-28 18:12:28,230 - speech_scraper - WARNING - Extract April 3, 2018 Neel Kashkari at the Regional Economic Indicators Forum
+2024-10-28 18:12:51,952 - speech_scraper - WARNING - Extract March 23, 2018 Neel Kashkari remarks from events in NYC, NY (audio only)
+2024-10-28 18:13:15,482 - speech_scraper - WARNING - Extract February 21, 2018 Neel Kashkari at Bloomberg Business Executive Dinner
+2024-10-28 18:13:39,372 - speech_scraper - WARNING - Extract February 8, 2018 Neel Kashkari's Town Hall Forum in Pierre South Dakota
+2024-10-28 18:14:02,791 - speech_scraper - WARNING - Extract January 9, 2018 Neel Kashkari speaking at Cargill
+2024-10-28 18:14:02,797 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/minneapolis_fed_speeches/minneapolis_speeches_2018.json created.
+2024-10-28 18:14:26,259 - speech_scraper - WARNING - Extract April 3, 2019 Neel Kashkari's Town Hall Forum in Fargo, North Dakota
+2024-10-28 18:14:50,447 - speech_scraper - WARNING - Extract March 5, 2019 Watch video of President Neel Kashkari before Minnesota¡¯s Senate Finance Committee
+2024-10-28 18:16:26,639 - speech_scraper - WARNING - Extract January 16, 2019 Live Debate - Ten Years After the Global Financial Crisis, the System Is Safer
+2024-10-28 18:16:50,044 - speech_scraper - WARNING - Extract January 15, 2019 Neel Kashkari at Rochester Area Chamber of Commerce
+2024-10-28 18:17:13,597 - speech_scraper - WARNING - Extract January 10, 2019 Neel Kashkari at Jewish Community Relations Council
+2024-10-28 18:17:37,025 - speech_scraper - WARNING - Extract April 3, 2019 Neel Kashkari's Town Hall Forum in Fargo, North Dakota
+2024-10-28 18:18:00,658 - speech_scraper - WARNING - Extract March 5, 2019 Watch video of President Neel Kashkari before Minnesota¡¯s Senate Finance Committee
+2024-10-28 18:19:38,172 - speech_scraper - WARNING - Extract January 16, 2019 Live Debate - Ten Years After the Global Financial Crisis, the System Is Safer
+2024-10-28 18:20:01,610 - speech_scraper - WARNING - Extract January 15, 2019 Neel Kashkari at Rochester Area Chamber of Commerce
+2024-10-28 18:20:25,059 - speech_scraper - WARNING - Extract January 10, 2019 Neel Kashkari at Jewish Community Relations Council
+2024-10-28 18:20:25,066 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/minneapolis_fed_speeches/minneapolis_speeches_2019.json created.
+2024-10-28 18:20:48,568 - speech_scraper - WARNING - Extract December 4, 2020 Neel Kashkari at 2020 Rochester Chamber Economic Summit
+2024-10-28 18:20:48,571 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/minneapolis_fed_speeches/minneapolis_speeches_2020.json created.
+2024-10-28 18:23:59,163 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/minneapolis_fed_speeches/minneapolis_speeches_2021.json created.
+2024-10-28 18:31:53,163 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/minneapolis_fed_speeches/minneapolis_speeches_2022.json created.
+2024-10-28 18:36:23,032 - speech_scraper - WARNING - Extract March 1, 2023 Neel Kashkari Q&A at 2023 SiouxFalls.Business CEO event
+2024-10-28 18:36:23,044 - speech_scraper - WARNING - Extract February 8, 2023 Neel Kashkari Q&A with the Boston Economic Club
+2024-10-28 18:36:23,054 - speech_scraper - WARNING - Extract November 2, 2023 Neel Kashkari in conversation with Bill George and Poppy Harlow
+2024-10-28 18:36:23,063 - speech_scraper - WARNING - Extract October 17, 2023 Neel Kashkari at University of Minnesota
+2024-10-28 18:36:23,072 - speech_scraper - WARNING - Extract October 10, 2023 Neel Kashkari at Minot State University
+2024-10-28 18:36:23,081 - speech_scraper - WARNING - Extract September 25, 2023 Neel Kashkari Q&A at University of Pennsylvania¡¯s Wharton School
+2024-10-28 18:36:23,091 - speech_scraper - WARNING - Extract September 22, 2023 Neel Kashkari at the Economic Club of Minnesota
+2024-10-28 18:36:25,152 - speech_scraper - WARNING - Extract August 15, 2023 Neel Kashkari participates in Q&A at APi Group's Global Controllers Conference in Minneapolis
+2024-10-28 18:36:25,241 - speech_scraper - WARNING - Extract July 12, 2023 Neel Kashkari at the National Bureau of Economic Research Summer Institute
+2024-10-28 18:36:25,256 - speech_scraper - WARNING - Extract May 15, 2023 Neel Kashkari Q&A at the Minnesota Transportation Conference & EXPO
+2024-10-28 18:36:25,261 - speech_scraper - WARNING - Extract May 11, 2023 Neel Kashkari Q&A at the Marquette CEO Town Hall
+2024-10-28 18:36:25,267 - speech_scraper - WARNING - Extract April 11, 2023 Town hall with Neel Kashkari at Montana State University
+2024-10-28 18:36:25,273 - speech_scraper - WARNING - Extract March 30, 2023 Neel Kashkari Q&A with the Minnesota Housing Partnership
+2024-10-28 18:36:25,277 - speech_scraper - WARNING - Extract March 1, 2023 Neel Kashkari Q&A at 2023 SiouxFalls.Business CEO event
+2024-10-28 18:36:25,283 - speech_scraper - WARNING - Extract February 8, 2023 Neel Kashkari Q&A with the Boston Economic Club
+2024-10-28 18:36:25,291 - speech_scraper - WARNING - Extract November 2, 2023 Neel Kashkari in conversation with Bill George and Poppy Harlow
+2024-10-28 18:36:25,298 - speech_scraper - WARNING - Extract October 17, 2023 Neel Kashkari at University of Minnesota
+2024-10-28 18:36:25,303 - speech_scraper - WARNING - Extract October 10, 2023 Neel Kashkari at Minot State University
+2024-10-28 18:36:25,309 - speech_scraper - WARNING - Extract September 25, 2023 Neel Kashkari Q&A at University of Pennsylvania¡¯s Wharton School
+2024-10-28 18:36:25,314 - speech_scraper - WARNING - Extract September 22, 2023 Neel Kashkari at the Economic Club of Minnesota
+2024-10-28 18:36:25,319 - speech_scraper - WARNING - Extract August 15, 2023 Neel Kashkari participates in Q&A at APi Group's Global Controllers Conference in Minneapolis
+2024-10-28 18:36:25,325 - speech_scraper - WARNING - Extract July 12, 2023 Neel Kashkari at the National Bureau of Economic Research Summer Institute
+2024-10-28 18:36:25,330 - speech_scraper - WARNING - Extract May 15, 2023 Neel Kashkari Q&A at the Minnesota Transportation Conference & EXPO
+2024-10-28 18:36:25,336 - speech_scraper - WARNING - Extract May 11, 2023 Neel Kashkari Q&A at the Marquette CEO Town Hall
+2024-10-28 18:36:25,342 - speech_scraper - WARNING - Extract April 11, 2023 Town hall with Neel Kashkari at Montana State University
+2024-10-28 18:36:25,346 - speech_scraper - WARNING - Extract March 30, 2023 Neel Kashkari Q&A with the Minnesota Housing Partnership
+2024-10-28 18:36:25,351 - speech_scraper - WARNING - Extract March 1, 2023 Neel Kashkari Q&A at 2023 SiouxFalls.Business CEO event
+2024-10-28 18:36:25,357 - speech_scraper - WARNING - Extract February 8, 2023 Neel Kashkari Q&A with the Boston Economic Club
+2024-10-28 18:36:25,361 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/minneapolis_fed_speeches/minneapolis_speeches_2023.json created.
+2024-10-28 18:36:25,366 - speech_scraper - WARNING - Extract October 21, 2024 Town hall with Neel Kashkari at the Chippewa Falls Area Chamber of Commerce
+2024-10-28 18:36:25,372 - speech_scraper - WARNING - Extract October 14, 2024 President Kashkari Remarks at the 2024 Money and Banking Conference Hosted by the Central Bank of the Argentine Republic
+2024-10-28 18:36:25,377 - speech_scraper - WARNING - Extract October 10, 2024 Neel Kashkari recorded remarks for Minnesota Business Partnership in Minneapolis
+2024-10-28 18:36:25,381 - speech_scraper - WARNING - Extract October 7, 2024 Neel Kashkari Q&A at the Bank Holding Company Association Fall Seminar
+2024-10-28 18:36:25,386 - speech_scraper - WARNING - Extract September 26, 2024 Fireside chat featuring Neel Kashkari and Michael Barr at Boston Fed workshop: Financial Inclusion and Banking Supervision
+2024-10-28 18:36:25,391 - speech_scraper - WARNING - Extract September 23, 2024 Neel Kashkari Q&A at the 2024 Greater Kansas City Chamber of Commerce Leadership Exchange
+2024-10-28 18:36:25,396 - speech_scraper - WARNING - Extract June 20, 2024 Neel Kashkari at the 2024 Michigan Bankers Association Convention
+2024-10-28 18:36:25,402 - speech_scraper - WARNING - Extract May 28, 2024 Neel Kashkari at the Barclays-CEPR International Monetary Policy Forum 2024
+2024-10-28 18:36:25,407 - speech_scraper - WARNING - Extract May 15, 2024 Neel Kashkari participates in fireside chat on the economy at the 2024 Williston Basin Petroleum Conference
+2024-10-28 18:36:25,412 - speech_scraper - WARNING - Extract May 7, 2024 A conversation with Neel Kashkari at the 2024 Milken Institute Global Conference
+2024-10-28 18:36:25,418 - speech_scraper - WARNING - Extract April 8, 2024 Neel Kashkari town hall at the University of Montana
+2024-10-28 18:36:25,425 - speech_scraper - WARNING - Extract February 22, 2024 Neel Kashkari participates in Northside Economic Opportunity Network (NEON) Community Conversations series
+2024-10-28 18:36:25,432 - speech_scraper - WARNING - Extract February 12, 2024 Neel Kashkari in conversation with Ginni Rometty at the Economic Club of Minnesota
+2024-10-28 18:36:25,440 - speech_scraper - WARNING - Extract February 6, 2024 Neel Kashkari Q&A at Greater Mankato Growth event
+2024-10-28 18:36:25,447 - speech_scraper - WARNING - Extract April 8, 2024 Neel Kashkari town hall at the University of Montana
+2024-10-28 18:36:25,452 - speech_scraper - WARNING - Extract February 22, 2024 Neel Kashkari participates in Northside Economic Opportunity Network (NEON) Community Conversations series
+2024-10-28 18:36:25,457 - speech_scraper - WARNING - Extract February 12, 2024 Neel Kashkari in conversation with Ginni Rometty at the Economic Club of Minnesota
+2024-10-28 18:36:25,464 - speech_scraper - WARNING - Extract February 6, 2024 Neel Kashkari Q&A at Greater Mankato Growth event
+2024-10-28 18:36:25,469 - speech_scraper - WARNING - Extract April 8, 2024 Neel Kashkari town hall at the University of Montana
+2024-10-28 18:36:25,559 - speech_scraper - WARNING - Extract February 22, 2024 Neel Kashkari participates in Northside Economic Opportunity Network (NEON) Community Conversations series
+2024-10-28 18:36:25,633 - speech_scraper - WARNING - Extract February 12, 2024 Neel Kashkari in conversation with Ginni Rometty at the Economic Club of Minnesota
+2024-10-28 18:36:25,640 - speech_scraper - WARNING - Extract February 6, 2024 Neel Kashkari Q&A at Greater Mankato Growth event
+2024-10-28 18:36:25,655 - speech_scraper - INFO - 2024 updated.
+2024-10-28 19:38:38,214 - speech_scraper - INFO - Speech Infos Data already exists, skip collecting infos.
+2024-10-30 09:33:01,518 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/stlouis_fed_speeches/stlouis_speeches.json created.
