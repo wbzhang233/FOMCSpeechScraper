@@ -5,7 +5,7 @@
 @Time    :   2024/10/24 19:36:46
 @Author  :   wbzhang
 @Version :   1.0
-@Desc    :   芝加哥联储行长讲话爬取
+@Desc    :   7G 芝加哥联储行长讲话爬取
 """
 
 from collections import OrderedDict
@@ -13,23 +13,15 @@ import os
 import re
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.remote.webelement import WebElement
-from selenium.common.exceptions import (
-    TimeoutException,
-    WebDriverException,
-    NoSuchElementException,
-)
 
-from bs4 import BeautifulSoup
 import time
 from datetime import datetime
 
 from data_scraper.scrapers.scraper import SpeechScraper
 from utils.common import parse_datestring
 from utils.file_saver import json_dump, json_load, json_update, update_records
-from utils.logger import logger
+from utils.logger import get_logger
 
 today = datetime.today()
 
@@ -40,7 +32,11 @@ class ChicagoSpeechScraper(SpeechScraper):
     __name__ = f"{__fed_name__.title()}SpeechScraper"
     SAVE_PATH = f"../../data/fed_speeches/{__fed_name__}_fed_speeches/"
 
-    def __init__(self, url: str = None, auto_save: bool = True):
+    logger = get_logger(
+        logger_name=f"{__fed_name__}_speech_scraper", log_filepath="../../log/"
+    )
+
+    def __init__(self, url: str = None, auto_save: bool = True, **kwargs):
         super().__init__(url)
         self.speech_infos_by_year = None
         self.speeches_by_year = None
@@ -49,6 +45,14 @@ class ChicagoSpeechScraper(SpeechScraper):
         self.save = auto_save
 
     def extract_speaker_name(self, text: str):
+        """正则匹配演讲人姓名
+
+        Args:
+            text (str): _description_
+
+        Returns:
+            _type_: _description_
+        """
         pattern = r"President\s+(.*?)(?=\()"
 
         match = re.search(pattern, text)
@@ -179,13 +183,20 @@ class ChicagoSpeechScraper(SpeechScraper):
                     )
                 else:
                     speech_infos_by_year[year] = new_speech_infos
+                msg = "{number} speech infos of {year} was collected.".format(
+                    number=len(speech_infos_by_year[year]), year=year
+                )
+                print(msg)
+                self.logger.info(msg=msg)
         # 排个序
         speech_infos_by_year = OrderedDict(sorted(speech_infos_by_year.items()))
+        msg = "-" * 50 + "All speech infos was collected." + "-" * 50
+        print(msg)
+        self.logger.info(msg=msg)
         self.speech_infos_by_year = speech_infos_by_year
         return speech_infos_by_year
 
     def extract_single_speech(self, speech_info: dict):
-        speech = {"speaker": "", "position": "", "highlights": "", "content": ""}
         try:
             self.driver.get(speech_info["href"])
             # 等待加载完
@@ -205,7 +216,6 @@ class ChicagoSpeechScraper(SpeechScraper):
             else:
                 speech_info.setdefault("date", "")
 
-
             # 查找所有元素
             options = [
                 "//div[@class='cfedContent']//p",
@@ -220,37 +230,37 @@ class ChicagoSpeechScraper(SpeechScraper):
             )
 
             if paragraph_elements:
-                content = "\n\n".join([p.text.strip() for p in paragraph_elements]).strip()
-                print(
-                    "{} {} {} content extracted.".format(
-                        speech_info["speaker"],
-                        speech_info["date"],
-                        speech_info["title"],
-                    )
+                content = "\n\n".join(
+                    [p.text.strip() for p in paragraph_elements]
+                ).strip()
+                msg = "{} {} {} content extracted.".format(
+                    speech_info["speaker"],
+                    speech_info["date"],
+                    speech_info["title"],
                 )
             else:
                 content = ""
-                print(
-                    "{} {} {} content failed.".format(
-                        speech_info["speaker"],
-                        speech_info["date"],
-                        speech_info["title"],
-                    )
+                msg = "{} {} {} content failed.".format(
+                    speech_info["speaker"],
+                    speech_info["date"],
+                    speech_info["title"],
                 )
+            print(msg)
+            self.logger.info(msg=msg)
 
             speech = {"content": content}
         except Exception as e:
-            print(
-                "Error when extracting speech content from {href}. {error}".format(
-                    href=speech_info["href"], error=repr(e)
-                )
+            msg = "Error when extracting speech content from {href}. {error}".format(
+                href=speech_info["href"], error=repr(e)
             )
+            print(msg)
+            self.logger.info()
             speech = {"content": ""}
-            print(
-                "{} {} {} content failed.".format(
-                    speech_info["speaker"], speech_info["date"], speech_info["title"]
-                )
+            msg = "{} {} {} content failed.".format(
+                speech_info["speaker"], speech_info["date"], speech_info["title"]
             )
+            print(msg)
+            self.logger.info()
         speech.update(speech_info)
         return speech
 
@@ -277,7 +287,7 @@ class ChicagoSpeechScraper(SpeechScraper):
                     speech_info.get("date")
                     and parse_datestring(speech_info["date"]) <= start_date
                 ):
-                    logger.info(
+                    self.logger.info(
                         "Skip speech {speaker} {date} {title} cause' it's earlier than start_date.".format(
                             speaker=speech_info["speaker"],
                             date=speech_info["date"],
@@ -290,7 +300,7 @@ class ChicagoSpeechScraper(SpeechScraper):
                 if single_speech["content"] == "":
                     # 记录提取失败的报告
                     failed.append(single_speech)
-                    logger.warning(
+                    self.logger.warning(
                         "Extract {speaker} {date} {title}".format(
                             speaker=speech_info["speaker"],
                             date=speech_info["date"],
@@ -336,7 +346,7 @@ class ChicagoSpeechScraper(SpeechScraper):
                     for speech_info in speech_infos[latest_year]
                 ]
             ).strftime("%b %d, %Y")
-            logger.info("Speech Infos Data already exists, skip collecting infos.")
+            self.logger.info("Speech Infos Data already exists, skip collecting infos.")
             existed_lastest = "Jan 01, 2024"
         else:
             speech_infos = self.extract_speech_infos()

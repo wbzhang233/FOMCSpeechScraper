@@ -5,7 +5,7 @@
 @Time    :   2024/10/23 11:23:10
 @Author  :   wbzhang
 @Version :   1.0
-@Desc    :   达拉斯联储银行讲话数据爬取
+@Desc    :   11K 达拉斯联储银行讲话数据爬取
 """
 
 import os
@@ -14,11 +14,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.remote.webelement import WebElement
-# from selenium.common.exceptions import (
-#     TimeoutException,
-#     WebDriverException,
-#     NoSuchElementException,
-# )
+
 
 import time
 from datetime import datetime

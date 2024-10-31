@@ -5,7 +5,7 @@
 @Time    :   2024/10/23 11:23:10
 @Author  :   wbzhang
 @Version :   1.0
-@Desc    :   费城联储银行讲话数据爬取
+@Desc    :   3C 费城联储银行讲话数据爬取
 """
 
 import os

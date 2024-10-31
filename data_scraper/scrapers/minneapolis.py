@@ -1,32 +1,24 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-'''
+"""
 @File    :   minneapolis.py
 @Time    :   2024/10/28 15:47:46
-@Author  :   wbzhang 
+@Author  :   wbzhang
 @Version :   1.0
-@Desc    :   明尼阿波利斯联储行长讲话数据
-'''
+@Desc    :   9I 明尼阿波利斯联储行长讲话数据
+"""
+
 from collections import OrderedDict
 import os
-import re
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.remote.webelement import WebElement
-from selenium.common.exceptions import (
-    TimeoutException,
-    WebDriverException,
-    NoSuchElementException,
-)
-
 import time
 from datetime import datetime
 
 from data_scraper.scrapers.scraper import SpeechScraper
 from utils.common import parse_datestring
-from utils.file_saver import json_dump, json_load, json_update, update_records
+from utils.file_saver import json_dump, json_load, json_update
 from utils.logger import logger
 
 today = datetime.today()
@@ -45,7 +37,6 @@ class MinneapolisSpeechScraper(SpeechScraper):
         os.makedirs(self.SAVE_PATH, exist_ok=True)
         print(f"{self.SAVE_PATH} has been created.")
         self.save = auto_save
-
 
     def extract_speech_infos(self):
         """抽取演讲的信息"""
@@ -70,17 +61,14 @@ class MinneapolisSpeechScraper(SpeechScraper):
                 "href"
             )
             # 日期
-            date = speech_info_item.find_element(By.XPATH,
-                                                 "./div/div").text
+            date = speech_info_item.find_element(By.XPATH, "./div/div").text
             date = date.replace("Speech on ", "").strip()
             # 年份
-            year = date.split(',')[-1].strip()
-            speech_infos_by_year.setdefault(year, []).append({
-                "title": title,
-                "href": href,
-                "date": date
-            })
-            
+            year = date.split(",")[-1].strip()
+            speech_infos_by_year.setdefault(year, []).append(
+                {"title": title, "href": href, "date": date}
+            )
+
         # 排个序
         speech_infos_by_year = OrderedDict(sorted(speech_infos_by_year.items()))
         self.speech_infos_by_year = speech_infos_by_year
@@ -110,13 +98,16 @@ class MinneapolisSpeechScraper(SpeechScraper):
             speech["position"] = position
             # 查找是否包含youtube链接
             youtube_link_element = self.driver.find_elements(
-                By.XPATH, "//div[(@id='i9-js-video-tabs--simple--UNIQUEPARENTID') or (@data-wf='video tabs')]"
+                By.XPATH,
+                "//div[(@id='i9-js-video-tabs--simple--UNIQUEPARENTID') or (@data-wf='video tabs')]",
             )
             # 如果包含youtube链接，则加上
             if youtube_link_element:
-                youtube_link = youtube_link_element[0].find_element(
-                    By.XPATH, ".//iframe[@id='videoFrame']"
-                ).get_attribute("src")
+                youtube_link = (
+                    youtube_link_element[0]
+                    .find_element(By.XPATH, ".//iframe[@id='videoFrame']")
+                    .get_attribute("src")
+                )
                 speech.setdefault("youtube_link", youtube_link.strip())
 
             # 查找所有正文元素
@@ -270,8 +261,7 @@ def test_extract_speech_infos():
 def test_extract_single_speech():
     """测试 extract_single_speech 方法"""
     scraper = MinneapolisSpeechScraper()
-    speech_info = {
-    }
+    speech_info = {}
 
     speech = scraper.extract_single_speech(speech_info)
     print(speech)

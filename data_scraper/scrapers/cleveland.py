@@ -5,7 +5,7 @@
 @Time    :   2024/09/27 18:26:46
 @Author  :   wbzhang
 @Version :   1.0
-@Desc    :   None
+@Desc    :   4D 克利夫兰联储行长讲话数据爬取
 """
 
 from datetime import datetime

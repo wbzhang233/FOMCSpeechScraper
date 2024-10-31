@@ -5,16 +5,13 @@
 @Time    :   2024/09/30 15:02:17
 @Author  :   wbzhang
 @Version :   1.0
-@Desc    :   旧金山联储历任主席讲话数据爬取
+@Desc    :   12L 旧金山联储历任主席讲话数据爬取
 """
 
-# from datetime import datetime
 import os
 import re
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
-
-# from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import (
     TimeoutException,

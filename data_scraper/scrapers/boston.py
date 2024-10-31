@@ -5,7 +5,7 @@
 @Time    :   2024/10/24 16:47:09
 @Author  :   wbzhang 
 @Version :   1.0
-@Desc    :   波士顿联储银行银行演讲稿数据爬取
+@Desc    :   1A 波士顿联储银行银行演讲稿数据爬取
 '''
 
 
@@ -27,11 +27,11 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.remote.webelement import WebElement
 from utils.file_saver import json_dump, json_load, json_update
 
-logger = get_logger('boston_speech_scraper')
+logger = get_logger('boston_speech_scraper', log_filepath='../../log')
 
 class BostonSpeechScraper(SpeechScraper):
     URL = "https://www.bostonfed.org/news-and-events/speeches.aspx"
-    __fed_name__ = "boston_fed"
+    __fed_name__ = "boston"
     __name__ = f"{__fed_name__.title()}SpeechScraper"
     SAVE_PATH = f"../../data/fed_speeches/{__fed_name__}_fed_speeches/"
 
@@ -47,10 +47,10 @@ class BostonSpeechScraper(SpeechScraper):
         """提取段落中的日期
 
         Args:
-            text (str): _description_
+            text (str): 段落
 
         Returns:
-            _type_: _description_
+            date (str): 日期
         """
         # 正则分段
         try:
@@ -70,16 +70,16 @@ class BostonSpeechScraper(SpeechScraper):
         
 
     def parse_single_row(self, data_row: WebElement):
-        """解析Boston中的单个文章
+        """解析Boston中的单个演讲信息
 
         Args:
-            data_row (_type_): _description_
+            data_row (WebElement): 行数据元素
 
         Returns:
-            _type_: _description_
+            dict: 讲话信息
         """
         try:
-            # 日期
+            # 日期和地点
             date_and_location = data_row.find_elements(
                 By.CSS_SELECTOR,
                 "p.date-and-location",
@@ -114,7 +114,6 @@ class BostonSpeechScraper(SpeechScraper):
             }
         except Exception as e:
             print(f"Parse Speech Info Error: {e}")
-            # speech_info = None
             # TODO 提取失败依然返回，额外再处理
             speech_info = {
                 "date": "",
@@ -191,21 +190,23 @@ class BostonSpeechScraper(SpeechScraper):
         return speech_infos_by_year
 
     def extract_single_speech(self, speech_info: dict):
+        """提取单篇演讲的内容
+
+        Args:
+            speech_info (dict): 演讲信息
+
+        Returns:
+            _type_: _description_
+        """
         try:
             href = speech_info["href"]
             self.driver.get(href)
-
-            # Wait for the content to load
             WebDriverWait(self.driver, 10).until(
                 EC.visibility_of_all_elements_located((By.ID, "main-content"))
             )
             time.sleep(1.2)
 
             # 演讲标题
-            # speech_title = self.driver.find_element(
-            #     By.CSS_SELECTOR,
-            #     "#main-content > div.container.title-container > div > div > div > div > h1",
-            # ).text
             speech_title = self.driver.find_element(
                 By.XPATH,
                 "//h1[contains(@class, 'title')]"
@@ -279,7 +280,7 @@ class BostonSpeechScraper(SpeechScraper):
                     # 记录提取失败的报告
                     failed.append(single_speech)
                     logger.warning(
-                        "Extract {speaker} {date} {title}".format(
+                        "Extract {speaker} {date} {title} failed.".format(
                             speaker=speech_info["speaker"],
                             date=speech_info["date"],
                             title=speech_info["title"],
@@ -309,7 +310,7 @@ class BostonSpeechScraper(SpeechScraper):
         """收集每篇演讲的信息
 
         Returns:
-            _type_: _description_
+            dict: 演讲内容 dict<year, list[dict]>
         """
         # 提取每年演讲的基本信息（不含正文和highlights等）
         if os.path.exists(self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"):
@@ -317,7 +318,7 @@ class BostonSpeechScraper(SpeechScraper):
                 self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
             )
             # 查看已有的最新的演讲日期
-            latest_year = max([k for k, _ in speech_infos.items()])
+            latest_year = max([k for k, _ in speech_infos.items() if k.isdigit()])
             dates = []
             for speech_info in speech_infos[latest_year]:
                 speech_date = parse_datestring(speech_info["date"])

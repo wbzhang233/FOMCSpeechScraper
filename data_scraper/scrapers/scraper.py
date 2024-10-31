@@ -1,6 +1,17 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+@File    :   scraper.py
+@Time    :   2024/10/31 09:31:30
+@Author  :   wbzhang
+@Version :   1.0
+@Desc    :   演讲数据爬虫基类
+"""
+
 from abc import abstractmethod
 from selenium import webdriver
-from selenium.webdriver.support import expected_conditions as EC
+
+from utils.logger import get_logger
 
 FOMC_MEETING_PROMPT = """
 下面这个网站是美联储FOMC的会议网址：https://www.federalreserve.gov/monetarypolicy/fomccalendars.htm
@@ -18,6 +29,13 @@ date: 决议日期，为str类型，如17-19
 
 class SpeechScraper(object):
     URL: str = ""
+    __fed_name__ = ""
+    __name__ = f"{__fed_name__.title()}SpeechScraper"
+    SAVE_PATH = f"../../data/fed_speeches/{__fed_name__}_fed_speeches/"
+    # 日志记录
+    logger = get_logger(
+        logger_name=f"{__fed_name__}_speech_scraper", log_filepath="../../log/"
+    )
 
     def __init__(self, url: str = None, **kwargs):
         options = kwargs.get("options", None)
@@ -25,7 +43,12 @@ class SpeechScraper(object):
         url = self.URL if url is None else url
         if not url:
             raise ValueError("No url provided.")
+        # 先进入主页
         self.driver.get(url)
+
+    @property
+    def save_path(self):
+        return f"../../data/fed_speeches/{self.__fed_name__}_fed_speeches/"
 
     @abstractmethod
     def extract_speech_infos(self):
@@ -36,6 +59,15 @@ class SpeechScraper(object):
         """
         raise NotImplementedError("Method `extract_speech_infos` not realized.")
 
+    # FIXME 考虑对已存在的speech_infos做更新.   
+    def extract_incremental_speech_infos(self):
+        """抽取增量演讲的url信息"""
+        pass
+
+    def extract_single_speech(self, speech_info: dict):
+        """抽取单个演讲内容"""
+        pass
+
     @abstractmethod
     def extract_speeches(self):
         """抽取演讲内容
@@ -44,7 +76,7 @@ class SpeechScraper(object):
             NotImplementedError: _description_
         """
         raise NotImplementedError("Method `extract_speeches` not realized.")
-    
+
     @abstractmethod
     def collect(self):
         """收集演讲并保存

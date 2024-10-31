@@ -5,10 +5,9 @@
 @Time    :   2024/10/22 16:30:49
 @Author  :   wbzhang
 @Version :   1.0
-@Desc    :   堪萨斯城联储讲话数据爬取
+@Desc    :   10J 堪萨斯城联储讲话数据爬取
 """
 
-from datetime import datetime
 import os
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -21,7 +20,6 @@ from selenium.common.exceptions import (
     NoSuchElementException,
 )
 
-from bs4 import BeautifulSoup
 import time
 import requests
 

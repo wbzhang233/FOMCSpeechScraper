@@ -5,7 +5,7 @@
 @Time    :   2024/09/27 18:26:36
 @Author  :   wbzhang
 @Version :   1.0
-@Desc    :   None
+@Desc    :   5E 里奇蒙德联储行长讲话数据爬取
 """
 
 import os

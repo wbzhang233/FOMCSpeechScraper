@@ -5,7 +5,7 @@
 @Time    :   2024/10/22 11:11:06
 @Author  :   wbzhang
 @Version :   1.0
-@Desc    :   纽约联储讲话数据爬取
+@Desc    :   2B 纽约联储讲话数据爬取
 """
 
 import os

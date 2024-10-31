@@ -5,7 +5,7 @@
 @Time    :   2024/10/29 15:25:47
 @Author  :   wbzhang
 @Version :   1.0
-@Desc    :   圣路易斯联储主席讲话数据爬虫
+@Desc    :   8H 圣路易斯联储主席讲话数据爬虫
 """
 
 import os
@@ -45,6 +45,12 @@ class StLouisSpeechScraper(SpeechScraper):
         title_infos = []
         # 打开圣路易斯联储讲话集合
         self.driver.get(self.URL)
+        # 等待主内容加载完
+        title_elements = WebDriverWait(self.driver, 10).until(
+            EC.visibility_of_all_elements_located(
+                (By.XPATH, "//ul[@class='browse-by-list']/li")
+            )
+        )
         titles = self.driver.find_elements(By.XPATH, "//ul[@class='browse-by-list']/li")
         for title in titles:
             title.click()
@@ -53,8 +59,8 @@ class StLouisSpeechScraper(SpeechScraper):
                     (By.XPATH, "//div[contains(@class, 'browse-by-right')]")
                 )
             )
-            # 再等待3秒
-            self.driver.implicitly_wait(2)
+            # 隐式等待2.0s
+            self.driver.implicitly_wait(10)
             time.sleep(1.0)
             # 名称
             title_name = title.text
@@ -208,16 +214,21 @@ class StLouisSpeechScraper(SpeechScraper):
         return result
 
     def extract_speech_infos(self):
-        """抽取演讲的信息"""
+        """提取演讲的基本信息
+
+        Returns:
+            speech_infos_by_year (dict): 按年整理的演讲的基本信息. dict<year, list[dict]>
+        """
         # 搜寻历任主席的title链接
         if os.path.exists(self.SAVE_PATH + f"{self.__fed_name__}_title_infos.json"):
             title_infos = json_load(
                 self.SAVE_PATH + f"{self.__fed_name__}_title_infos.json"
             )
         else:
+            # 获取St. Louis集合下的历任行长的FRESER-title信息
             title_infos = self.fetch_series_all_titles()
-            json_dump(
-                title_infos, self.SAVE_PATH + f"{self.__fed_name__}_title_infos.json"
+            json_update(
+                self.SAVE_PATH + f"{self.__fed_name__}_title_infos.json", title_infos
             )
         msg = f"{len(title_infos)} titles found."
         print(msg)
@@ -244,18 +255,27 @@ class StLouisSpeechScraper(SpeechScraper):
             self.logger.info(msg=msg)
 
         self.speech_infos_by_year = speech_infos_by_year
+        # 更新基本信息.
         json_update(
             self.SAVE_PATH + f"{self.__fed_name__}_speech_infos_by_year.json",
-            speech_infos_by_year
+            speech_infos_by_year,
         )
         return speech_infos_by_year
 
     def extract_single_speech(self, speech_info: dict):
+        """抽取单片讲话数据的内容
+
+        Args:
+            speech_info (dict): 单篇演讲的信息
+
+        Returns:
+            dict: 包含content等其他信息的演讲信息
+        """
         try:
-            # 正文
+            # 获取演讲正文
             content = FRESERScraper.fetch_txt(speech_info["text_url"])
             print(
-                "Content of {} {} {} extracted.".format(
+                "Content of {}, {}, {} extracted.".format(
                     speech_info["speaker"], speech_info["date"], speech_info["title"]
                 )
             )
@@ -268,7 +288,7 @@ class StLouisSpeechScraper(SpeechScraper):
             )
             speech = {"content": ""}
             print(
-                "{} {} {} content failed.".format(
+                "{}, {}, {} content failed.".format(
                     speech_info["speaker"], speech_info["date"], speech_info["title"]
                 )
             )
@@ -310,7 +330,7 @@ class StLouisSpeechScraper(SpeechScraper):
                     # 记录提取失败的报告
                     failed.append(single_speech)
                     self.logger.warning(
-                        "Extract {speaker} {date} {title}".format(
+                        "Extract {speaker}, {date}, {title} failed.".format(
                             speaker=speech_info["speaker"],
                             date=speech_info["date"],
                             title=speech_info["title"],
@@ -323,12 +343,15 @@ class StLouisSpeechScraper(SpeechScraper):
                     self.SAVE_PATH + f"{self.__fed_name__}_speeches_{year}.json",
                     single_year_speeches,
                 )
-            print("{} speeches of {} collected.".format(len(speeches_by_year[year]),year))
+            print(
+                "{} speeches of {} collected.".format(len(speeches_by_year[year]), year)
+            )
         # 保存演讲内容
         if self.save:
-            # 保存读取失败的演讲内容
+            # 更新读取失败的演讲内容
             json_dump(
-                failed, self.SAVE_PATH + f"{self.__fed_name__}_failed_speech_infos.json"
+                self.SAVE_PATH + f"{self.__fed_name__}_failed_speech_infos.json",
+                failed
             )
             # 更新已存储的演讲内容
             json_update(
@@ -340,10 +363,11 @@ class StLouisSpeechScraper(SpeechScraper):
         """收集每篇演讲的信息
 
         Returns:
-            _type_: _description_
+            dict: 按自然年份整理的讲话数据. dict<str, list[dict]>
         """
         # 提取每年演讲的基本信息（不含正文和highlights等）
         if os.path.exists(self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"):
+            # 若已经存在基本信息，则加载进来.
             speech_infos = json_load(
                 self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
             )
@@ -358,6 +382,7 @@ class StLouisSpeechScraper(SpeechScraper):
             self.logger.info("Speech Infos Data already exists, skip collecting infos.")
             # existed_lastest = "October 01, 2023"
         else:
+            # 否则，去获取基本信息
             speech_infos = self.extract_speech_infos()
             if self.save:
                 json_dump(
