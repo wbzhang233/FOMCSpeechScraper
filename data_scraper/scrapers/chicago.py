@@ -11,6 +11,7 @@
 from collections import OrderedDict
 import os
 import re
+import pandas as pd
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -62,6 +63,33 @@ class ChicagoSpeechScraper(SpeechScraper):
         else:
             return "Unknown"
 
+    def extract_speech_date(self, speech: dict):
+        try:
+            # 年份
+            year = speech["href"].split('/')[-2]
+            # 最后的划分日期
+            title = speech["href"].split("/")[-1]
+            month, date = title.split("-")[0], title.split("-")[1]
+            # 转为日期
+            if month.isdigit():
+                # print(f"{year}-{month}-{date}")
+                speech_date = pd.to_datetime(f"{year}-{month}-{date}")
+            else:
+                # print(f"{month}. {date}, {year}")
+                speech_date = pd.to_datetime(f"{month}. {date}, {year}")
+            # 若记录日期为空、或者年份与识别日期年份不一致，则更新日期
+            # print(
+            #     "{} is going to be replace by {}".format(
+            #         speech["date"], speech_date.date().strftime(format="%B %d, %Y")
+            #     )
+            # )
+            return speech_date.strftime("%B %d, %Y")  # speech["date"] =
+        except Exception as e:
+            msg = "Error  {} occured when processing {}.".format(repr(e), speech["href"])
+            print(msg)
+            self.logger.info(msg=msg)
+            return None
+
     def extract_president_speech_infos(self, president_info: dict):
         """提取芝加哥联储某位行长的演讲信息
 
@@ -91,6 +119,7 @@ class ChicagoSpeechScraper(SpeechScraper):
             for item in speech_items:
                 title = item.find_element(By.XPATH, "./a[@href]").text.strip()
                 href = item.find_element(By.XPATH, "./a[@href]").get_attribute("href")
+                # 获取日期
                 date = item.find_element(
                     By.XPATH, "./p[@class='cyan-publication-date']"
                 ).text.strip()
@@ -120,6 +149,8 @@ class ChicagoSpeechScraper(SpeechScraper):
                 href = item.find_element(By.XPATH, "./div/a[@href]").get_attribute(
                     "href"
                 )
+                # 根据href来解析日期
+                date = self.extract_speech_date({"href": href})
                 p_items = item.find_elements(By.TAG_NAME, "p")
                 summary = "\n\n".join([p.text for p in p_items]).strip()
                 # 查找上一个h3元素
@@ -129,6 +160,7 @@ class ChicagoSpeechScraper(SpeechScraper):
                         "speaker": president_info["name"],
                         "title": title,
                         "href": href,
+                        "date": date,
                         "summary": summary,
                     }
                 )
