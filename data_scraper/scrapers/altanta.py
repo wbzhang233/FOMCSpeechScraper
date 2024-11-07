@@ -31,8 +31,7 @@ class AtlantaSpeechScraper(SpeechScraper):
     SAVE_PATH = f"../../data/fed_speeches/{__fed_name__}_fed_speeches/"
 
     logger = get_logger(
-        logger_name=f"{__fed_name__}_speech_scraper",
-        log_filepath="../../log/"
+        logger_name=f"{__fed_name__}_speech_scraper", log_filepath="../../log/"
     )
 
     def __init__(self, url: str = None, auto_save: bool = True):
@@ -55,8 +54,9 @@ class AtlantaSpeechScraper(SpeechScraper):
         """
         try:
             # 演讲人元素
-            speaker_element = speech_content.find("p").find("strong")
-            speaker_items = speaker_element.text.split("\n")
+            speaker_element = speech_content.find_all("strong")
+            assert len(speaker_element) != 0, "Speaker element not found"
+            speaker_items = speaker_element[0].text.split("\n")
             # 演讲人
             speaker = speaker_items[0].strip() if len(speaker_items) > 0 else ""
             # 演讲人职位
@@ -216,10 +216,11 @@ class AtlantaSpeechScraper(SpeechScraper):
             print(f"Start scraping speeches of {year}...")
             single_year_speech_infos = self.extract_single_year_speech_infos(year)
             speech_infos_by_year[year] = single_year_speech_infos
-            print("{number} speeches of {year} was collected.".format(
-                number=len(speech_infos_by_year[year]),
-                year=year
-            ))
+            print(
+                "{number} speeches of {year} was collected.".format(
+                    number=len(speech_infos_by_year[year]), year=year
+                )
+            )
         json_update(
             self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json",
             speech_infos_by_year,
@@ -234,7 +235,7 @@ class AtlantaSpeechScraper(SpeechScraper):
         # 获取演讲的开始时间
         start_date = parse_datestring(start_date)
         start_year = start_date.year
-        
+
         speeches_by_year = {}
         failed = []
         for year, single_year_infos in speech_infos_by_year.items():
@@ -273,7 +274,7 @@ class AtlantaSpeechScraper(SpeechScraper):
             if self.save:
                 json_update(
                     self.SAVE_PATH + f"{self.__fed_name__}_speeches_{year}.json",
-                    singe_year_speeches
+                    singe_year_speeches,
                 )
         if self.save:
             json_dump(
@@ -343,6 +344,13 @@ class AtlantaSpeechScraper(SpeechScraper):
         return speeches
 
 
+def test_extract_speech_infos():
+    """测试 extract_speeches 信息 方法"""
+    scraper = AtlantaSpeechScraper()
+    speech_infos = scraper.extract_speech_infos()
+    print(speech_infos)
+
+
 def test_extract_single_speech():
     """测试 extract_single_speech 方法"""
     scraper = AtlantaSpeechScraper()
@@ -353,15 +361,15 @@ def test_extract_single_speech():
         "highlights": "Atlanta Fed president Raphael Bostic gives the opening remarks at the Day Ahead Conference on Financial Markets and Institutions on Thursday, January 5.",
     }
 
+    # speech_info = {
+    #     "date": "February 17, 2006",
+    #     "title": "Taking into Account a Changing World of Banking",
+    #     "href": "https://www.atlantafed.org/news/speeches/2006/060217-barron",
+    #     "highlights": "",
+    # }
+
     speech = scraper.extract_single_speech(speech_info)
     print(speech)
-
-
-def test_extract_speech_infos():
-    """测试 extract_speeches 信息 方法"""
-    scraper = AtlantaSpeechScraper()
-    speech_infos = scraper.extract_speech_infos()
-    print(speech_infos)
 
 
 def test():
@@ -370,4 +378,5 @@ def test():
 
 
 if __name__ == "__main__":
-    test()
+    test_extract_single_speech()
+    # test()
