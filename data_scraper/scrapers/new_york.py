@@ -47,13 +47,14 @@ class NewYorkSpeechScraper(SpeechScraper):
         try:
             self.driver.get(self.URL)
             # Wait for the table to be present
+            time.sleep(1.0)
             table = WebDriverWait(self.driver, 10).until(
                 EC.presence_of_element_located((By.CLASS_NAME, "newsTable"))
             )
 
-            rows = table.find_elements(By.TAG_NAME, "tr")
+            row = table.find_element(By.TAG_NAME, "tr")
             current_year = ""
-            for row in rows:
+            while row:
                 if row.text == "Speeches":
                     continue
                 if "yrHead" in row.get_attribute("class"):
@@ -88,7 +89,11 @@ class NewYorkSpeechScraper(SpeechScraper):
                 except NoSuchElementException:
                     print(f"No speech link found in row: {row.text}")
                     continue
-
+                following_siblings = row.find_elements(By.XPATH, "following-sibling::tr")
+                if len(following_siblings) ==0:
+                    break
+                row = following_siblings[0]
+                    
             print(f"Collected {len(speech_infos)} speech links.")
             return speech_infos
         except Exception as e:
@@ -234,9 +239,9 @@ class NewYorkSpeechScraper(SpeechScraper):
                 failed, self.SAVE_PATH + f"{self.__fed_name__}_failed_speech_infos.json"
             )
             # 更新已存储的演讲内容
-            json_update(
-                self.SAVE_PATH + f"{self.__fed_name__}_speeches.json", speeches_by_year
-            )
+            # json_update(
+            #     self.SAVE_PATH + f"{self.__fed_name__}_speeches_all.json", speeches_by_year
+            # )
         return speeches_by_year
 
     def collect(self):
@@ -246,30 +251,31 @@ class NewYorkSpeechScraper(SpeechScraper):
             str: list[dict]
         """
         # 提取每年演讲的基本信息（不含正文和highlights等）
-        if os.path.exists(self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"):
-            speech_infos = json_load(
-                self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
+        # if os.path.exists(self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"):
+        #     speech_infos = json_load(
+        #         self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
+        #     )
+        #     # 查看已有的最新的演讲日期
+        #     latest_year = max([k for k, _ in speech_infos.items()])
+        #     existed_lastest = max(
+        #         [
+        #             parse_datestring(speech_info["date"])
+        #             for speech_info in speech_infos[latest_year]
+        #         ]
+        #     ).strftime("%b %d, %Y")
+        #     logger.info("Speech Infos Data already exists, skip collecting infos.")
+        # else:
+        speech_infos = self.extract_speech_infos()
+        if self.save:
+            json_dump(
+                speech_infos,
+                self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json",
             )
-            # 查看已有的最新的演讲日期
-            latest_year = max([k for k, _ in speech_infos.items()])
-            existed_lastest = max(
-                [
-                    parse_datestring(speech_info["date"])
-                    for speech_info in speech_infos[latest_year]
-                ]
-            ).strftime("%b %d, %Y")
-            logger.info("Speech Infos Data already exists, skip collecting infos.")
-        else:
-            speech_infos = self.extract_speech_infos()
-            if self.save:
-                json_dump(
-                    speech_infos,
-                    self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json",
-                )
-            existed_lastest = "Jan 01, 2006"
+        existed_lastest = "Oct 15, 2024"
 
         # 提取演讲正文内容
         speeches = self.extract_speeches(speech_infos, existed_lastest)
+        json_update(self.SAVE_PATH + f"{self.__fed_name__}_speeches_all.json", speeches)
         return speeches
 
     def extract_lastest_speech_date(self):
@@ -340,6 +346,6 @@ def test():
 
 
 if __name__ == "__main__":
-    test_extract_speech_infos()
+    # test_extract_speech_infos()
     # test_extract_single_speech()
-    # test()
+    test()

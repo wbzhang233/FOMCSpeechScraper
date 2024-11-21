@@ -469,7 +469,7 @@ class StLouisSpeechScraper(SpeechScraper):
             dict: 按自然年份整理的讲话数据. dict<str, list[dict]>
         """
         # 先收集历任行长演讲的基本信息（不含正文和highlights等）
-        if not os.path.exists(
+        if os.path.exists(
             self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
         ):
             # 若已经存在基本信息，则加载进来.

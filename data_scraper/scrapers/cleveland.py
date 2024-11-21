@@ -270,27 +270,27 @@ class ClevelandSpeechScraper(SpeechScraper):
             _type_: _description_
         """
         # 提取每年演讲的基本信息（不含正文和highlights等）
-        if os.path.exists(self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"):
-            speech_infos = json_load(
-                self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
+        # if os.path.exists(self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"):
+        #     speech_infos = json_load(
+        #         self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
+        #     )
+        #     # 查看已有的最新的演讲日期
+        #     latest_year = max([k for k, _ in speech_infos.items()])
+        #     existed_lastest = max(
+        #         [
+        #             parse_datestring(speech_info["date"])
+        #             for speech_info in speech_infos[latest_year]
+        #         ]
+        #     ).strftime("%b %d, %Y")
+        #     logger.info("Speech Infos Data already exists, skip collecting infos.")
+        # else:
+        speech_infos = self.extract_speech_infos()
+        if self.save:
+            json_dump(
+                speech_infos,
+                self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json",
             )
-            # 查看已有的最新的演讲日期
-            latest_year = max([k for k, _ in speech_infos.items()])
-            existed_lastest = max(
-                [
-                    parse_datestring(speech_info["date"])
-                    for speech_info in speech_infos[latest_year]
-                ]
-            ).strftime("%b %d, %Y")
-            logger.info("Speech Infos Data already exists, skip collecting infos.")
-        else:
-            speech_infos = self.extract_speech_infos()
-            if self.save:
-                json_dump(
-                    speech_infos,
-                    self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json",
-                )
-            existed_lastest = "Jan 01, 2006"
+        existed_lastest = "May 28, 2006"
 
         # 提取演讲正文内容
         speeches = self.extract_speeches(speech_infos, existed_lastest)

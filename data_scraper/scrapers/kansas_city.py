@@ -137,10 +137,10 @@ class KansasCitySpeechScraper(SpeechScraper):
             apply_filter_button.click()
 
             # 等待页面
+            time.sleep(3.0)
             WebDriverWait(self.driver, 10).until(
-                EC.presence_of_element_located((By.XPATH, "//*[@id='mainContent']"))
+                EC.presence_of_all_elements_located((By.XPATH, "//*[@id='mainContent']"))
             )
-            time.sleep(1.2)
 
             # 设置每页展示100个
             perpage_number_button = self.driver.find_element(
@@ -158,10 +158,10 @@ class KansasCitySpeechScraper(SpeechScraper):
             )
             perpage_100.click()
             # 等待页面
+            time.sleep(5.0)
             WebDriverWait(self.driver, 10).until(
                 EC.visibility_of_all_elements_located((By.CLASS_NAME, "clear"))
             )
-            time.sleep(5.0)
         except Exception as e:
             print(f"Error setting date range: {e}")
 
@@ -205,7 +205,7 @@ class KansasCitySpeechScraper(SpeechScraper):
                 )
                 next_page_button.click()
                 # 等待页面加载
-                time.sleep(1.2)
+                time.sleep(2.0)
             except NoSuchElementException as e:
                 print(
                     f"Next button not found or disabled. Reached last page. {repr(e)}"
@@ -233,9 +233,13 @@ class KansasCitySpeechScraper(SpeechScraper):
             if href.endswith(".pdf"):
                 # 下载PDF文件
                 pdf_filename = href.split("/")[-1]
-                if not is_download_existed(self.DOWNLOAD_PATH + pdf_filename):
+                # 如果不存在，就下载
+                _times = 0
+                while (not is_download_existed(self.DOWNLOAD_PATH + pdf_filename)) and _times<=10:
                     self.driver.get(href)
                     time.sleep(1.0)
+                    _times +=1
+                # 如果下载完成，则解析
                 if is_download_existed(self.DOWNLOAD_PATH + pdf_filename):
                     # 解析pdf
                     content = read_pdf_file(self.DOWNLOAD_PATH + pdf_filename)
@@ -334,7 +338,7 @@ class KansasCitySpeechScraper(SpeechScraper):
             _type_: _description_
         """
         # 提取每年演讲的基本信息（不含正文和highlights等）
-        if os.path.exists(self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"):
+        if not os.path.exists(self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"):
             speech_infos = json_load(
                 self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
             )
@@ -355,7 +359,8 @@ class KansasCitySpeechScraper(SpeechScraper):
                     speech_infos,
                     self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json",
                 )
-            existed_lastest = "Jan 01, 2006"
+            # existed_lastest = "Jan 01, 2006"
+            existed_lastest = "Oct 21, 2024"
 
         # 提取演讲正文内容
         speech_infos = OrderedDict(speech_infos.items())

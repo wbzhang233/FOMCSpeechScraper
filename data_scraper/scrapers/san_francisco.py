@@ -23,7 +23,8 @@ from bs4 import BeautifulSoup
 import time
 
 from data_scraper.scrapers.scraper import SpeechScraper
-from utils.file_saver import json_dump, json_load
+from utils.common import parse_datestring
+from utils.file_saver import json_dump, json_load, json_update
 
 
 class SanFranciscoSpeechScraper(SpeechScraper):
@@ -174,13 +175,33 @@ class SanFranciscoSpeechScraper(SpeechScraper):
         speech_info.update(speech)
         return speech_info
 
-    def extract_speeches(self, speech_infos_by_year):
+    def extract_speeches(self, speech_infos_by_year: dict, start_date: str):
         """搜集每篇演讲的内容"""
+        # 获取演讲的开始时间
+        start_date = parse_datestring(start_date)
+        start_year = start_date.year
+        
         speeches_by_year = {}
         failed = []
         for year, single_year_infos in speech_infos_by_year.items():
+            if not year.isdigit():
+                continue
+            # 跳过之前的年份
+            if int(year) < start_year:
+                continue
             singe_year_speeches = []
             for speech_info in single_year_infos:
+                if not speech_info["date"] or speech_info["date"] == "":
+                    continue
+                # 跳过start_date之前的演讲
+                if parse_datestring(speech_info["date"]) <= start_date:
+                    print(
+                        "Skip speech {date} {title} cause' it's earlier than start_date.".format(
+                            date=speech_info["date"],
+                            title=speech_info["title"],
+                        )
+                    )
+                    continue
                 single_speech = self.extract_single_speech(speech_info)
                 if single_speech["content"] == "":
                     # 记录提取失败的报告
@@ -188,17 +209,18 @@ class SanFranciscoSpeechScraper(SpeechScraper):
                 singe_year_speeches.append(single_speech)
             speeches_by_year[year] = singe_year_speeches
             if self.save:
-                json_dump(
-                    singe_year_speeches,
+                json_update(
                     self.SAVE_PATH + f"{self.__fed_name__}_speeches_{year}.json",
+                    singe_year_speeches
                 )
             print(f"Speeches of {year} collected.")
         if self.save:
             json_dump(
                 failed, self.SAVE_PATH + f"{self.__fed_name__}_failed_speech_infos.json"
             )
-            json_dump(
-                speeches_by_year, self.SAVE_PATH + f"{self.__fed_name__}_speeches.json"
+            json_update(
+                self.SAVE_PATH + f"{self.__fed_name__}_speeches.json",
+                speeches_by_year,
             )
         return speeches_by_year
 
@@ -218,23 +240,24 @@ class SanFranciscoSpeechScraper(SpeechScraper):
             _type_: _description_
         """
         # 提取每年演讲的信息，若存在则不再更新？.做更新机制.
-        if os.path.exists(self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"):
-            speech_infos = json_load(
-                self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
+        # if os.path.exists(self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"):
+        #     speech_infos = json_load(
+        #         self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
+        #     )
+        #     print("Speech Infos Data already exists, skip collecting.")
+        # else:
+        speech_infos = self.extract_speech_infos()
+        if self.save:
+            json_update(
+                self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json",
+                speech_infos,
             )
-            print("Speech Infos Data already exists, skip collecting.")
-        else:
-            speech_infos = self.extract_speech_infos()
-            if self.save:
-                json_dump(
-                    speech_infos,
-                    self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json",
-                )
+        existed_lastest = "Jun 24, 2024"
 
         # 提取演讲内容
-        speeches = self.extract_speeches(speech_infos)
+        speeches = self.extract_speeches(speech_infos, existed_lastest)
         if self.save:
-            json_dump(speeches, self.SAVE_PATH + f"{self.__fed_name__}_speeches.json")
+            json_update(self.SAVE_PATH + f"{self.__fed_name__}_speeches.json", speeches)
         return speeches
 
 

@@ -201,7 +201,7 @@ class ChicagoSpeechScraper(SpeechScraper):
         speech_infos_by_year = {}
         for president_info in president_infos:
             # 太早的不要
-            if president_info["start_year"] < "1994":
+            if int(president_info["start_year"]) < 1994:
                 continue
             # 主席名称
             # speaker = president_info['name']
@@ -286,13 +286,13 @@ class ChicagoSpeechScraper(SpeechScraper):
                 href=speech_info["href"], error=repr(e)
             )
             print(msg)
-            self.logger.info()
+            self.logger.info(msg)
             speech = {"content": ""}
             msg = "{} {} {} content failed.".format(
                 speech_info["speaker"], speech_info["date"], speech_info["title"]
             )
             print(msg)
-            self.logger.info()
+            self.logger.info(msg)
         speech.update(speech_info)
         return speech
 
@@ -366,28 +366,28 @@ class ChicagoSpeechScraper(SpeechScraper):
             _type_: _description_
         """
         # 提取每年演讲的基本信息（不含正文和highlights等）
-        if os.path.exists(self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"):
-            speech_infos = json_load(
-                self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
+        # if os.path.exists(self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"):
+        #     speech_infos = json_load(
+        #         self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
+        #     )
+        #     # 查看已有的最新的演讲日期
+        #     latest_year = max([k for k, _ in speech_infos.items()])
+        #     existed_lastest = max(
+        #         [
+        #             parse_datestring(speech_info["date"])
+        #             for speech_info in speech_infos[latest_year]
+        #         ]
+        #     ).strftime("%b %d, %Y")
+        #     self.logger.info("Speech Infos Data already exists, skip collecting infos.")
+        #     existed_lastest = "Jan 01, 2024"
+        # else:
+        speech_infos = self.extract_speech_infos()
+        if self.save:
+            json_dump(
+                speech_infos,
+                self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json",
             )
-            # 查看已有的最新的演讲日期
-            latest_year = max([k for k, _ in speech_infos.items()])
-            existed_lastest = max(
-                [
-                    parse_datestring(speech_info["date"])
-                    for speech_info in speech_infos[latest_year]
-                ]
-            ).strftime("%b %d, %Y")
-            self.logger.info("Speech Infos Data already exists, skip collecting infos.")
-            existed_lastest = "Jan 01, 2024"
-        else:
-            speech_infos = self.extract_speech_infos()
-            if self.save:
-                json_dump(
-                    speech_infos,
-                    self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json",
-                )
-            existed_lastest = "Jan 01, 2006"
+        existed_lastest = "Oct 17, 2024"
 
         # 提取演讲正文内容
         speeches = self.extract_speeches(speech_infos, existed_lastest)

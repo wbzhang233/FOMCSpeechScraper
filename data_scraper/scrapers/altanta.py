@@ -8,19 +8,25 @@
 @Desc    :   6F 亚特兰大联储行长讲话数据爬取
 """
 
-from datetime import datetime
 import os
+import sys
+import time
+
+sys.path.append("../../")
+sys.path.append("../")
+
+# from datetime import datetime
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.common.exceptions import TimeoutException
 from bs4 import BeautifulSoup
-import time
 
 from data_scraper.scrapers.scraper import SpeechScraper
 from utils.common import parse_datestring
-from utils.file_saver import json_dump, json_load, json_update
+from utils.file_saver import json_load, json_update  # , json_dump
 from utils.logger import get_logger
 
 
@@ -159,17 +165,31 @@ class AtlantaSpeechScraper(SpeechScraper):
             "/html/body/div[1]/article[2]/section/div[2]/div[2]/div[2]/div/div/div[1]/form/div/div[2]/input[1]",
         )
         filter_button.click()
-        self.driver.implicitly_wait(2)
-        time.sleep(2)
         # 等待加载完
-        WebDriverWait(self.driver, 5).until(
-            EC.presence_of_all_elements_located(
-                (
-                    By.CLASS_NAME,
-                    "row.frba-content_router-date-linked-headline-Teaser-grouped",
+        try:
+            self.driver.implicitly_wait(3.0)
+            WebDriverWait(self.driver, 10.0).until(
+                EC.text_to_be_present_in_element(
+                    (
+                        By.XPATH,
+                        "//div[@data-bind='foreach: items']",
+                    ),
+                    str(year),
                 )
             )
-        )
+        except TimeoutException as e:
+            print("TimeoutException when filter button {}".format(year))
+            filter_button.click()
+            self.driver.implicitly_wait(3.0)
+            WebDriverWait(self.driver, 10.0).until(
+                EC.text_to_be_present_in_element(
+                    (
+                        By.XPATH,
+                        "//div[@data-bind='foreach: items']",
+                    ),
+                    str(year),
+                )
+            )
 
         # 获取页面源码
         page_source = self.driver.page_source
@@ -206,14 +226,16 @@ class AtlantaSpeechScraper(SpeechScraper):
         """Extract speech infos from the website."""
         # 获取下拉框控件的所有选项
         years = [
-            int(option.text)
+            option.text.strip()
             for option in Select(self.driver.find_element(By.ID, "YearList")).options
-            if option.text.isdigit()
+            if option.text.strip().isdigit()
         ]
 
         speech_infos_by_year = {}
         for year in years:
-            print(f"Start scraping speeches of {year}...")
+            # print(f"Start scraping speeches of {year}...")
+            if int(year) < 2006:
+                continue
             single_year_speech_infos = self.extract_single_year_speech_infos(year)
             speech_infos_by_year[year] = single_year_speech_infos
             print(
@@ -251,8 +273,7 @@ class AtlantaSpeechScraper(SpeechScraper):
                 # 跳过start_date之前的演讲
                 if parse_datestring(speech_info["date"]) <= start_date:
                     self.logger.info(
-                        "Skip speech {speaker} {date} {title} cause' it's earlier than start_date.".format(
-                            speaker=speech_info["speaker"],
+                        "Skip speech {date} {title} cause' it's earlier than start_date.".format(
                             date=speech_info["date"],
                             title=speech_info["title"],
                         )
@@ -263,8 +284,7 @@ class AtlantaSpeechScraper(SpeechScraper):
                     # 记录提取失败的报告
                     failed.append(single_speech)
                     print(
-                        "Extract {speaker}, {date}, {title} failed.".format(
-                            speaker=speech_info["speaker"],
+                        "Extract {date}, {title} failed.".format(
                             date=speech_info["date"],
                             title=speech_info["title"],
                         )
@@ -277,12 +297,12 @@ class AtlantaSpeechScraper(SpeechScraper):
                     singe_year_speeches,
                 )
         if self.save:
-            json_dump(
-                failed, self.SAVE_PATH + f"{self.__fed_name__}_failed_speech_infos.json"
+            json_update(
+                self.SAVE_PATH + f"{self.__fed_name__}_failed_speech_infos.json", failed
             )
-            json_dump(
-                speeches_by_year, self.SAVE_PATH + f"{self.__fed_name__}_speeches.json"
-            )
+            # json_update(
+            #     self.SAVE_PATH + f"{self.__fed_name__}_speeches.json", speeches_by_year
+            # )
         return speeches_by_year
 
     def update(self, year: str):
@@ -312,35 +332,37 @@ class AtlantaSpeechScraper(SpeechScraper):
         Returns:
             _type_: _description_
         """
-        # 提取每年演讲的信息，若存在则不再更新？.做更新机制.
-        if os.path.exists(self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"):
-            speech_infos = json_load(
-                self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
+        # 获取所有演讲信息
+        speech_infos = self.extract_speech_infos()
+        if self.save:
+            json_update(
+                self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json", speech_infos
             )
-            # 查看已有的最新的演讲日期
-            latest_year = max([k for k, _ in speech_infos.items() if k.isdigit()])
-            dates = []
-            for speech_info in speech_infos[latest_year]:
-                speech_date = parse_datestring(speech_info["date"])
-                if isinstance(speech_date, datetime):
-                    dates.append(speech_date)
-            existed_lastest = max(dates).strftime("%b %d, %Y")
-            # existed_lastest = "Jan 01, 2006"
-            print("Speech Infos Data already exists, skip collecting.")
-            self.logger.info("Speech Infos Data already exists, skip collecting infos.")
+
+        # 查看已有的最新的演讲日期
+        existed_speeches_filepath = (
+            self.SAVE_PATH + f"{self.__fed_name__}_speeches.json"
+        )
+        if os.path.exists(existed_speeches_filepath):
+            # 已存在的演讲日期
+            existed_speeches = json_load(existed_speeches_filepath)
+            # 按年整理的speeches
+            speech_years = [k for k, _ in existed_speeches.items()]
+            latest_year = max(speech_years)
+            # 早于已存在日期的则不再收集.
+            existed_lastest = max(
+                [
+                    parse_datestring(speech["date"])
+                    for speech in existed_speeches[latest_year]
+                ]
+            ).strftime("%b %d, %Y")
         else:
-            speech_infos = self.extract_speech_infos()
-            if self.save:
-                json_dump(
-                    speech_infos,
-                    self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json",
-                )
             existed_lastest = "Jan 01, 2006"
 
         # 提取演讲内容
-        speeches = self.extract_speeches(speech_infos)
+        speeches = self.extract_speeches(speech_infos, existed_lastest)
         if self.save:
-            json_dump(speeches, self.SAVE_PATH + f"{self.__fed_name__}_speeches.json")
+            json_update(self.SAVE_PATH + f"{self.__fed_name__}_speeches.json", speeches)
         return speeches
 
 
@@ -378,5 +400,5 @@ def test():
 
 
 if __name__ == "__main__":
-    test_extract_single_speech()
-    # test()
+    # test_extract_single_speech()
+    test()

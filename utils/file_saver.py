@@ -130,6 +130,45 @@ def json_update(filepath: str, obj, **kwargs):
         msg = f"JSON update failed. Unknown object type: {type(exist_obj)}"
         logger.error(msg)
 
+
+def sort_speeches_dict(speeches_by_year: dict, sort_filed: str = 'date'):
+    """对讲话字典进行排序
+
+    Args:
+        speeches_by_year (dict): _description_
+        sort_filed (str, optional): _description_. Defaults to 'date'.
+
+    Returns:
+        _type_: _description_
+    """
+    try:
+        result = {}
+        for year, single_year_speeches in speeches_by_year.items():
+            # 过滤掉没有日期、标题或者作者的记录
+            #  and speech['speaker']
+            single_year = [speech for speech in single_year_speeches if speech['date'] and speech['title']]
+            result[year] = sorted( 
+                single_year,
+                key=lambda x: parse_datestring(x[sort_filed]),
+                reverse=True,
+            )
+        result = OrderedDict(sorted(
+            result.items(), 
+            key=lambda x: int(x[0]),
+            reverse=True)
+        )
+    except Exception as e:
+        msg = f"Error occurred when sorting speech records. Error: {repr(e)}"
+        logger.error(msg)
+        result = speeches_by_year
+    return result
+
+
+def sort_speeches():
+    filepath = "../data/fed_speeches/stlouis_fed_speeches/stlouis_speeches.json"
+    stlouis_speeches = json_load(filepath)
+    sort_speeches_dict(stlouis_speeches)
+
 def test_update_dict():
     existed = {
         "2018": [
@@ -170,4 +209,5 @@ def test_json_load():
 
 if __name__ == "__main__":
     # test_json_load()
-    test_update_dict()
+    # test_update_dict()
+    sort_speeches()
