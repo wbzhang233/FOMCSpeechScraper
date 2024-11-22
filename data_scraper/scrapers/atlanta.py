@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 """
-@File    :   altanta.py
+@File    :   atlanta.py
 @Time    :   2024/10/10 19:24:42
 @Author  :   wbzhang
 @Version :   1.0
