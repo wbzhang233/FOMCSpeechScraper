@@ -1,173 +1,69 @@
 {
-    "2016": [
+    "2024": [
         {
-            "date": "April 07, 2016",
-            "speaker": "Esther L. George",
-            "title": "The Outlook and Monetary Policy",
-            "href": "https://www.kansascityfed.org/Speeches/documents/61/2016-2016-George-York-04-07.pdf"
+            "date": "October 21, 2024",
+            "speaker": "Jeffrey Schmid",
+            "title": "Chartered Financial Analysts Society, Opening Remarks",
+            "href": "https://www.kansascityfed.org/Speeches/documents/10547/2024-Schmid-KansasCityCFA-10-18_003.pdf"
         },
         {
-            "date": "May 12, 2016",
-            "speaker": "Esther L. George",
-            "title": "Longer-Term Labor Market Trends, the Economic Outlook and Monetary Policy",
-            "href": "https://www.kansascityfed.org/Speeches/documents/2790/2016-2016-George-Albuquerque-05-12.pdf"
+            "date": "August 08, 2024",
+            "speaker": "Jeffrey Schmid",
+            "title": "Kansas Bankers Association Annual Meeting, Opening Remarks",
+            "href": "https://www.kansascityfed.org/Speeches/documents/10340/2024-Schmid-KBA-08-08.pdf"
         },
         {
-            "date": "October 11, 2016",
-            "speaker": "Esther L. George",
-            "title": "Improving the U.S. Payment System: Progress, Challenges, and Opportunities Ahead",
-            "href": "https://www.kansascityfed.org/Speeches/documents/2637/2016-2016-George-Chicago-10-12.pdf"
+            "date": "May 14, 2024",
+            "speaker": "Jeffrey Schmid",
+            "title": "The Outlook for the Economy and Monetary Policy",
+            "href": "https://www.kansascityfed.org/Speeches/documents/10168/2024-Schmid-Omaha-05-14.pdf"
         },
         {
-            "date": "July 01, 2016",
-            "speaker": "Esther L. George",
-            "title": "Structure, Governance Representation: Federal Reserve Member Banks and Federal Reserve Bank Stock",
-            "href": "https://www.kansascityfed.org/Speeches/documents/2622/2016-structure-governance-representation.pdf"
+            "date": "April 12, 2024",
+            "speaker": "Jeffrey Schmid",
+            "title": "The Importance of Prices and Price Stability",
+            "href": "https://www.kansascityfed.org/Speeches/documents/10114/2024-Schmid-CFTC-04_12.pdf"
         },
         {
-            "date": "September 07, 2016",
-            "speaker": "Esther L. George",
-            "title": "Statement to the House Subcommittee on Monetary Policy and Trade",
-            "href": "https://www.kansascityfed.org/Speeches/documents/2513/2016-2016-George-DC-09-06.pdf"
-        },
-        {
-            "date": "November 18, 2016",
-            "speaker": "Esther L. George",
-            "title": "The Energy Sector, U.S. Economic Outlook and Monetary Policy",
-            "href": "https://www.kansascityfed.org/Speeches/documents/2492/2016-2016-George-Houston-11-18.pdf"
-        },
-        {
-            "date": "February 02, 2016",
-            "speaker": "Esther L. George",
-            "title": "The U.S. Outlook and Monetary Policy",
-            "href": "https://www.kansascityfed.org/Speeches/documents/2370/2016-2016-George-KansasCity-02-02.pdf"
+            "date": "April 02, 2024",
+            "speaker": "Jeffrey Schmid",
+            "title": "A Workshop on the Future of Banking, Opening Remarks",
+            "href": "https://www.kansascityfed.org/Speeches/documents/10095/2024-Schmid-KansasCity-04-02.pdf"
         }
     ],
-    "2017": [
+    "2021": [
         {
-            "date": "May 08, 2017",
+            "date": "November 05, 2021",
             "speaker": "Esther L. George",
-            "title": "Evaluating the Balance of Economic Risks and Monetary Policy",
-            "href": "https://www.kansascityfed.org/Speeches/documents/2271/2017-2017-George-SantaBarbara-05-09.pdf"
+            "title": "Higher Prices: Supply Bottlenecks, Robust Demand, or Both? Lessons from Energy Markets for the Broader Economy",
+            "href": "https://www.kansascityfed.org/Speeches/documents/8485/2021-George-EnergyConference-11-5.pdf"
         },
         {
-            "date": "February 28, 2017",
+            "date": "September 24, 2021",
             "speaker": "Esther L. George",
-            "title": "A Monetary Policy for Long-Run Economic Stability",
-            "href": "https://www.kansascityfed.org/Speeches/documents/2198/2017-2017-George-Stanford-2-28.pdf"
+            "title": "The Long Return to Normal",
+            "href": "https://www.kansascityfed.org/Speeches/documents/8395/2021-George-AEI-09-23.pdf"
         },
         {
-            "date": "April 06, 2017",
+            "date": "August 11, 2021",
             "speaker": "Esther L. George",
-            "title": "Why Community Banks Matter",
-            "href": "https://www.kansascityfed.org/Speeches/documents/1903/2017-2017-George-NYFed-4-6.pdf"
+            "title": "Is the Economy Tight or Slack?",
+            "href": "https://www.kansascityfed.org/Speeches/documents/8239/2021-George-NABE-08-11.pdf"
         },
         {
-            "date": "April 18, 2017",
+            "date": "May 26, 2021",
             "speaker": "Esther L. George",
-            "title": "On the Path of Monetary Policy Normalization",
-            "href": "https://www.kansascityfed.org/Speeches/documents/1884/2017-2017-George-NY-4-18.pdf"
+            "title": "The Outlook for the Economy and Banks",
+            "href": "https://www.kansascityfed.org/Speeches/documents/8110/EstherGeorge_OklahomaBankers_May262021.pdf"
         },
         {
-            "date": "May 15, 2017",
+            "date": "January 12, 2021",
             "speaker": "Esther L. George",
-            "title": "Lessons Learned Along the Way",
-            "href": "https://www.kansascityfed.org/Speeches/documents/1781/2017-2017-George-UMKC-05-12.pdf"
-        },
-        {
-            "date": "October 05, 2017",
-            "speaker": "Esther L. George",
-            "title": "Labor Market Trends and Monetary Policy",
-            "href": "https://www.kansascityfed.org/Speeches/documents/2391/2017-2017-George-Austin-10-05.pdf"
-        },
-        {
-            "date": "October 11, 2017",
-            "speaker": "Esther L. George",
-            "title": "Monetary Policy in a Low Inflation Economy",
-            "href": "https://www.kansascityfed.org/Speeches/documents/2762/2017-2017-George-CentralExchange-10-11.pdf"
-        },
-        {
-            "date": "May 04, 2017",
-            "speaker": "Esther L. George",
-            "title": "Strategies for Improving the U.S. Payments System: Maintaining the Momentum",
-            "href": "https://www.kansascityfed.org/Speeches/documents/2641/2017-2017-George-ChicagoFPTF-05-04.pdf"
-        },
-        {
-            "date": "September 28, 2017",
-            "speaker": "Esther L. George",
-            "title": "Minority Banks and the Economy",
-            "href": "https://www.kansascityfed.org/Speeches/documents/2621/2017-2017-George-KansasCity-09-28.pdf"
-        },
-        {
-            "date": "July 12, 2017",
-            "speaker": "Esther L. George",
-            "title": "Fed Balance Sheet 101",
-            "href": "https://www.kansascityfed.org/Speeches/documents/288/2017-2017-George-Denver-07-12.pdf"
-        }
-    ],
-    "2018": [
-        {
-            "date": "July 17, 2018",
-            "speaker": "Esther L. George",
-            "title": "Threading the Needle",
-            "href": "https://www.kansascityfed.org/Speeches/documents/1883/2018-2018-George-KansasCity_07-17.pdf"
-        },
-        {
-            "date": "March 28, 2018",
-            "speaker": "Esther L. George",
-            "title": "Kids Ask the KC Fed - What does a Federal Reserve Bank president do?",
-            "href": "https://www.youtube.com/embed/vQ30nreJ6YI"
-        },
-        {
-            "date": "October 11, 2018",
-            "speaker": "Esther L. George",
-            "title": "Thoughts on the U.S. Economy, Monetary Policy and Energy Sector Dynamics",
-            "href": "https://www.kansascityfed.org/Speeches/documents/1801/2018-2018-George-Tulsa-10-10.pdf"
-        },
-        {
-            "date": "February 08, 2018",
-            "speaker": "Esther L. George",
-            "title": "Monetary Policy for the Near and Long Term",
-            "href": "https://www.kansascityfed.org/Speeches/documents/1720/2018-2018-George-Wichita-02-08.pdf"
-        },
-        {
-            "date": "March 08, 2018",
-            "speaker": "Esther L. George",
-            "title": "The U.S Economic Outlook and Monetary Policy",
-            "href": "https://www.kansascityfed.org/Speeches/documents/2580/2018-2018-George-Lincoln-03-08.pdf"
-        },
-        {
-            "date": "May 04, 2018",
-            "speaker": "Esther L. George",
-            "title": "Monetary Policy and Reform in Practice",
-            "href": "https://www.kansascityfed.org/Speeches/documents/2424/2018-2018-George-PaloAlto-05-04.pdf"
+            "title": "In the Wake of an Unprecedented Year",
+            "href": "https://www.kansascityfed.org/Speeches/documents/7431/2021-george-centralexchange-1-12.pdf"
         }
     ],
     "2020": [
-        {
-            "date": "January 14, 2020",
-            "speaker": "Esther L. George",
-            "title": "2020 Vision: Solid Growth in a Challenging Low-Interest-Rate World",
-            "href": "https://www.kansascityfed.org/Speeches/documents/1925/2020-2020-George-KansasCity-01-14.pdf"
-        },
-        {
-            "date": "February 10, 2020",
-            "speaker": "Esther L. George",
-            "title": "Digital Currencies: A System Upgrade or Problems 2.0?",
-            "href": "https://www.kansascityfed.org/Speeches/documents/1773/2020-2020-George-WashingtonDC-02-10.pdf"
-        },
-        {
-            "date": "March 06, 2020",
-            "speaker": "Esther L. George",
-            "title": "Perspectives on Balance Sheet and Credit Policies: A Tribute to Marvin Goodfriend",
-            "href": "https://www.kansascityfed.org/Speeches/documents/2128/2020-2020-George-NewYork-03-06.pdf"
-        },
-        {
-            "date": "June 25, 2020",
-            "speaker": "Esther L. George",
-            "title": "The Coronavirus Shock: Implications for the Economy and Monetary Policy",
-            "href": "https://www.kansascityfed.org/Speeches/documents/7430/2020-george-kansascity-06-25.pdf"
-        },
         {
             "date": "November 20, 2020",
             "speaker": "Esther L. George",
@@ -185,38 +81,30 @@
             "speaker": "Esther L. George",
             "title": "Community Banks: Stability in Crisis and Catalysts for Recovery",
             "href": "https://www.kansascityfed.org/Speeches/documents/7429/2020-george-colorado-09-25.pdf"
-        }
-    ],
-    "2021": [
-        {
-            "date": "January 12, 2021",
-            "speaker": "Esther L. George",
-            "title": "In the Wake of an Unprecedented Year",
-            "href": "https://www.kansascityfed.org/Speeches/documents/7431/2021-george-centralexchange-1-12.pdf"
         },
         {
-            "date": "May 26, 2021",
+            "date": "June 25, 2020",
             "speaker": "Esther L. George",
-            "title": "The Outlook for the Economy and Banks",
-            "href": "https://www.kansascityfed.org/Speeches/documents/8110/EstherGeorge_OklahomaBankers_May262021.pdf"
+            "title": "The Coronavirus Shock: Implications for the Economy and Monetary Policy",
+            "href": "https://www.kansascityfed.org/Speeches/documents/7430/2020-george-kansascity-06-25.pdf"
         },
         {
-            "date": "August 11, 2021",
+            "date": "March 06, 2020",
             "speaker": "Esther L. George",
-            "title": "Is the Economy Tight or Slack?",
-            "href": "https://www.kansascityfed.org/Speeches/documents/8239/2021-George-NABE-08-11.pdf"
+            "title": "Perspectives on Balance Sheet and Credit Policies: A Tribute to Marvin Goodfriend",
+            "href": "https://www.kansascityfed.org/Speeches/documents/2128/2020-2020-George-NewYork-03-06.pdf"
         },
         {
-            "date": "September 24, 2021",
+            "date": "February 10, 2020",
             "speaker": "Esther L. George",
-            "title": "The Long Return to Normal",
-            "href": "https://www.kansascityfed.org/Speeches/documents/8395/2021-George-AEI-09-23.pdf"
+            "title": "Digital Currencies: A System Upgrade or Problems 2.0?",
+            "href": "https://www.kansascityfed.org/Speeches/documents/1773/2020-2020-George-WashingtonDC-02-10.pdf"
         },
         {
-            "date": "November 05, 2021",
+            "date": "January 14, 2020",
             "speaker": "Esther L. George",
-            "title": "Higher Prices: Supply Bottlenecks, Robust Demand, or Both? Lessons from Energy Markets for the Broader Economy",
-            "href": "https://www.kansascityfed.org/Speeches/documents/8485/2021-George-EnergyConference-11-5.pdf"
+            "title": "2020 Vision: Solid Growth in a Challenging Low-Interest-Rate World",
+            "href": "https://www.kansascityfed.org/Speeches/documents/1925/2020-2020-George-KansasCity-01-14.pdf"
         }
     ],
     "2019": [
@@ -287,12 +175,194 @@
             "href": "https://www.kansascityfed.org/Speeches/documents/1902/2019-2019-George-KansasCity-01-15.pdf"
         }
     ],
+    "2018": [
+        {
+            "date": "October 11, 2018",
+            "speaker": "Esther L. George",
+            "title": "Thoughts on the U.S. Economy, Monetary Policy and Energy Sector Dynamics",
+            "href": "https://www.kansascityfed.org/Speeches/documents/1801/2018-2018-George-Tulsa-10-10.pdf"
+        },
+        {
+            "date": "July 17, 2018",
+            "speaker": "Esther L. George",
+            "title": "Threading the Needle",
+            "href": "https://www.kansascityfed.org/Speeches/documents/1883/2018-2018-George-KansasCity_07-17.pdf"
+        },
+        {
+            "date": "May 04, 2018",
+            "speaker": "Esther L. George",
+            "title": "Monetary Policy and Reform in Practice",
+            "href": "https://www.kansascityfed.org/Speeches/documents/2424/2018-2018-George-PaloAlto-05-04.pdf"
+        },
+        {
+            "date": "March 28, 2018",
+            "speaker": "Esther L. George",
+            "title": "Kids Ask the KC Fed - What does a Federal Reserve Bank president do?",
+            "href": "https://www.youtube.com/embed/vQ30nreJ6YI"
+        },
+        {
+            "date": "March 08, 2018",
+            "speaker": "Esther L. George",
+            "title": "The U.S Economic Outlook and Monetary Policy",
+            "href": "https://www.kansascityfed.org/Speeches/documents/2580/2018-2018-George-Lincoln-03-08.pdf"
+        },
+        {
+            "date": "February 08, 2018",
+            "speaker": "Esther L. George",
+            "title": "Monetary Policy for the Near and Long Term",
+            "href": "https://www.kansascityfed.org/Speeches/documents/1720/2018-2018-George-Wichita-02-08.pdf"
+        }
+    ],
+    "2017": [
+        {
+            "date": "October 11, 2017",
+            "speaker": "Esther L. George",
+            "title": "Monetary Policy in a Low Inflation Economy",
+            "href": "https://www.kansascityfed.org/Speeches/documents/2762/2017-2017-George-CentralExchange-10-11.pdf"
+        },
+        {
+            "date": "October 05, 2017",
+            "speaker": "Esther L. George",
+            "title": "Labor Market Trends and Monetary Policy",
+            "href": "https://www.kansascityfed.org/Speeches/documents/2391/2017-2017-George-Austin-10-05.pdf"
+        },
+        {
+            "date": "September 28, 2017",
+            "speaker": "Esther L. George",
+            "title": "Minority Banks and the Economy",
+            "href": "https://www.kansascityfed.org/Speeches/documents/2621/2017-2017-George-KansasCity-09-28.pdf"
+        },
+        {
+            "date": "July 12, 2017",
+            "speaker": "Esther L. George",
+            "title": "Fed Balance Sheet 101",
+            "href": "https://www.kansascityfed.org/Speeches/documents/288/2017-2017-George-Denver-07-12.pdf"
+        },
+        {
+            "date": "May 15, 2017",
+            "speaker": "Esther L. George",
+            "title": "Lessons Learned Along the Way",
+            "href": "https://www.kansascityfed.org/Speeches/documents/1781/2017-2017-George-UMKC-05-12.pdf"
+        },
+        {
+            "date": "May 08, 2017",
+            "speaker": "Esther L. George",
+            "title": "Evaluating the Balance of Economic Risks and Monetary Policy",
+            "href": "https://www.kansascityfed.org/Speeches/documents/2271/2017-2017-George-SantaBarbara-05-09.pdf"
+        },
+        {
+            "date": "May 04, 2017",
+            "speaker": "Esther L. George",
+            "title": "Strategies for Improving the U.S. Payments System: Maintaining the Momentum",
+            "href": "https://www.kansascityfed.org/Speeches/documents/2641/2017-2017-George-ChicagoFPTF-05-04.pdf"
+        },
+        {
+            "date": "April 18, 2017",
+            "speaker": "Esther L. George",
+            "title": "On the Path of Monetary Policy Normalization",
+            "href": "https://www.kansascityfed.org/Speeches/documents/1884/2017-2017-George-NY-4-18.pdf"
+        },
+        {
+            "date": "April 06, 2017",
+            "speaker": "Esther L. George",
+            "title": "Why Community Banks Matter",
+            "href": "https://www.kansascityfed.org/Speeches/documents/1903/2017-2017-George-NYFed-4-6.pdf"
+        },
+        {
+            "date": "February 28, 2017",
+            "speaker": "Esther L. George",
+            "title": "A Monetary Policy for Long-Run Economic Stability",
+            "href": "https://www.kansascityfed.org/Speeches/documents/2198/2017-2017-George-Stanford-2-28.pdf"
+        }
+    ],
+    "2016": [
+        {
+            "date": "November 18, 2016",
+            "speaker": "Esther L. George",
+            "title": "The Energy Sector, U.S. Economic Outlook and Monetary Policy",
+            "href": "https://www.kansascityfed.org/Speeches/documents/2492/2016-2016-George-Houston-11-18.pdf"
+        },
+        {
+            "date": "October 11, 2016",
+            "speaker": "Esther L. George",
+            "title": "Improving the U.S. Payment System: Progress, Challenges, and Opportunities Ahead",
+            "href": "https://www.kansascityfed.org/Speeches/documents/2637/2016-2016-George-Chicago-10-12.pdf"
+        },
+        {
+            "date": "September 07, 2016",
+            "speaker": "Esther L. George",
+            "title": "Statement to the House Subcommittee on Monetary Policy and Trade",
+            "href": "https://www.kansascityfed.org/Speeches/documents/2513/2016-2016-George-DC-09-06.pdf"
+        },
+        {
+            "date": "July 01, 2016",
+            "speaker": "Esther L. George",
+            "title": "Structure, Governance Representation: Federal Reserve Member Banks and Federal Reserve Bank Stock",
+            "href": "https://www.kansascityfed.org/Speeches/documents/2622/2016-structure-governance-representation.pdf"
+        },
+        {
+            "date": "May 12, 2016",
+            "speaker": "Esther L. George",
+            "title": "Longer-Term Labor Market Trends, the Economic Outlook and Monetary Policy",
+            "href": "https://www.kansascityfed.org/Speeches/documents/2790/2016-2016-George-Albuquerque-05-12.pdf"
+        },
+        {
+            "date": "April 07, 2016",
+            "speaker": "Esther L. George",
+            "title": "The Outlook and Monetary Policy",
+            "href": "https://www.kansascityfed.org/Speeches/documents/61/2016-2016-George-York-04-07.pdf"
+        },
+        {
+            "date": "February 02, 2016",
+            "speaker": "Esther L. George",
+            "title": "The U.S. Outlook and Monetary Policy",
+            "href": "https://www.kansascityfed.org/Speeches/documents/2370/2016-2016-George-KansasCity-02-02.pdf"
+        }
+    ],
+    "2015": [
+        {
+            "date": "October 06, 2015",
+            "speaker": "Esther L. George",
+            "title": "Improving Through Collaboration: The Federal Reserve’s Perspective",
+            "href": "https://www.kansascityfed.org/Speeches/documents/2626/2015-2015-george-chicago-10-06.pdf"
+        },
+        {
+            "date": "July 09, 2015",
+            "speaker": "Esther L. George",
+            "title": "Weighing the Costs of Waiting",
+            "href": "https://www.kansascityfed.org/Speeches/documents/8606/2015-George-Stillwater-07-09.pdf"
+        },
+        {
+            "date": "June 26, 2015",
+            "speaker": "Esther L. George",
+            "title": "The Federal Reserve’s Role in the Payments System",
+            "href": "https://www.kansascityfed.org/Speeches/documents/2404/2015-2015-george-kansascity-payments-06-26.pdf"
+        },
+        {
+            "date": "March 04, 2015",
+            "speaker": "Esther L. George",
+            "title": "The Next Phase of Monetary Policy",
+            "href": "https://www.kansascityfed.org/Speeches/documents/8604/2015-George-KansasCity-CentralExchange-03-04.pdf"
+        },
+        {
+            "date": "February 10, 2015",
+            "speaker": "Esther L. George",
+            "title": "Monetary and Macroprudential Policy: Complements, Not Substitutes",
+            "href": "https://www.kansascityfed.org/Speeches/documents/8605/2015-George-Manila-BIS-02-10.pdf"
+        }
+    ],
     "2014": [
         {
-            "date": "January 09, 2014",
+            "date": "September 23, 2014",
             "speaker": "Esther L. George",
-            "title": "The Economic and Banking Outlook",
-            "href": "https://www.kansascityfed.org/Speeches/documents/1771/speeches-2014-George-Madison-WBA-01-09.pdf"
+            "title": "Community Bank Regulation: Intent vs. Reality",
+            "href": "https://www.kansascityfed.org/Speeches/documents/1778/speeches-2014-George-StLouis-CSBS-09-23.pdf"
+        },
+        {
+            "date": "May 29, 2014",
+            "speaker": "Esther L. George",
+            "title": "Supervisory Frameworks and Monetary Policy",
+            "href": "https://www.kansascityfed.org/Speeches/documents/2199/speeches-2014-George-Stanford-Hoover-05-29.pdf"
         },
         {
             "date": "May 21, 2014",
@@ -301,25 +371,25 @@
             "href": "https://www.kansascityfed.org/Speeches/documents/1775/speeches-2014-George-Washington-Exchequer-05-21.pdf"
         },
         {
-            "date": "September 23, 2014",
-            "speaker": "Esther L. George",
-            "title": "Community Bank Regulation: Intent vs. Reality",
-            "href": "https://www.kansascityfed.org/Speeches/documents/1778/speeches-2014-George-StLouis-CSBS-09-23.pdf"
-        },
-        {
             "date": "January 31, 2014",
             "speaker": "Esther L. George",
             "title": "Current Monetary Policy and the Implications for Supervision and Regulation",
             "href": "https://www.kansascityfed.org/Speeches/documents/2139/speeches-2014-George-CapeTown-FSI-01-31.pdf"
         },
         {
-            "date": "May 29, 2014",
+            "date": "January 09, 2014",
             "speaker": "Esther L. George",
-            "title": "Supervisory Frameworks and Monetary Policy",
-            "href": "https://www.kansascityfed.org/Speeches/documents/2199/speeches-2014-George-Stanford-Hoover-05-29.pdf"
+            "title": "The Economic and Banking Outlook",
+            "href": "https://www.kansascityfed.org/Speeches/documents/1771/speeches-2014-George-Madison-WBA-01-09.pdf"
         }
     ],
     "2013": [
+        {
+            "date": "November 22, 2013",
+            "speaker": "Esther L. George",
+            "title": "Effective Supervision: Balancing New and Traditional Approaches",
+            "href": "https://www.kansascityfed.org/Speeches/documents/2414/speeches-2013-George-Paris-11-22.pdf"
+        },
         {
             "date": "June 04, 2013",
             "speaker": "Esther L. George",
@@ -331,20 +401,14 @@
             "speaker": "Esther L. George",
             "title": "Central Bank Patience",
             "href": "https://www.kansascityfed.org/Speeches/documents/2411/speeches-2013-George-ElReno-Redlands-4-4.pdf"
-        },
-        {
-            "date": "November 22, 2013",
-            "speaker": "Esther L. George",
-            "title": "Effective Supervision: Balancing New and Traditional Approaches",
-            "href": "https://www.kansascityfed.org/Speeches/documents/2414/speeches-2013-George-Paris-11-22.pdf"
         }
     ],
     "2012": [
         {
-            "date": "April 11, 2012",
+            "date": "November 16, 2012",
             "speaker": "Esther L. George",
-            "title": "Looking Ahead: Financial Stability and Microprudential Supervision",
-            "href": "https://www.kansascityfed.org/Speeches/documents/1923/speeches-2012-george-ny-levyeconinstitute-04-11.pdf"
+            "title": "Recovery from Financial Crisis",
+            "href": "https://www.kansascityfed.org/Speeches/documents/2422/speeches-2012-George-PanamaCity-FSI-11-16.pdf"
         },
         {
             "date": "November 02, 2012",
@@ -353,16 +417,16 @@
             "href": "https://www.kansascityfed.org/Speeches/documents/2170/speeches-2012-George-KansasCity-CommunityBanking-11-02.pdf"
         },
         {
-            "date": "November 16, 2012",
-            "speaker": "Esther L. George",
-            "title": "Recovery from Financial Crisis",
-            "href": "https://www.kansascityfed.org/Speeches/documents/2422/speeches-2012-George-PanamaCity-FSI-11-16.pdf"
-        },
-        {
             "date": "May 22, 2012",
             "speaker": "Esther L. George",
             "title": "Perspectives on 150 Years of Dual Banking",
             "href": "https://www.kansascityfed.org/Speeches/documents/2644/speeches-2012-george-ga-csbs-05-22.pdf"
+        },
+        {
+            "date": "April 11, 2012",
+            "speaker": "Esther L. George",
+            "title": "Looking Ahead: Financial Stability and Microprudential Supervision",
+            "href": "https://www.kansascityfed.org/Speeches/documents/1923/speeches-2012-george-ny-levyeconinstitute-04-11.pdf"
         }
     ],
     "2011": [
@@ -537,70 +601,6 @@
             "speaker": "Thomas M. Hoenig",
             "title": "Rethinking Financial Regulation",
             "href": "https://www.kansascityfed.org/Speeches/documents/1764/speeches-BANKREG.pdf"
-        }
-    ],
-    "2015": [
-        {
-            "date": "July 09, 2015",
-            "speaker": "Esther L. George",
-            "title": "Weighing the Costs of Waiting",
-            "href": "https://www.kansascityfed.org/Speeches/documents/8606/2015-George-Stillwater-07-09.pdf"
-        },
-        {
-            "date": "October 06, 2015",
-            "speaker": "Esther L. George",
-            "title": "Improving Through Collaboration: The Federal Reserve’s Perspective",
-            "href": "https://www.kansascityfed.org/Speeches/documents/2626/2015-2015-george-chicago-10-06.pdf"
-        },
-        {
-            "date": "February 10, 2015",
-            "speaker": "Esther L. George",
-            "title": "Monetary and Macroprudential Policy: Complements, Not Substitutes",
-            "href": "https://www.kansascityfed.org/Speeches/documents/8605/2015-George-Manila-BIS-02-10.pdf"
-        },
-        {
-            "date": "June 26, 2015",
-            "speaker": "Esther L. George",
-            "title": "The Federal Reserve’s Role in the Payments System",
-            "href": "https://www.kansascityfed.org/Speeches/documents/2404/2015-2015-george-kansascity-payments-06-26.pdf"
-        },
-        {
-            "date": "March 04, 2015",
-            "speaker": "Esther L. George",
-            "title": "The Next Phase of Monetary Policy",
-            "href": "https://www.kansascityfed.org/Speeches/documents/8604/2015-George-KansasCity-CentralExchange-03-04.pdf"
-        }
-    ],
-    "2024": [
-        {
-            "date": "April 02, 2024",
-            "speaker": "Jeffrey Schmid",
-            "title": "A Workshop on the Future of Banking, Opening Remarks",
-            "href": "https://www.kansascityfed.org/Speeches/documents/10095/2024-Schmid-KansasCity-04-02.pdf"
-        },
-        {
-            "date": "April 12, 2024",
-            "speaker": "Jeffrey Schmid",
-            "title": "The Importance of Prices and Price Stability",
-            "href": "https://www.kansascityfed.org/Speeches/documents/10114/2024-Schmid-CFTC-04_12.pdf"
-        },
-        {
-            "date": "May 14, 2024",
-            "speaker": "Jeffrey Schmid",
-            "title": "The Outlook for the Economy and Monetary Policy",
-            "href": "https://www.kansascityfed.org/Speeches/documents/10168/2024-Schmid-Omaha-05-14.pdf"
-        },
-        {
-            "date": "August 08, 2024",
-            "speaker": "Jeffrey Schmid",
-            "title": "Kansas Bankers Association Annual Meeting, Opening Remarks",
-            "href": "https://www.kansascityfed.org/Speeches/documents/10340/2024-Schmid-KBA-08-08.pdf"
-        },
-        {
-            "date": "October 21, 2024",
-            "speaker": "Jeffrey Schmid",
-            "title": "Chartered Financial Analysts Society, Opening Remarks",
-            "href": "https://www.kansascityfed.org/Speeches/documents/10547/2024-Schmid-KansasCityCFA-10-18_003.pdf"
         }
     ]
 }

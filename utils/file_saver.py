@@ -15,7 +15,6 @@ from utils.common import parse_datestring
 from utils.logger import logger
 
 
-
 def update_records(
     records: list[dict],
     new: list[dict],
@@ -118,20 +117,56 @@ def json_update(filepath: str, obj, **kwargs):
                 logger.info(f"{k} updated.")
             else:
                 exist_obj[k] = v
+        exist_obj = sort_speeches_dict(exist_obj)
         json_dump(exist_obj, filepath)
+        return exist_obj
     elif isinstance(exist_obj, list):
         exist_obj = update_records(exist_obj, obj, **kwargs)
+        exist_obj = sort_speeches_records(exist_obj)
         json_dump(exist_obj, filepath)
+        return exist_obj
     elif not exist_obj:
+        obj = sort_speeches_records(obj)
         json_dump(obj, filepath)
         msg = "JSON file was not existed. New file {} created.".format(filepath)
         logger.error(msg)
+        return obj
     else:
         msg = f"JSON update failed. Unknown object type: {type(exist_obj)}"
         logger.error(msg)
+        return None
 
 
-def sort_speeches_dict(speeches_by_year: dict, sort_filed: str = 'date'):
+def unify_speech_date(dt: dict):
+    """统一字典中的日期格式为 %B %d, %Y
+
+    Args:
+        dt (dict): 字典信息
+
+    Returns:
+        dict: 字典信息
+    """
+    try:
+        dt["date"] = parse_datestring(dt["date"]).strftime("%B %d, %Y")
+    except:
+        pass
+    return dt
+
+
+def sort_speeches_records(speeches: list, sort_filed: str = "date"):
+    if speeches is None or speeches == []:
+        return speeches
+    else:
+        speeches = [
+            unify_speech_date(speech) for speech in speeches if speech.get(sort_filed)
+        ]
+        speeches = sorted(
+            speeches, key=lambda x: parse_datestring(x[sort_filed]), reverse=True
+        )
+        return speeches
+
+
+def sort_speeches_dict(speeches_by_year: dict, sort_filed: str = "date"):
     """对讲话字典进行排序
 
     Args:
@@ -139,23 +174,24 @@ def sort_speeches_dict(speeches_by_year: dict, sort_filed: str = 'date'):
         sort_filed (str, optional): _description_. Defaults to 'date'.
 
     Returns:
-        _type_: _description_
+        dict: 降序排序后的讲话稿字典.
     """
     try:
         result = {}
         for year, single_year_speeches in speeches_by_year.items():
             # 过滤掉没有日期、标题或者作者的记录
-            #  and speech['speaker']
-            single_year = [speech for speech in single_year_speeches if speech['date'] and speech['title']]
-            result[year] = sorted( 
+            single_year = [
+                unify_speech_date(speech)
+                for speech in single_year_speeches
+                if speech.get("date") and speech.get("title") and speech.get("speaker")
+            ]
+            result[year] = sorted(
                 single_year,
                 key=lambda x: parse_datestring(x[sort_filed]),
                 reverse=True,
             )
-        result = OrderedDict(sorted(
-            result.items(), 
-            key=lambda x: int(x[0]),
-            reverse=True)
+        result = OrderedDict(
+            sorted(result.items(), key=lambda x: int(x[0]), reverse=True)
         )
     except Exception as e:
         msg = f"Error occurred when sorting speech records. Error: {repr(e)}"
@@ -164,10 +200,12 @@ def sort_speeches_dict(speeches_by_year: dict, sort_filed: str = 'date'):
     return result
 
 
-def sort_speeches():
-    filepath = "../data/fed_speeches/stlouis_fed_speeches/stlouis_speeches.json"
-    stlouis_speeches = json_load(filepath)
-    sort_speeches_dict(stlouis_speeches)
+def sort_speeches_app(district: str="sanfrancisco"):
+    filepath = f"../data/fed_speeches/{district}_fed_speeches/{district}_speeches.json"
+    speeches = json_load(filepath)
+    speeches = sort_speeches_dict(speeches)
+    json_dump(speeches, filepath)
+    print(f"{district}_speeches have sorted.")
 
 def test_update_dict():
     existed = {
@@ -210,4 +248,4 @@ def test_json_load():
 if __name__ == "__main__":
     # test_json_load()
     # test_update_dict()
-    sort_speeches()
+    sort_speeches_app()

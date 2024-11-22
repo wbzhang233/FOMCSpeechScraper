@@ -1,112 +1,54 @@
 {
-    "2003": [
-        {
-            "title": "Federal Reserve Banks Initiatives in the Payments System",
-            "href": "https://www.minneapolisfed.org/speeches/2003/federal-reserve-banks-initiatives-in-the-payments-system",
-            "date": "October 30, 2003"
-        }
-    ],
-    "2005": [
-        {
-            "title": "Payments System Issues and Challenges",
-            "href": "https://www.minneapolisfed.org/speeches/2005/payments-system-issues-and-challenges",
-            "date": "June 15, 2005"
-        },
-        {
-            "title": "Remarks to the Conference of State Bank Supervisors: Too Big To Fail",
-            "href": "https://www.minneapolisfed.org/speeches/2005/remarks-to-the-conference-of-state-bank-supervisors-too-big-to-fail",
-            "date": "June 2, 2005"
-        }
-    ],
-    "2007": [
-        {
-            "title": "Remarks at the Early Childhood Research Collaborative Conference",
-            "href": "https://www.minneapolisfed.org/speeches/2007/remarks-at-the-early-childhood-research-collaborative-conference",
-            "date": "December 7, 2007"
-        },
-        {
-            "title": "Credit Market Developments: Lessons for Central Banking",
-            "href": "https://www.minneapolisfed.org/speeches/2007/credit-market-developments-lessons-for-central-banking",
-            "date": "November 19, 2007"
-        },
-        {
-            "title": "Comments to the 2007 Business Leaders Luncheon",
-            "href": "https://www.minneapolisfed.org/speeches/2007/comments-to-the-2007-business-leaders-luncheon",
-            "date": "August 9, 2007"
-        },
-        {
-            "title": "Comments on Release of the Nation's Report Card: Economics 2006",
-            "href": "https://www.minneapolisfed.org/speeches/2007/comments-on-release-of-the-nations-report-card-economics-2006",
-            "date": "August 8, 2007"
-        },
-        {
-            "title": "Perspectives on the Economy",
-            "href": "https://www.minneapolisfed.org/speeches/2007/perspectives-on-the-economy",
-            "date": "March 29, 2007"
-        },
-        {
-            "title": "Remarks at the U.S. Monetary Policy Forum",
-            "href": "https://www.minneapolisfed.org/speeches/2007/remarks-at-the-us-monetary-policy-forum",
-            "date": "March 9, 2007"
-        }
-    ],
-    "2008": [
-        {
-            "title": "Too Big to Fail: The Way Forward",
-            "href": "https://www.minneapolisfed.org/speeches/2008/too-big-to-fail-the-way-forward",
-            "date": "November 13, 2008"
-        },
-        {
-            "title": "Policy and the Economy in the Wake of the Shock",
-            "href": "https://www.minneapolisfed.org/speeches/2008/policy-and-the-economy-in-the-wake-of-the-shock",
-            "date": "October 21, 2008"
-        },
-        {
-            "title": "Repercussions from the Financial Shock",
-            "href": "https://www.minneapolisfed.org/speeches/2008/repercussions-from-the-financial-shock-10092008",
-            "date": "October 9, 2008"
-        },
-        {
-            "title": "Repercussions from the Financial Shock",
-            "href": "https://www.minneapolisfed.org/speeches/2008/repercussions-from-the-financial-shock-10072008",
-            "date": "October 7, 2008"
-        },
-        {
-            "title": "Repercussions from the Financial Shock",
-            "href": "https://www.minneapolisfed.org/speeches/2008/repercussions-from-the-financial-shock-08142008",
-            "date": "August 14, 2008"
-        },
-        {
-            "title": "Issues in Macroeconomic Policy",
-            "href": "https://www.minneapolisfed.org/speeches/2008/issues-in-macroeconomic-policy-03272008",
-            "date": "March 27, 2008"
-        },
-        {
-            "title": "Issues in Macroeconomic Policy",
-            "href": "https://www.minneapolisfed.org/speeches/2008/issues-in-macroeconomic-policy-021920081",
-            "date": "February 19, 2008"
-        }
-    ],
     "2009": [
         {
-            "title": "Better Late Than Never: Addressing Too-Big-To-Fail",
-            "href": "https://www.minneapolisfed.org/speeches/2009/better-late-than-never-addressing-too-big-to-fail",
-            "date": "March 31, 2009"
+            "title": "Remarks to Helena Business Leaders",
+            "href": "https://www.minneapolisfed.org/speeches/2009/remarks-to-helena-business-leaders",
+            "date": "July 9, 2009"
         },
         {
-            "title": "Banking Policies and Too Big To Fail",
-            "href": "https://www.minneapolisfed.org/speeches/2009/banking-policies-and-too-big-to-fail",
-            "date": "March 26, 2009"
+            "title": "Financial Conditions and the Economic Outlook",
+            "href": "https://www.minneapolisfed.org/speeches/2009/financial-conditions-and-the-economic-outlook-willmar",
+            "date": "May 19, 2009"
         },
         {
-            "title": "Prospects for Macro- and Financial Policy",
-            "href": "https://www.minneapolisfed.org/speeches/2009/prospects-for-macro--and-financial-policy-02052009",
-            "date": "February 5, 2009"
+            "title": "Addressing the Too Big to Fail Problem",
+            "href": "https://www.minneapolisfed.org/speeches/2009/addressing-the-too-big-to-fail-problem",
+            "date": "May 6, 2009"
         },
         {
-            "title": "Prospects for Macro- and Financial Policy",
-            "href": "https://www.minneapolisfed.org/speeches/2009/prospects-for-macro--and-financial-policy-01142009",
-            "date": "January 14, 2009"
+            "title": "The View from the Federal Reserve: Financial Conditions and the Economic Outlook",
+            "href": "https://www.minneapolisfed.org/speeches/2009/the-view-from-the-federal-reserve-financial-conditions-and-the-economic-outlook",
+            "date": "May 5, 2009"
+        },
+        {
+            "title": "Financial Conditions and the Economic Outlook",
+            "href": "https://www.minneapolisfed.org/speeches/2009/financial-conditions-and-the-economic-outlook",
+            "date": "April 9, 2009"
+        },
+        {
+            "title": "Remarks to Helena Business Leaders",
+            "href": "https://www.minneapolisfed.org/speeches/2009/remarks-to-helena-business-leaders",
+            "date": "July 9, 2009"
+        },
+        {
+            "title": "Financial Conditions and the Economic Outlook",
+            "href": "https://www.minneapolisfed.org/speeches/2009/financial-conditions-and-the-economic-outlook-willmar",
+            "date": "May 19, 2009"
+        },
+        {
+            "title": "Addressing the Too Big to Fail Problem",
+            "href": "https://www.minneapolisfed.org/speeches/2009/addressing-the-too-big-to-fail-problem",
+            "date": "May 6, 2009"
+        },
+        {
+            "title": "The View from the Federal Reserve: Financial Conditions and the Economic Outlook",
+            "href": "https://www.minneapolisfed.org/speeches/2009/the-view-from-the-federal-reserve-financial-conditions-and-the-economic-outlook",
+            "date": "May 5, 2009"
+        },
+        {
+            "title": "Financial Conditions and the Economic Outlook",
+            "href": "https://www.minneapolisfed.org/speeches/2009/financial-conditions-and-the-economic-outlook",
+            "date": "April 9, 2009"
         }
     ],
     "2010": [
@@ -126,58 +68,158 @@
             "date": "November 18, 2010"
         },
         {
-            "title": "Monetary Policy Actions and Fiscal Policy Substitutes",
-            "href": "https://www.minneapolisfed.org/speeches/2010/monetary-policy-actions-and-fiscal-policy-substitutes-20101130",
-            "date": "November 30, 2010"
+            "title": "The Tools of the FOMC",
+            "href": "https://www.minneapolisfed.org/speeches/2010/the-tools-of-the-fomc-20101019",
+            "date": "October 19, 2010"
         },
         {
-            "title": "Monetary Policy, Labor Markets, and Uncertainty",
-            "href": "https://www.minneapolisfed.org/speeches/2010/monetary-policy-labor-markets-and-uncertainty",
-            "date": "November 22, 2010"
+            "title": "The Tools of the FOMC",
+            "href": "https://www.minneapolisfed.org/speeches/2010/the-tools-of-the-fomc",
+            "date": "October 14, 2010"
         },
         {
-            "title": "Monetary Policy Actions and Fiscal Policy Substitutes",
-            "href": "https://www.minneapolisfed.org/speeches/2010/monetary-policy-actions-and-fiscal-policy-substitutes",
-            "date": "November 18, 2010"
+            "title": "Economic Outlook and the Current Tools of Monetary Policy",
+            "href": "https://www.minneapolisfed.org/speeches/2010/economic-outlook-and-the-current-tools-of-monetary-policy",
+            "date": "September 29, 2010"
+        },
+        {
+            "title": "Back Inside the FOMC",
+            "href": "https://www.minneapolisfed.org/speeches/2010/back-inside-the-fomc",
+            "date": "September 8, 2010"
+        },
+        {
+            "title": "Inside the FOMC",
+            "href": "https://www.minneapolisfed.org/speeches/2010/inside-the-fomc",
+            "date": "August 17, 2010"
+        },
+        {
+            "title": "More on Taxing Risk",
+            "href": "https://www.minneapolisfed.org/speeches/2010/more-on-taxing-risk",
+            "date": "July 7, 2010"
+        },
+        {
+            "title": "Entrepreneurs and the Economy",
+            "href": "https://www.minneapolisfed.org/speeches/2010/entrepreneurs-and-the-economy",
+            "date": "June 11, 2010"
+        },
+        {
+            "title": "Commencement Address",
+            "href": "https://www.minneapolisfed.org/speeches/2010/commencement-address",
+            "date": "May 16, 2010"
+        },
+        {
+            "title": "Economic Outlook and Economic Choices",
+            "href": "https://www.minneapolisfed.org/speeches/2010/economic-outlook-and-economic-choices",
+            "date": "May 13, 2010"
+        },
+        {
+            "title": "Taxing Risk",
+            "href": "https://www.minneapolisfed.org/speeches/2010/taxing-risk",
+            "date": "May 10, 2010"
+        },
+        {
+            "title": "Economic Recovery and Balance Sheet Normalization",
+            "href": "https://www.minneapolisfed.org/speeches/2010/economic-recovery-and-balance-sheet-normalization-20100408",
+            "date": "April 8, 2010"
+        },
+        {
+            "title": "Economic Recovery and Balance Sheet Normalization",
+            "href": "https://www.minneapolisfed.org/speeches/2010/economic-recovery-and-balance-sheet-normalization",
+            "date": "April 6, 2010"
+        },
+        {
+            "title": "The Economy and Why the Federal Reserve Needs to Supervise Banks",
+            "href": "https://www.minneapolisfed.org/speeches/2010/the-economy-and-why-the-federal-reserve-needs-to-supervise-banks-20100302",
+            "date": "March 2, 2010"
+        },
+        {
+            "title": "Remarks on: “Financial Conditions Indexes:\nA Fresh Look at the Crisis”",
+            "href": "https://www.minneapolisfed.org/speeches/2010/remarks-on-financial-conditions-indexesa-fresh-look-at-the-crisis",
+            "date": "February 26, 2010"
+        },
+        {
+            "title": "The Economy and Why the Federal Reserve Needs to Supervise Banks",
+            "href": "https://www.minneapolisfed.org/speeches/2010/the-economy-and-why-the-federal-reserve-needs-to-supervise-banks",
+            "date": "February 16, 2010"
+        },
+        {
+            "title": "The Tools of the FOMC",
+            "href": "https://www.minneapolisfed.org/speeches/2010/the-tools-of-the-fomc-20101019",
+            "date": "October 19, 2010"
+        },
+        {
+            "title": "The Tools of the FOMC",
+            "href": "https://www.minneapolisfed.org/speeches/2010/the-tools-of-the-fomc",
+            "date": "October 14, 2010"
+        },
+        {
+            "title": "Economic Outlook and the Current Tools of Monetary Policy",
+            "href": "https://www.minneapolisfed.org/speeches/2010/economic-outlook-and-the-current-tools-of-monetary-policy",
+            "date": "September 29, 2010"
+        },
+        {
+            "title": "Back Inside the FOMC",
+            "href": "https://www.minneapolisfed.org/speeches/2010/back-inside-the-fomc",
+            "date": "September 8, 2010"
+        },
+        {
+            "title": "Inside the FOMC",
+            "href": "https://www.minneapolisfed.org/speeches/2010/inside-the-fomc",
+            "date": "August 17, 2010"
+        },
+        {
+            "title": "More on Taxing Risk",
+            "href": "https://www.minneapolisfed.org/speeches/2010/more-on-taxing-risk",
+            "date": "July 7, 2010"
+        },
+        {
+            "title": "Entrepreneurs and the Economy",
+            "href": "https://www.minneapolisfed.org/speeches/2010/entrepreneurs-and-the-economy",
+            "date": "June 11, 2010"
+        },
+        {
+            "title": "Commencement Address",
+            "href": "https://www.minneapolisfed.org/speeches/2010/commencement-address",
+            "date": "May 16, 2010"
+        },
+        {
+            "title": "Economic Outlook and Economic Choices",
+            "href": "https://www.minneapolisfed.org/speeches/2010/economic-outlook-and-economic-choices",
+            "date": "May 13, 2010"
+        },
+        {
+            "title": "Taxing Risk",
+            "href": "https://www.minneapolisfed.org/speeches/2010/taxing-risk",
+            "date": "May 10, 2010"
+        },
+        {
+            "title": "Economic Recovery and Balance Sheet Normalization",
+            "href": "https://www.minneapolisfed.org/speeches/2010/economic-recovery-and-balance-sheet-normalization-20100408",
+            "date": "April 8, 2010"
+        },
+        {
+            "title": "Economic Recovery and Balance Sheet Normalization",
+            "href": "https://www.minneapolisfed.org/speeches/2010/economic-recovery-and-balance-sheet-normalization",
+            "date": "April 6, 2010"
+        },
+        {
+            "title": "The Economy and Why the Federal Reserve Needs to Supervise Banks",
+            "href": "https://www.minneapolisfed.org/speeches/2010/the-economy-and-why-the-federal-reserve-needs-to-supervise-banks-20100302",
+            "date": "March 2, 2010"
+        },
+        {
+            "title": "Remarks on: “Financial Conditions Indexes:\nA Fresh Look at the Crisis”",
+            "href": "https://www.minneapolisfed.org/speeches/2010/remarks-on-financial-conditions-indexesa-fresh-look-at-the-crisis",
+            "date": "February 26, 2010"
+        },
+        {
+            "title": "The Economy and Why the Federal Reserve Needs to Supervise Banks",
+            "href": "https://www.minneapolisfed.org/speeches/2010/the-economy-and-why-the-federal-reserve-needs-to-supervise-banks",
+            "date": "February 16, 2010"
         }
     ],
     "2011": [
         {
-            "title": "Making Monetary Policy: Public Contingency Planning Using a Mandate Dashboard",
-            "href": "https://www.minneapolisfed.org/speeches/2011/making-monetary-policy-public-contingency-planning-using-a-mandate-dashboard",
-            "date": "November 29, 2011"
-        },
-        {
-            "title": "Making Monetary Policy: Public Contingency Planning Using a Mandate Dashboard - Transcript of Video Summary",
-            "href": "https://www.minneapolisfed.org/speeches/2011/making-monetary-policy-public-contingency-planning-using-a-mandate-dashboard-transcript-of-video-summary",
-            "date": "November 29, 2011"
-        },
-        {
-            "title": "Looking Back at Four Years of Federal Reserve Actions",
-            "href": "https://www.minneapolisfed.org/speeches/2011/looking-back-at-four-years-of-federal-reserve-actions-20111122",
-            "date": "November 22, 2011"
-        },
-        {
-            "title": "Looking Back at Four Years of Federal Reserve Actions",
-            "href": "https://www.minneapolisfed.org/speeches/2011/looking-back-at-four-years-of-federal-reserve-actions",
-            "date": "November 8, 2011"
-        },
-        {
-            "title": "Further Thoughts on Making Monetary Policy",
-            "href": "https://www.minneapolisfed.org/speeches/2011/further-thoughts-on-making-monetary-policy",
-            "date": "October 21, 2011"
-        },
-        {
-            "title": "The Importance of Teaching Teachers",
-            "href": "https://www.minneapolisfed.org/speeches/2011/the-importance-of-teaching-teachers",
-            "date": "October 20, 2011"
-        },
-        {
-            "title": "Making Monetary Policy",
-            "href": "https://www.minneapolisfed.org/speeches/2011/making-monetary-policy",
-            "date": "October 13, 2011"
-        },
-        {
             "title": "Central Bank Independence and Sovereign Default",
             "href": "https://www.minneapolisfed.org/speeches/2011/central-bank-independence-and-sovereign-default-20110926",
             "date": "September 26, 2011"
@@ -261,161 +303,64 @@
             "title": "It’s a Wonderful Fed",
             "href": "https://www.minneapolisfed.org/speeches/2011/its-a-wonderful-fed",
             "date": "January 11, 2011"
-        },
-        {
-            "title": "Central Bank Independence and Sovereign Default",
-            "href": "https://www.minneapolisfed.org/speeches/2011/central-bank-independence-and-sovereign-default-20110926",
-            "date": "September 26, 2011"
-        },
-        {
-            "title": "Communication, Credibility and Implementation: Some Thoughts on Current, Past and Future Monetary Policy",
-            "href": "https://www.minneapolisfed.org/speeches/2011/communication-credibility-and-implementation-some-thoughts-on-current-past-and-future-monetary-policy-20110906",
-            "date": "September 6, 2011"
-        },
-        {
-            "title": "Communication, Credibility and Implementation: Some Thoughts on Current, Past and Future Monetary Policy",
-            "href": "https://www.minneapolisfed.org/speeches/2011/communication-credibility-and-implementation-some-thoughts-on-current-past-and-future-monetary-policy",
-            "date": "August 30, 2011"
-        },
-        {
-            "title": "Re-thinking Leverage Subsidies",
-            "href": "https://www.minneapolisfed.org/speeches/2011/rethinking-leverage-subsidies",
-            "date": "June 27, 2011"
-        },
-        {
-            "title": "Re-thinking Leverage Subsidies - Transcript of Video Summary",
-            "href": "https://www.minneapolisfed.org/speeches/2011/rethinking-leverage-subsidies-transcript-of-video-summary",
-            "date": "June 27, 2011"
-        },
-        {
-            "title": "Some Contingent Planning for Monetary Policy",
-            "href": "https://www.minneapolisfed.org/speeches/2011/some-contingent-planning-for-monetary-policy-20110525",
-            "date": "May 25, 2011"
-        },
-        {
-            "title": "Some Contingent Planning for Monetary Policy",
-            "href": "https://www.minneapolisfed.org/speeches/2011/some-contingent-planning-for-monetary-policy-20110511",
-            "date": "May 11, 2011"
-        },
-        {
-            "title": "Neel Kashkari Remarks at the 47th Annual Conference on Bank Structure and Competition",
-            "href": "https://www.minneapolisfed.org/speeches/2011/neel-kashkari-remarks-at-the-47th-annual-conference-on-bank-structure-and-competition",
-            "date": "May 6, 2011"
-        },
-        {
-            "title": "Some Contingent Planning for Monetary Policy",
-            "href": "https://www.minneapolisfed.org/speeches/2011/some-contingent-planning-for-monetary-policy",
-            "date": "May 5, 2011"
-        },
-        {
-            "title": "Economic Development in Indian Country",
-            "href": "https://www.minneapolisfed.org/speeches/2011/economic-development-in-indian-country",
-            "date": "April 14, 2011"
-        },
-        {
-            "title": "The Future of Mortgage Lending",
-            "href": "https://www.minneapolisfed.org/speeches/2011/the-future-of-mortgage-lending",
-            "date": "April 5, 2011"
-        },
-        {
-            "title": "Central Bank Independence and Sovereign Default",
-            "href": "https://www.minneapolisfed.org/speeches/2011/central-bank-independence-and-sovereign-default",
-            "date": "April 1, 2011"
-        },
-        {
-            "title": "Bubbles and Unemployment",
-            "href": "https://www.minneapolisfed.org/speeches/2011/bubbles-and-unemployment",
-            "date": "March 25, 2011"
-        },
-        {
-            "title": "Labor Markets and Monetary Policy",
-            "href": "https://www.minneapolisfed.org/speeches/2011/labor-markets-and-monetary-policy",
-            "date": "March 3, 2011"
-        },
-        {
-            "title": "It’s a Wonderful Fed",
-            "href": "https://www.minneapolisfed.org/speeches/2011/its-a-wonderful-fed-20110222",
-            "date": "February 22, 2011"
-        },
-        {
-            "title": "It’s a Wonderful Fed",
-            "href": "https://www.minneapolisfed.org/speeches/2011/its-a-wonderful-fed-20110203",
-            "date": "February 3, 2011"
-        },
-        {
-            "title": "It’s a Wonderful Fed",
-            "href": "https://www.minneapolisfed.org/speeches/2011/its-a-wonderful-fed",
-            "date": "January 11, 2011"
-        }
-    ],
-    "2012": [
-        {
-            "title": "Remarks for Helena Branch Director Joe McDonald's Retirement",
-            "href": "https://www.minneapolisfed.org/speeches/2012/remarks-for-helena-branch-director-joe-mcdonalds-retirement",
-            "date": "August 2, 2012"
-        },
-        {
-            "title": "Welcome Remarks for Beyond the Border Conference",
-            "href": "https://www.minneapolisfed.org/speeches/2012/welcome-remarks-for-beyond-the-border-conference",
-            "date": "June 28, 2012"
-        },
-        {
-            "title": "Optimal Outlooks - Executive Summary",
-            "href": "https://www.minneapolisfed.org/speeches/2012/optimal-outlooks-executive-summary-20120608",
-            "date": "June 8, 2012"
-        },
-        {
-            "title": "Monetary Policy Transparency: Changes and Challenges",
-            "href": "https://www.minneapolisfed.org/speeches/2012/monetary-policy-transparency-changes-and-challenges-20120607",
-            "date": "June 7, 2012"
-        },
-        {
-            "title": "Optimal Outlooks - Executive Summary",
-            "href": "https://www.minneapolisfed.org/speeches/2012/optimal-outlooks-executive-summary",
-            "date": "June 3, 2012"
-        },
-        {
-            "title": "Monetary Policy Transparency: Changes and Challenges",
-            "href": "https://www.minneapolisfed.org/speeches/2012/monetary-policy-transparency-changes-and-challenges-20120523",
-            "date": "May 23, 2012"
-        },
-        {
-            "title": "Monetary Policy Transparency: Changes and Challenges",
-            "href": "https://www.minneapolisfed.org/speeches/2012/monetary-policy-transparency-changes-and-challenges",
-            "date": "May 10, 2012"
-        },
-        {
-            "title": "Toward a More Transparent FOMC",
-            "href": "https://www.minneapolisfed.org/speeches/2012/toward-a-more-transparent-fomc",
-            "date": "May 9, 2012"
-        },
-        {
-            "title": "What's Different about Economic Development in Indian Country?",
-            "href": "https://www.minneapolisfed.org/speeches/2012/whats-different-about-economic-development-in-indian-country",
-            "date": "May 1, 2012"
-        },
-        {
-            "title": "Thoughts about the Outlook",
-            "href": "https://www.minneapolisfed.org/speeches/2012/thoughts-about-the-outlook-20120412",
-            "date": "April 12, 2012"
-        },
-        {
-            "title": "Thoughts about the Outlook",
-            "href": "https://www.minneapolisfed.org/speeches/2012/thoughts-about-the-outlook",
-            "date": "April 10, 2012"
-        },
-        {
-            "title": "On the Limits to Monetary Policy - Executive Summary",
-            "href": "https://www.minneapolisfed.org/speeches/2012/on-the-limits-to-monetary-policy-executive-summary-20120331",
-            "date": "March 31, 2012"
-        },
-        {
-            "title": "On the Limits to Monetary Policy - Executive Summary",
-            "href": "https://www.minneapolisfed.org/speeches/2012/on-the-limits-to-monetary-policy-executive-summary",
-            "date": "March 20, 2012"
         }
     ],
     "2013": [
+        {
+            "title": "Lessons from Lars",
+            "href": "https://www.minneapolisfed.org/speeches/2013/lessons-from-lars",
+            "date": "December 3, 2013"
+        },
+        {
+            "title": "Too-Big-to-Fail: The Role of Metrics",
+            "href": "https://www.minneapolisfed.org/speeches/2013/toobigtofail-the-role-of-metrics",
+            "date": "November 18, 2013"
+        },
+        {
+            "title": "A Time of Testing",
+            "href": "https://www.minneapolisfed.org/speeches/2013/a-time-of-testing-20131112",
+            "date": "November 12, 2013"
+        },
+        {
+            "title": "Better Health Through Better Collaboration",
+            "href": "https://www.minneapolisfed.org/speeches/2013/better-health-through-better-collaboration",
+            "date": "November 1, 2013"
+        },
+        {
+            "title": "A Time of Testing",
+            "href": "https://www.minneapolisfed.org/speeches/2013/a-time-of-testing-20131017",
+            "date": "October 17, 2013"
+        },
+        {
+            "title": "A Time of Testing",
+            "href": "https://www.minneapolisfed.org/speeches/2013/a-time-of-testing-20131004",
+            "date": "October 4, 2013"
+        },
+        {
+            "title": "A Time of Testing",
+            "href": "https://www.minneapolisfed.org/speeches/2013/a-time-of-testing",
+            "date": "September 26, 2013"
+        },
+        {
+            "title": "A Time of Testing - Executive Summary",
+            "href": "https://www.minneapolisfed.org/speeches/2013/a-time-of-testing-executive-summary",
+            "date": "September 26, 2013"
+        },
+        {
+            "title": "Optimal Outlooks",
+            "href": "https://www.minneapolisfed.org/speeches/2013/optimal-outlooks",
+            "date": "September 20, 2013"
+        },
+        {
+            "title": "Opening Remarks",
+            "href": "https://www.minneapolisfed.org/speeches/2013/opening-remarks",
+            "date": "September 4, 2013"
+        },
+        {
+            "title": "Evaluating the Appropriateness of U.S. Monetary Policy",
+            "href": "https://www.minneapolisfed.org/speeches/2013/evaluating-the-appropriateness-of-us-monetary-policy",
+            "date": "June 1, 2013"
+        },
         {
             "title": "Lessons from Lars",
             "href": "https://www.minneapolisfed.org/speeches/2013/lessons-from-lars",
@@ -529,69 +474,49 @@
     ],
     "2014": [
         {
-            "title": "Clarifying the Objectives of Monetary Policy",
-            "href": "https://www.minneapolisfed.org/speeches/2014/clarifying-the-objectives-of-monetary-policy-20141118",
-            "date": "November 18, 2014"
+            "title": "Monetary Policy Report to the Economic Club of Minnesota",
+            "href": "https://www.minneapolisfed.org/speeches/2014/monetary-policy-report-to-the-economic-club-of-minnesota",
+            "date": "May 21, 2014"
         },
         {
-            "title": "State of the West Symposium",
-            "href": "https://www.minneapolisfed.org/speeches/2014/state-of-the-west-symposium",
-            "date": "November 13, 2014"
-        },
-        {
-            "title": "Clarifying the Objectives of Monetary Policy",
-            "href": "https://www.minneapolisfed.org/speeches/2014/clarifying-the-objectives-of-monetary-policy-20141112",
-            "date": "November 12, 2014"
-        },
-        {
-            "title": "2014 Bank of Canada Annual Conference",
-            "href": "https://www.minneapolisfed.org/speeches/2014/2014-bank-of-canada-annual-conference",
-            "date": "November 7, 2014"
-        },
-        {
-            "title": "Clarifying the Objectives of Monetary Policy",
-            "href": "https://www.minneapolisfed.org/speeches/2014/clarifying-the-objectives-of-monetary-policy",
-            "date": "November 5, 2014"
-        },
-        {
-            "title": "Clarifying the Objectives of Monetary Policy",
-            "href": "https://www.minneapolisfed.org/speeches/2014/clarifying-the-objectives-of-monetary-policy-20141016",
-            "date": "October 16, 2014"
-        },
-        {
-            "title": "Clarifying the Objectives of Monetary Policy",
-            "href": "https://www.minneapolisfed.org/speeches/2014/clarifying-the-objectives-of-monetary-policy-20141007",
-            "date": "October 7, 2014"
-        },
-        {
-            "title": "On the Objectives of Monetary Policy",
-            "href": "https://www.minneapolisfed.org/speeches/2014/on-the-objectives-of-monetary-policy",
-            "date": "September 22, 2014"
+            "title": "Reflections on Diversity",
+            "href": "https://www.minneapolisfed.org/speeches/2014/reflections-on-diversity",
+            "date": "May 9, 2014"
         },
         {
             "title": "Opening Remarks",
-            "href": "https://www.minneapolisfed.org/speeches/2014/opening-remarks-20140904",
-            "date": "September 4, 2014"
+            "href": "https://www.minneapolisfed.org/speeches/2014/opening-remarks-20140415",
+            "date": "April 15, 2014"
         },
         {
-            "title": "The Current and Future State of Community Banking",
-            "href": "https://www.minneapolisfed.org/speeches/2014/the-current-and-future-state-of-community-banking",
-            "date": "August 15, 2014"
+            "title": "Discussion of Robert Hall's Paper",
+            "href": "https://www.minneapolisfed.org/speeches/2014/discussion-of-robert-halls-paper",
+            "date": "April 12, 2014"
         },
         {
-            "title": "Monetary Policy Report to the Minnesota Business Partnership",
-            "href": "https://www.minneapolisfed.org/speeches/2014/monetary-policy-report-to-the-minnesota-business-partnership",
-            "date": "July 8, 2014"
+            "title": "Monetary Policy Report to the People of Rochester, Minnesota",
+            "href": "https://www.minneapolisfed.org/speeches/2014/monetary-policy-report-to-the-people-of-rochester-minnesota",
+            "date": "April 8, 2014"
         },
         {
-            "title": "Conversation With Students at Eastview High School",
-            "href": "https://www.minneapolisfed.org/speeches/2014/conversation-with-students-at-eastview-high-school",
-            "date": "July 1, 2014"
+            "title": "2014 International Research Forum on Monetary Policy",
+            "href": "https://www.minneapolisfed.org/speeches/2014/2014-international-research-forum-on-monetary-policy",
+            "date": "March 21, 2014"
         },
         {
-            "title": "Low Real Interest Rates",
-            "href": "https://www.minneapolisfed.org/speeches/2014/low-real-interest-rates-20140605",
-            "date": "June 5, 2014"
+            "title": "Discussion of 2014 USMPF Monetary Policy Report",
+            "href": "https://www.minneapolisfed.org/speeches/2014/discussion-of-2014-usmpf-monetary-policy-report",
+            "date": "February 28, 2014"
+        },
+        {
+            "title": "Opening Remarks",
+            "href": "https://www.minneapolisfed.org/speeches/2014/opening-remarks-20140109",
+            "date": "January 9, 2014"
+        },
+        {
+            "title": "Economics at the Federal Reserve Banks",
+            "href": "https://www.minneapolisfed.org/speeches/2014/economics-at-the-federal-reserve-banks",
+            "date": "January 4, 2014"
         },
         {
             "title": "Monetary Policy Report to the Economic Club of Minnesota",
@@ -754,41 +679,6 @@
             "title": "We Can Do Better",
             "href": "https://www.minneapolisfed.org/speeches/2015/we-can-do-better-bloomington",
             "date": "April 10, 2015"
-        },
-        {
-            "title": "We Can Do Better",
-            "href": "https://www.minneapolisfed.org/speeches/2015/we-can-do-better-bismarck",
-            "date": "April 7, 2015"
-        },
-        {
-            "title": "Persistent Poverty on Indian Reservations: New Perspectives and Responses",
-            "href": "https://www.minneapolisfed.org/speeches/2015/persistent-poverty-on-indian-reservations-new-perspectives-and-responses",
-            "date": "April 3, 2015"
-        },
-        {
-            "title": "Thoughts on Monetary Policy and Community Banks",
-            "href": "https://www.minneapolisfed.org/speeches/2015/thoughts-on-monetary-policy-and-community-banks",
-            "date": "February 3, 2015"
-        },
-        {
-            "title": "Goal-Based Monetary Policy Report",
-            "href": "https://www.minneapolisfed.org/speeches/2015/goal-based-monetary-policy-report-jan-16",
-            "date": "January 16, 2015"
-        },
-        {
-            "title": "Goal-Based Monetary Policy Report",
-            "href": "https://www.minneapolisfed.org/speeches/2015/goal-based-monetary-policy-report",
-            "date": "January 13, 2015"
-        },
-        {
-            "title": "Opening Remarks",
-            "href": "https://www.minneapolisfed.org/speeches/2015/opening-remarks-2015-01-08",
-            "date": "January 8, 2015"
-        },
-        {
-            "title": "Rules Versus Discretion: A Reconsideration",
-            "href": "https://www.minneapolisfed.org/speeches/2015/rules-versus-discretion-a-reconsideration",
-            "date": "January 4, 2015"
         }
     ],
     "2016": [
@@ -869,6 +759,81 @@
         }
     ],
     "2017": [
+        {
+            "title": "Neel Kashkari at Lambda Alpha International",
+            "href": "https://www.minneapolisfed.org/speeches/2017/neel-kashkari-at-lambda-alpha-international",
+            "date": "December 19, 2017"
+        },
+        {
+            "title": "Neel Kashkari's Town Hall Forum in Winona, Minnesota",
+            "href": "https://www.minneapolisfed.org/speeches/2017/neel-kashkaris-town-hall-forum-in-winona-minnesota",
+            "date": "November 27, 2017"
+        },
+        {
+            "title": "The History of Diversity and the Importance of Inclusion in the Workplace",
+            "href": "https://www.minneapolisfed.org/speeches/2017/the-history-of-diversity-and-the-importance-of-inclusion-in-the-workplace",
+            "date": "November 20, 2017"
+        },
+        {
+            "title": "Tribal Community Perspectives on Higher Education",
+            "href": "https://www.minneapolisfed.org/speeches/2017/tribal-community-perspectives-on-higher-education",
+            "date": "September 27, 2017"
+        },
+        {
+            "title": "Neel Kashkari's Town Hall Forum in Grand Forks, North Dakota",
+            "href": "https://www.minneapolisfed.org/speeches/2017/neel-kashkaris-town-hall-forum-in-grand-forks-north-dakota",
+            "date": "September 25, 2017"
+        },
+        {
+            "title": "Neel Kashkari Speaking at the Carlson School of Management at the University of Minnesota",
+            "href": "https://www.minneapolisfed.org/speeches/2017/neel-kashkari-speaking-at-the-carlson-school-of-management-at-the-university-of-minnesota",
+            "date": "September 5, 2017"
+        },
+        {
+            "title": "Neel Kashkari with the Edina Rotary Club",
+            "href": "https://www.minneapolisfed.org/speeches/2017/neel-kashkari-with-the-edina-rotary-club",
+            "date": "August 17, 2017"
+        },
+        {
+            "title": "Neel Kashkari at the Independent Community Bankers of Minnesota Annual Convention",
+            "href": "https://www.minneapolisfed.org/speeches/2017/neel-kashkari-at-the-independent-community-bankers-of-minnesota-annual-convention",
+            "date": "August 11, 2017"
+        },
+        {
+            "title": "Neel Kashkari at the Rotary Club of Downtown Sioux Falls",
+            "href": "https://www.minneapolisfed.org/speeches/2017/neel-kashkari-at-the-rotary-club-of-downtown-sioux-falls",
+            "date": "August 7, 2017"
+        },
+        {
+            "title": "Neel Kashkari Speaking at the Business Networking Luncheon in Woodbury",
+            "href": "https://www.minneapolisfed.org/speeches/2017/neel-kashkari-speaking-at-the-business-networking-luncheon-in-woodbury",
+            "date": "July 28, 2017"
+        },
+        {
+            "title": "Healthy Children, Healthy Nations",
+            "href": "https://www.minneapolisfed.org/speeches/2017/healthy-children-healthy-nations",
+            "date": "July 12, 2017"
+        },
+        {
+            "title": "Neel Kashkari at the Minnesota Women's Economic Roundtable luncheon",
+            "href": "https://www.minneapolisfed.org/speeches/2017/neel-kashkari-at-the-minnesota-womens-economic-roundtable-luncheon",
+            "date": "July 11, 2017"
+        },
+        {
+            "title": "Neel Kashkari's Town Hall Forum in Houghton, Michigan",
+            "href": "https://www.minneapolisfed.org/speeches/2017/neel-kashkaris-town-hall-forum-in-houghton-michigan",
+            "date": "June 27, 2017"
+        },
+        {
+            "title": "Neel Kashkari's Town Hall Forum in Ashland, Wisconsin",
+            "href": "https://www.minneapolisfed.org/speeches/2017/neel-kashkaris-town-hall-forum-in-ashland-wisconsin",
+            "date": "May 24, 2017"
+        },
+        {
+            "title": "Neel Kashkari with Paul Weech at a CICD Roundtable",
+            "href": "https://www.minneapolisfed.org/speeches/2017/neel-kashkari-with-paul-weech-at-a-cicd-roundtable",
+            "date": "May 23, 2017"
+        },
         {
             "title": "Neel Kashkari at Lambda Alpha International",
             "href": "https://www.minneapolisfed.org/speeches/2017/neel-kashkari-at-lambda-alpha-international",
@@ -1080,54 +1045,34 @@
             "title": "Neel Kashkari speaking at Cargill",
             "href": "https://www.minneapolisfed.org/speeches/2018/neel-kashkari-speaking-at-cargill",
             "date": "January 9, 2018"
+        },
+        {
+            "title": "Neel Kashkari at the Regional Economic Indicators Forum",
+            "href": "https://www.minneapolisfed.org/speeches/2018/neel-kashkari-at-the-regional-economic-indicators-forum",
+            "date": "April 3, 2018"
+        },
+        {
+            "title": "Neel Kashkari remarks from events in NYC, NY (audio only)",
+            "href": "https://www.minneapolisfed.org/speeches/2018/neel-kashkari-remarks-from-events-in-nyc-ny-audio-only",
+            "date": "March 23, 2018"
+        },
+        {
+            "title": "Neel Kashkari at Bloomberg Business Executive Dinner",
+            "href": "https://www.minneapolisfed.org/speeches/2018/neel-kashkari-at-bloomberg-business-executive-dinner",
+            "date": "February 21, 2018"
+        },
+        {
+            "title": "Neel Kashkari's Town Hall Forum in Pierre South Dakota",
+            "href": "https://www.minneapolisfed.org/speeches/2018/neel-kashkaris-town-hall-forum-in-pierre-south-dakota",
+            "date": "February 8, 2018"
+        },
+        {
+            "title": "Neel Kashkari speaking at Cargill",
+            "href": "https://www.minneapolisfed.org/speeches/2018/neel-kashkari-speaking-at-cargill",
+            "date": "January 9, 2018"
         }
     ],
     "2019": [
-        {
-            "title": "Neel Kashkari at Minnesota Chamber",
-            "href": "https://www.minneapolisfed.org/speeches/2019/neel-kashkari-at-minnesota-chamber",
-            "date": "November 21, 2019"
-        },
-        {
-            "title": "Neel Kashkari at UW La Crosse",
-            "href": "https://www.minneapolisfed.org/speeches/2019/neel-kashkari-at-uw-la-crosse",
-            "date": "November 13, 2019"
-        },
-        {
-            "title": "Neel Kashkari at CROWE Seminar",
-            "href": "https://www.minneapolisfed.org/speeches/2019/neel-kashkari-at-crowe-seminar",
-            "date": "November 12, 2019"
-        },
-        {
-            "title": "Neel Kashkari at Thrivent Event",
-            "href": "https://www.minneapolisfed.org/speeches/2019/neel-kashkari-at-thrivent-event",
-            "date": "November 5, 2019"
-        },
-        {
-            "title": "Neel Kashkari at the Federal Home Loan Bank of Des Moines Leadership Summit",
-            "href": "https://www.minneapolisfed.org/speeches/2019/neel-kashkari-at-the-federal-home-loan-bank-of-des-moines-leadership-summit",
-            "date": "October 18, 2019"
-        },
-        {
-            "title": "U.S. Senate testimony: “Lending Opportunities: Opening the Door to Homeownership in Indian Country”",
-            "href": "https://www.minneapolisfed.org/speeches/2019/us-senate-testimony-lending-opportunities",
-            "date": "October 16, 2019"
-        },
-        {
-            "title": "Neel Kashkari speaking at the 2019 NAFOA Fall Finance & Tribal Economies Conference",
-            "href": "https://www.minneapolisfed.org/speeches/2019/neel-kashkari-speaking-at-the-2019-nafoa-fall-finance-tribal-economies-conference",
-            "date": "October 7, 2019"
-        },
-        {
-            "title": "Neel Kashkari speaks to the MN chapter of the NACD in Minneapolis",
-            "href": "https://www.minneapolisfed.org/speeches/2019/neel-kashkari-speaks-to-the-mn-chapter-of-the-nacd-in-minneapolis",
-            "date": "September 4, 2019"
-        },
-        {
-            "title": "Neel Kashkari's Town Hall Forum in Aberdeen, South Dakota",
-            "href": "https://www.minneapolisfed.org/speeches/2019/neel-kashkaris-town-hall-forum-in-aberdeen-south-dakota",
-            "date": "May 17, 2019"
-        },
         {
             "title": "Monetary Policy Framework Review",
             "href": "https://www.minneapolisfed.org/speeches/2019/monetary-policy-framework-review",
@@ -1174,63 +1119,6 @@
             "date": "January 10, 2019"
         }
     ],
-    "2020": [
-        {
-            "title": "Neel Kashkari at 2020 Rochester Chamber Economic Summit",
-            "href": "https://www.minneapolisfed.org/speeches/2020/neel-kashkari-at-2020-rochester-chamber-economic-summit",
-            "date": "December 4, 2020"
-        },
-        {
-            "title": "NYU Stern Fireside Chat with Neel Kashkari",
-            "href": "https://www.minneapolisfed.org/speeches/2020/nyu-stern-fireside-chat-with-neel-kashkari",
-            "date": "October 15, 2020"
-        },
-        {
-            "title": "University of St. Thomas’ “First Friday”",
-            "href": "https://www.minneapolisfed.org/speeches/2020/university-of-st-thomas-first-friday",
-            "date": "October 2, 2020"
-        },
-        {
-            "title": "Neel Kashkari at Harvard event, “Health, Wealth, and the Role of Justice”",
-            "href": "https://www.minneapolisfed.org/speeches/2020/neel-kashkari-at-harvard-event-health-wealth-and-the-role-of-justice",
-            "date": "September 23, 2020"
-        },
-        {
-            "title": "Capital Markets and Banking Regulation",
-            "href": "https://www.minneapolisfed.org/speeches/2020/capital-markets-and-banking-regulation",
-            "date": "September 18, 2020"
-        },
-        {
-            "title": "Neel Kashkari at a joint Brookings Institution-Georgetown Law event \"Where are the Black financial regulators?\"",
-            "href": "https://www.minneapolisfed.org/speeches/2020/neel-kashkari-at-brookings-event-where-are-the-black-financial-regulators",
-            "date": "September 4, 2020"
-        },
-        {
-            "title": "Neel Kashkari at NABE event \"Race, Mobility, and Fairness in the U.S. Economy\"",
-            "href": "https://www.minneapolisfed.org/speeches/2020/neel-kashkari-at-nabe-event-race-mobility-and-fairness-in-the-us-economy",
-            "date": "July 1, 2020"
-        },
-        {
-            "title": "Neel Kashkari speaks to the Women Corporate Directors, Minnesota Chapter",
-            "href": "https://www.minneapolisfed.org/speeches/2020/neel-kashkari-speaks-to-the-women-corporate-directors-minnesota-chapter",
-            "date": "June 23, 2020"
-        },
-        {
-            "title": "Neel Kashkari at Rural Equitable Development Forum",
-            "href": "https://www.minneapolisfed.org/speeches/2020/neel-kashkari-at-rural-equitable-development-forum",
-            "date": "June 19, 2020"
-        },
-        {
-            "title": "COVID-19 and the economy: A conversation with Neel Kashkari",
-            "href": "https://www.minneapolisfed.org/speeches/2020/covid19-and-the-economy-a-conversation-with-neel-kashkari",
-            "date": "April 2, 2020"
-        },
-        {
-            "title": "Neel Kashkari at Best Buy",
-            "href": "https://www.minneapolisfed.org/speeches/2020/neel-kashkari-at-best-buy",
-            "date": "January 15, 2020"
-        }
-    ],
     "2021": [
         {
             "title": "Neel Kashkari Q&A at Eau Claire Chamber of Commerce",
@@ -1274,6 +1162,16 @@
         }
     ],
     "2022": [
+        {
+            "title": "Neel Kashkari Q&A at the Minnesota Chamber of Commerce's 2022 Economic Summit",
+            "href": "https://www.minneapolisfed.org/speeches/2022/neel-kashkari-qa-at-the-minnesota-chamber-of-commerce-2022-economic-summit",
+            "date": "November 17, 2022"
+        },
+        {
+            "title": "Neel Kashkari Q&A at South Dakota State University’s Ness School of Management and Economics",
+            "href": "https://www.minneapolisfed.org/speeches/2022/neel-kashkari-qa-at-sd-regional-outreach-trip-brookings-sd",
+            "date": "November 9, 2022"
+        },
         {
             "title": "Neel Kashkari Q&A at the Minnesota Chamber of Commerce's 2022 Economic Summit",
             "href": "https://www.minneapolisfed.org/speeches/2022/neel-kashkari-qa-at-the-minnesota-chamber-of-commerce-2022-economic-summit",
@@ -1485,6 +1383,71 @@
             "title": "Neel Kashkari Q&A with the Boston Economic Club",
             "href": "https://www.minneapolisfed.org/speeches/2023/neel-kashkari-qa-with-the-boston-economic-club",
             "date": "February 8, 2023"
+        },
+        {
+            "title": "Neel Kashkari in conversation with Bill George and Poppy Harlow",
+            "href": "https://www.minneapolisfed.org/speeches/2023/neel-kashkari-in-conversation-with-bill-george-and-poppy-harlow",
+            "date": "November 2, 2023"
+        },
+        {
+            "title": "Neel Kashkari at University of Minnesota",
+            "href": "https://www.minneapolisfed.org/speeches/2023/Neel-Kashkari-at-University-of-Minnesota",
+            "date": "October 17, 2023"
+        },
+        {
+            "title": "Neel Kashkari at Minot State University",
+            "href": "https://www.minneapolisfed.org/speeches/2023/Neel-Kashkari-at-Minot-State-University",
+            "date": "October 10, 2023"
+        },
+        {
+            "title": "Neel Kashkari Q&A at University of Pennsylvania’s Wharton School",
+            "href": "https://www.minneapolisfed.org/speeches/2023/neel-kashkari-qa-at-university-of-pennsylvanias-wharton-school",
+            "date": "September 25, 2023"
+        },
+        {
+            "title": "Neel Kashkari at the Economic Club of Minnesota",
+            "href": "https://www.minneapolisfed.org/speeches/2023/Neel-Kashkari-at-the-Economic-Club-of-Minnesota",
+            "date": "September 22, 2023"
+        },
+        {
+            "title": "Neel Kashkari participates in Q&A at APi Group's Global Controllers Conference in Minneapolis",
+            "href": "https://www.minneapolisfed.org/speeches/2023/neel-kashkari-participates-in-qa-at-api-groups-global-controllers-conference-in-minneapolis",
+            "date": "August 15, 2023"
+        },
+        {
+            "title": "Neel Kashkari at the National Bureau of Economic Research Summer Institute",
+            "href": "https://www.minneapolisfed.org/speeches/2023/neel-kashkari-at-the-national-bureau-of-economic-research-summer-institute",
+            "date": "July 12, 2023"
+        },
+        {
+            "title": "Neel Kashkari Q&A at the Minnesota Transportation Conference & EXPO",
+            "href": "https://www.minneapolisfed.org/speeches/2023/Neel-Kashkari-QA-at-the-Minnesota-Transportation-Conference-EXPO",
+            "date": "May 15, 2023"
+        },
+        {
+            "title": "Neel Kashkari Q&A at the Marquette CEO Town Hall",
+            "href": "https://www.minneapolisfed.org/speeches/2023/neel-kashkari-qa-at-the-marquette-ceo-town-hall",
+            "date": "May 11, 2023"
+        },
+        {
+            "title": "Town hall with Neel Kashkari at Montana State University",
+            "href": "https://www.minneapolisfed.org/speeches/2023/town-hall-with-neel-kashkari-at-montana-state-university",
+            "date": "April 11, 2023"
+        },
+        {
+            "title": "Neel Kashkari Q&A with the Minnesota Housing Partnership",
+            "href": "https://www.minneapolisfed.org/speeches/2023/Neel-Kashkari-QA-with-the-Minnesota-Housing-Partnership",
+            "date": "March 30, 2023"
+        },
+        {
+            "title": "Neel Kashkari Q&A at 2023 SiouxFalls.Business CEO event",
+            "href": "https://www.minneapolisfed.org/speeches/2023/neel-kashkari-qa-at-2023-siouxfalls-business-ceo-event",
+            "date": "March 1, 2023"
+        },
+        {
+            "title": "Neel Kashkari Q&A with the Boston Economic Club",
+            "href": "https://www.minneapolisfed.org/speeches/2023/neel-kashkari-qa-with-the-boston-economic-club",
+            "date": "February 8, 2023"
         }
     ],
     "2024": [
@@ -1537,6 +1500,31 @@
             "title": "Neel Kashkari participates in fireside chat on the economy at the 2024 Williston Basin Petroleum Conference",
             "href": "https://www.minneapolisfed.org/speeches/2024/fireside-chat-with-neel-kashkari-at-williston-basin-conference",
             "date": "May 15, 2024"
+        },
+        {
+            "title": "A conversation with Neel Kashkari at the 2024 Milken Institute Global Conference",
+            "href": "https://www.minneapolisfed.org/speeches/2024/a-conversation-with-neel-kashkari-at-the-2024-milken-institute-global-conference-",
+            "date": "May 7, 2024"
+        },
+        {
+            "title": "Neel Kashkari town hall at the University of Montana",
+            "href": "https://www.minneapolisfed.org/speeches/2024/Neel-Kashkari-town-hall-at-the-University-of-Montana",
+            "date": "April 8, 2024"
+        },
+        {
+            "title": "Neel Kashkari participates in Northside Economic Opportunity Network (NEON) Community Conversations series",
+            "href": "https://www.minneapolisfed.org/speeches/2024/neel-kashkari-participates-in-northside-economic-opportunity-network-community-conversations-series",
+            "date": "February 22, 2024"
+        },
+        {
+            "title": "Neel Kashkari in conversation with Ginni Rometty at the Economic Club of Minnesota",
+            "href": "https://www.minneapolisfed.org/speeches/2024/Neel-Kashkari-in-conversation-with-Ginni-Rometty-at-the-Economic-Club-of-Minnesota",
+            "date": "February 12, 2024"
+        },
+        {
+            "title": "Neel Kashkari Q&A at Greater Mankato Growth event",
+            "href": "https://www.minneapolisfed.org/speeches/2024/neel-kashkari-qa-at-greater-mankato-growth-event",
+            "date": "February 6, 2024"
         },
         {
             "title": "A conversation with Neel Kashkari at the 2024 Milken Institute Global Conference",

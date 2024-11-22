@@ -26,12 +26,18 @@ from bs4 import BeautifulSoup
 
 from data_scraper.scrapers.scraper import SpeechScraper
 from utils.common import parse_datestring
-from utils.file_saver import json_load, json_update  # , json_dump
+from utils.file_saver import (
+    json_load,
+    json_update,
+    sort_speeches_dict,
+    sort_speeches_records,
+)  # , json_dump
 from utils.logger import get_logger
 
 
 class AtlantaSpeechScraper(SpeechScraper):
     URL = "https://www.atlantafed.org/news/speeches"
+    # URL = "https://www.atlantafed.org/about/atlantafed/outreach/events"
     __fed_name__ = "atlanta"
     __name__ = f"{__fed_name__.title()}SpeechScraper"
     SAVE_PATH = f"../../data/fed_speeches/{__fed_name__}_fed_speeches/"
@@ -167,8 +173,7 @@ class AtlantaSpeechScraper(SpeechScraper):
         filter_button.click()
         # 等待加载完
         try:
-            self.driver.implicitly_wait(3.0)
-            WebDriverWait(self.driver, 10.0).until(
+            WebDriverWait(self.driver, 5.0).until(
                 EC.text_to_be_present_in_element(
                     (
                         By.XPATH,
@@ -178,10 +183,13 @@ class AtlantaSpeechScraper(SpeechScraper):
                 )
             )
         except TimeoutException as e:
-            print("TimeoutException when filter button {}".format(year))
+            print(
+                "TimeoutException when filter button {}. Error: {}".format(
+                    year, repr(e)
+                )
+            )
             filter_button.click()
-            self.driver.implicitly_wait(3.0)
-            WebDriverWait(self.driver, 10.0).until(
+            WebDriverWait(self.driver, 5.0).until(
                 EC.text_to_be_present_in_element(
                     (
                         By.XPATH,
@@ -212,8 +220,11 @@ class AtlantaSpeechScraper(SpeechScraper):
         highlights = foreach_item.find_all("p")
 
         for i in range(len(dates)):
+            # 如果已经有了，则break出去. 否则添加进去.
+            date_str = dates[i].text.strip()
+            date_str = parse_datestring(date_str).strftime("%B %d, %Y")
             speech_info = {
-                "date": dates[i].text.strip(),
+                "date": date_str,
                 "title": title_links[i].text.strip(),
                 "href": title_links[i]["href"],
                 "highlights": highlights[i].text.strip(),
@@ -222,32 +233,51 @@ class AtlantaSpeechScraper(SpeechScraper):
 
         return speech_infos
 
-    def extract_speech_infos(self):
+    def extract_speech_infos(self, mode: str = "history"):
         """Extract speech infos from the website."""
         # 获取下拉框控件的所有选项
-        years = [
-            option.text.strip()
-            for option in Select(self.driver.find_element(By.ID, "YearList")).options
-            if option.text.strip().isdigit()
-        ]
+        print(
+            "==" * 25 + "Start scraping speech infos of {self.__fed_name__}" + "=" * 25
+        )
+        # 获取选项中的所有年份
+        years = sorted(
+            [
+                int(option.text.strip())
+                for option in Select(
+                    self.driver.find_element(By.ID, "YearList")
+                ).options
+                if option.text.strip().isdigit()
+            ],
+            reverse=True,
+        )
 
+        # 从日期最近的开始爬取 已存储的中所没有的.
         speech_infos_by_year = {}
-        for year in years:
-            # print(f"Start scraping speeches of {year}...")
-            if int(year) < 2006:
-                continue
+        for i, year in enumerate(years):
+            # 非历史全量模式时，只获取第一年的信息
+            if mode != "history" and i >= 1:
+                break
+            if year < 2006:
+                break
             single_year_speech_infos = self.extract_single_year_speech_infos(year)
-            speech_infos_by_year[year] = single_year_speech_infos
+            speech_infos_by_year[str(year)] = single_year_speech_infos
             print(
-                "{number} speeches of {year} was collected.".format(
-                    number=len(speech_infos_by_year[year]), year=year
+                "-" * 40
+                + "{number} speeches of {year} was collected.".format(
+                    number=len(speech_infos_by_year[str(year)]), year=year
                 )
+                + "-" * 40
             )
+        # 与已存储的信息做合并更新
         json_update(
             self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json",
             speech_infos_by_year,
         )
-        print(f"All speech infos of {self.__fed_name__} fetched and saved.")
+        print(
+            "=" * 25
+            + f"All speech infos of {self.__fed_name__} fetched and saved."
+            + "=" * 25
+        )
         return speech_infos_by_year
 
     def extract_speeches(
@@ -290,50 +320,30 @@ class AtlantaSpeechScraper(SpeechScraper):
                         )
                     )
                 singe_year_speeches.append(single_speech)
-            speeches_by_year[year] = singe_year_speeches
+            speeches_by_year[year] = sort_speeches_records(singe_year_speeches)
             if self.save:
                 json_update(
                     self.SAVE_PATH + f"{self.__fed_name__}_speeches_{year}.json",
                     singe_year_speeches,
                 )
+        # 更新保存
         if self.save:
             json_update(
                 self.SAVE_PATH + f"{self.__fed_name__}_failed_speech_infos.json", failed
             )
-            # json_update(
-            #     self.SAVE_PATH + f"{self.__fed_name__}_speeches.json", speeches_by_year
-            # )
+            json_update(
+                self.SAVE_PATH + f"{self.__fed_name__}_speeches.json", speeches_by_year
+            )
         return speeches_by_year
 
-    def update(self, year: str):
-        """如何拉取更新的数据呢？
-
-        记载最新的讲话数据，然后从网站获取最新讲话的时间，做判断.
-
-        Args:
-            year (_type_): _description_
-        """
-        # 已存储的最新报告日期
-        if os.path.exists(self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"):
-            speech_infos = json_load(
-                self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
-            )
-            latest_year = int(max(speech_infos.keys()))
-            dates = [parse_datestring(sp["date"]) for sp in speech_infos[latest_year]]
-            latest_speech_date = max(dates)
-        else:
-            latest_speech_date = None
-        # 网页上最新的演讲日期（默认不点控件的第一个讲话）
-        return latest_speech_date
-
-    def collect(self):
+    def collect(self, mode: str = "update"):
         """收集每篇演讲的信息
 
         Returns:
             _type_: _description_
         """
-        # 获取所有演讲信息
-        speech_infos = self.extract_speech_infos()
+        # 获取最新的演讲信息
+        speech_infos = self.extract_speech_infos(mode=mode)
         if self.save:
             json_update(
                 self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json", speech_infos
@@ -382,13 +392,6 @@ def test_extract_single_speech():
         "href": "https://www.atlantafed.org/news/speeches/2023/01/05/bostic-understanding-the-interplay-between-financial-markets-and-monetary-policy",
         "highlights": "Atlanta Fed president Raphael Bostic gives the opening remarks at the Day Ahead Conference on Financial Markets and Institutions on Thursday, January 5.",
     }
-
-    # speech_info = {
-    #     "date": "February 17, 2006",
-    #     "title": "Taking into Account a Changing World of Banking",
-    #     "href": "https://www.atlantafed.org/news/speeches/2006/060217-barron",
-    #     "highlights": "",
-    # }
 
     speech = scraper.extract_single_speech(speech_info)
     print(speech)
