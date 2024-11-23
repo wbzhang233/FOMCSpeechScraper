@@ -126,7 +126,10 @@ def json_update(filepath: str, obj, **kwargs):
         json_dump(exist_obj, filepath)
         return exist_obj
     elif not exist_obj:
-        obj = sort_speeches_records(obj)
+        if isinstance(obj, dict):
+            obj = sort_speeches_dict(obj)
+        elif isinstance(obj, list):
+            obj = sort_speeches_records(obj)
         json_dump(obj, filepath)
         msg = "JSON file was not existed. New file {} created.".format(filepath)
         logger.error(msg)
@@ -157,16 +160,22 @@ def sort_speeches_records(speeches: list, sort_filed: str = "date"):
     if speeches is None or speeches == []:
         return speeches
     else:
+        # 先统一日期格式
         speeches = [
             unify_speech_date(speech) for speech in speeches if speech.get(sort_filed)
         ]
+        # 再排序
         speeches = sorted(
             speeches, key=lambda x: parse_datestring(x[sort_filed]), reverse=True
         )
         return speeches
 
 
-def sort_speeches_dict(speeches_by_year: dict, sort_filed: str = "date"):
+def sort_speeches_dict(
+    speeches_by_year: dict,
+    sort_filed: str = "date",
+    required_keys: list = ["date", "title"],
+):
     """对讲话字典进行排序
 
     Args:
@@ -183,7 +192,7 @@ def sort_speeches_dict(speeches_by_year: dict, sort_filed: str = "date"):
             single_year = [
                 unify_speech_date(speech)
                 for speech in single_year_speeches
-                if speech.get("date") and speech.get("title") and speech.get("speaker")
+                if all([speech.get(key) for key in required_keys])
             ]
             result[year] = sorted(
                 single_year,
@@ -200,12 +209,13 @@ def sort_speeches_dict(speeches_by_year: dict, sort_filed: str = "date"):
     return result
 
 
-def sort_speeches_app(district: str="sanfrancisco"):
+def sort_speeches_app(district: str = "sanfrancisco"):
     filepath = f"../data/fed_speeches/{district}_fed_speeches/{district}_speeches.json"
     speeches = json_load(filepath)
     speeches = sort_speeches_dict(speeches)
     json_dump(speeches, filepath)
     print(f"{district}_speeches have sorted.")
+
 
 def test_update_dict():
     existed = {

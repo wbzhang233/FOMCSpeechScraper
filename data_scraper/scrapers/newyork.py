@@ -8,6 +8,7 @@
 @Desc    :   2B 纽约联储讲话数据爬取
 """
 
+import datetime
 import os
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -46,8 +47,11 @@ class NewYorkSpeechScraper(SpeechScraper):
             self.SAVE_PATH + f"{self.__fed_name__}_failed_speech_infos.json"
         )
 
-    def extract_speech_infos(self, mode: str = "history", last_names=None):
+    def extract_speech_infos(self, mode: str = "history", last_names: list = None):
         """抽取演讲的信息"""
+        if not last_names:
+            last_names = ["Williams", "Dudley", "Geithner", "Stewart"]
+
         speech_infos = {}
         try:
             self.driver.get(self.URL)
@@ -55,16 +59,19 @@ class NewYorkSpeechScraper(SpeechScraper):
             table = WebDriverWait(self.driver, 10).until(
                 EC.presence_of_element_located((By.CLASS_NAME, "newsTable"))
             )
-
             # 直接找到所有行元素，然后遍历每一行.
             row = table.find_element(
                 By.XPATH,
                 "/html/body/div[1]/div[2]/table/tbody/tr[contains(@class, 'yrHead')]",
             )
+            _count = 0
             latest_year = row.text.strip()
             current_year = row.text.strip()
             while row:
                 try:
+                    # 太早的不要
+                    if current_year.isdigit() and int(current_year) < 2006:
+                        break
                     if row.text == "Speeches":
                         row = row.find_element(By.XPATH, "following-sibling::tr")
                         continue
@@ -93,24 +100,21 @@ class NewYorkSpeechScraper(SpeechScraper):
                     # Check if the speech is by one of the specified speakers
                     # 获取标题
                     title = link_elem.text.strip()
+                    _needed = True
                     if last_names:
                         speaker_last_name = title.split(":")[0].strip()
-                        if speaker_last_name in last_names:
-                            speech_infos[current_year].append(
-                                {
-                                    "date": date,
-                                    "title": title,
-                                    "url": href,
-                                }
-                            )
-                    else:
-                        speech_infos[current_year].append(
+                        if speaker_last_name not in last_names:
+                            _needed = False
+                    if _needed:
+                        speech_infos.setdefault(current_year, []).append(
                             {
                                 "date": date,
                                 "title": title,
                                 "url": href,
                             }
                         )
+                        print(f"Speech info of {date} | {title} was collected.")
+                        _count += 1
                     row = row.find_element(By.XPATH, "following-sibling::tr")
                 except NoSuchElementException:
                     print(f"No speech link found in row: {row.text}")
@@ -120,7 +124,7 @@ class NewYorkSpeechScraper(SpeechScraper):
                     print(msg)
                     break
 
-            print(f"Collected {len(speech_infos)} speech links.")
+            print("==" * 10 + f"Collected {_count} speech infos." + "==" * 10)
         except Exception as e:
             print(f"An error occurred while collecting speech links: {str(e)}")
         # 自动保存
@@ -135,14 +139,15 @@ class NewYorkSpeechScraper(SpeechScraper):
             str: 演讲日期
         """
         try:
-            date_elemment = self.driver.find_element(
-                By.XPATH, "/html/body/div[@container_12]/div/div[@class='ts-contact-info']"
+            date_elemments = self.driver.find_elements(
+                By.XPATH,
+                "/html/body/div/div/div[@class='ts-contact-info'][1]",
             )
-            date_text = date_elemment.text.strip()
-            posted_date = [line for line in date_text.split("\n") if "Posted" in line]
+            date_text = date_elemments[0].text.strip()
+            posted_date = [line.replace("Posted", "").strip() for line in date_text.split("\n") if "Posted" in line]
             date = posted_date[0] if posted_date else date_text.split("\n")[0]
         except Exception as e:
-            print("{}".format(repr(e)))
+            print("Error {} occured when extract speech date.".format(repr(e)))
             date = ""
         return date
 
@@ -227,7 +232,8 @@ class NewYorkSpeechScraper(SpeechScraper):
             single_year_speeches = []
             for speech_info in single_year_infos:
                 # 跳过start_date之前的演讲
-                if parse_datestring(speech_info["date"]) <= start_date:
+                if parse_datestring(speech_info["date"]) <= start_date \
+                or parse_datestring(speech_info["date"]) >= datetime.datetime(2017, 1, 1):
                     logger.info(
                         "Skip speech {date} {title} cause' it's earlier than start_date.".format(
                             date=speech_info["date"],
@@ -248,6 +254,20 @@ class NewYorkSpeechScraper(SpeechScraper):
                     )
                 if single_speech["position"].startswith("President"):
                     single_year_speeches.append(single_speech)
+                    logger.info(
+                        "{speaker} | {date} | {title}.".format(
+                            speaker=single_speech["speaker"],
+                            date=single_speech["date"],
+                            title=single_speech["title"],
+                        )
+                    )
+                    print(
+                        "{speaker} | {date} | {title} collected.".format(
+                            speaker=single_speech["speaker"],
+                            date=single_speech["date"],
+                            title=single_speech["title"],
+                        )
+                    )
             # 排序
             single_year_speeches = sort_speeches_records(single_year_speeches)
             speeches_by_year[year] = single_year_speeches
@@ -278,7 +298,8 @@ class NewYorkSpeechScraper(SpeechScraper):
             + "==" * 20
         )
         # 提取每年演讲的基本信息（不含正文和highlights等）
-        speech_infos = self.extract_speech_infos(mode=mode)
+        # speech_infos = self.extract_speech_infos(mode=mode)
+        speech_infos = json_load(self.speech_infos_filename)
         # 提取已存储的演讲
         if os.path.exists(self.speeches_filename):
             existed_speeches = json_load(self.speeches_filename)
@@ -322,7 +343,7 @@ def test_extract_single_speech():
 
 def test():
     scraper = NewYorkSpeechScraper()
-    scraper.collect()
+    scraper.collect(mode="history")
 
 
 if __name__ == "__main__":

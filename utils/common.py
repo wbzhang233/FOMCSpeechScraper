@@ -35,10 +35,10 @@ def parse_datestring(date_str: str, format: str=None) -> datetime:
     """日期字符串标准化
 
     Args:
-        date_str (_type_): _description_
+        date_str (str): 日期字符串
 
     Returns:
-        _type_: _description_
+        datetime: 日期
     """
     if not date_str:
         return None
@@ -51,21 +51,24 @@ def parse_datestring(date_str: str, format: str=None) -> datetime:
 
     try:
         if re.fullmatch(date_patterns[0], date_str, re.IGNORECASE | re.VERBOSE):
-            return datetime.strptime(date_str, "%B %d, %Y")
+            result = datetime.strptime(date_str, "%B %d, %Y")
         elif re.fullmatch(date_patterns[1], date_str, re.IGNORECASE | re.VERBOSE):
             date_str = date_str.replace('Sept', 'Sep').replace('sept', 'sep')
-            return datetime.strptime(date_str, "%b %d, %Y")
+            result = datetime.strptime(date_str, "%b %d, %Y")
         elif re.fullmatch(date_patterns[2], date_str, re.IGNORECASE | re.VERBOSE):
             date_str = date_str.replace("Sept", "Sep").replace("sept", "sep")
-            return datetime.strptime(date_str, "%b. %d, %Y")
+            result = datetime.strptime(date_str, "%b. %d, %Y")
         else:
-            return date_str
+            result = date_str
+        return result
     except ValueError as e:
-        print(date_str + f" | {repr(e)}")
-        return date_str
+        msg = f"Parse datestring {date_str} failed. {repr(e)}"
+        print(msg)
+        raise ValueError(msg=msg)
     except Exception as e:
+        msg = f"Parse datestring {date_str} failed. {repr(e)}"
         print(date_str + f" | {repr(e)}")
-        return date_str
+        raise Exception(msg=msg)
 
 
 # def stardard_datestring(date_str: str) -> str:
