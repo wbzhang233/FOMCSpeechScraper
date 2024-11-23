@@ -150,8 +150,10 @@ def unify_speech_date(dt: dict):
         dict: 字典信息
     """
     try:
-        dt["date"] = parse_datestring(dt["date"]).strftime("%B %d, %Y")
-    except:
+        date = parse_datestring(dt["date"]).strftime("%B %d, %Y")
+        dt["date"] = date
+    except Exception as e:
+        print(f"{dt} Error: {e}")
         pass
     return dt
 
