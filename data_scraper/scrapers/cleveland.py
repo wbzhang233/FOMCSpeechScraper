@@ -8,6 +8,7 @@
 @Desc    :   4D 克利夫兰联储行长讲话数据爬取
 """
 
+from copy import deepcopy
 from datetime import datetime
 import os
 from selenium.webdriver.common.by import By
@@ -21,10 +22,9 @@ from selenium.common.exceptions import (
 )
 
 from bs4 import BeautifulSoup
-import time
 
 from data_scraper.scrapers.scraper import SpeechScraper
-from utils.common import parse_datestring
+from utils.common import get_latest_speech_date, parse_datestring
 from utils.file_saver import json_dump, json_load, json_update
 from utils.logger import logger
 
@@ -42,9 +42,17 @@ class ClevelandSpeechScraper(SpeechScraper):
         os.makedirs(self.SAVE_PATH, exist_ok=True)
         print(f"{self.SAVE_PATH} has been created.")
         self.save = auto_save
+        # 保存文件的文件名
+        self.speech_infos_filename = (
+            self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
+        )
+        self.speeches_filename = self.SAVE_PATH + f"{self.__fed_name__}_speeches.json"
+        self.failed_speech_infos_filename = (
+            self.SAVE_PATH + f"{self.__fed_name__}_failed_speech_infos.json"
+        )
 
-    def extract_speech_infos(self):
-        """抽取演讲的信息"""
+    def setting_date_range(self):
+        """设置时间范围"""
         try:
             # 设置时间范围为最早和最晚
             from_years_element = self.driver.find_element(By.ID, "fromYears")
@@ -54,7 +62,7 @@ class ClevelandSpeechScraper(SpeechScraper):
                 if option.text.isdigit()
             ]
             from_years_element.send_keys(str(min(from_years_options)))
-
+            # 最晚时间框
             to_years_element = self.driver.find_element(By.ID, "toYears")
             to_years_options = [
                 int(option.text)
@@ -73,13 +81,28 @@ class ClevelandSpeechScraper(SpeechScraper):
                     (By.XPATH, "//*[@id='content']/div[3]/div[1]/search-results/div")
                 )
             )
-            time.sleep(2.0)
         except Exception as e:
             print(f"Error setting date range: {e}")
 
+    def extract_speech_infos(self, existed_speech_infos: dict):
+        """抽取演讲的信息"""
+        # 设置时间范围
+        self.driver.get(self.URL)
+        # 等待页面
+        WebDriverWait(self.driver, 10).until(
+            EC.presence_of_element_located((By.ID, "fromYears"))
+        )
+        self.setting_date_range()
+
+        # 已经存储的日期.
+        existed_speech_dates = set()
+        for _, single_year_infos in existed_speech_infos.items():
+            existed_speech_dates.update([info["date"] for info in single_year_infos])
+
         # 主循环获取所有演讲信息
-        speech_infos_by_year = {}
-        while True:
+        speech_infos_by_year = deepcopy(existed_speech_infos)
+        _continue = True
+        while _continue:
             soup = BeautifulSoup(self.driver.page_source, "html.parser")
             speech_items = soup.find_all("li", class_="result-item")
 
@@ -91,9 +114,12 @@ class ClevelandSpeechScraper(SpeechScraper):
                     .strip()
                 )
                 year = int(date.split(".")[2])
-                if year not in speech_infos_by_year:
-                    speech_infos_by_year[year] = []
                 date = datetime.strptime(date, "%m.%d.%Y").strftime("%B %d, %Y")
+                # 如果元素已经在列表中，则跳过
+                if date in existed_speech_dates:
+                    print(f"Date {date} already exists in the list. Continue.")
+                    _continue = False
+                    break
                 # 提取演讲者
                 speaker = item.find("span", class_="author-name").text.strip()
 
@@ -109,7 +135,7 @@ class ClevelandSpeechScraper(SpeechScraper):
                     else ""
                 )
 
-                speech_infos_by_year[year].append(
+                speech_infos_by_year.setdefault(year, []).append(
                     {
                         "date": date,
                         "speaker": speaker,
@@ -119,6 +145,8 @@ class ClevelandSpeechScraper(SpeechScraper):
                     }
                 )
 
+            if not _continue:
+                break
             # # Try to find and click the "Next" button
             try:
                 next_button = self.driver.find_element(
@@ -126,7 +154,14 @@ class ClevelandSpeechScraper(SpeechScraper):
                 )
                 self.driver.execute_script("arguments[0].click();", next_button)
                 # 等待页面加载
-                time.sleep(2.0)
+                WebDriverWait(self.driver, 10).until(
+                    EC.presence_of_all_elements_located(
+                        (
+                            By.XPATH,
+                            "//*[@id='content']/div[3]/div[1]/search-results/div",
+                        )
+                    )
+                )
             except NoSuchElementException as e:
                 print(
                     f"Next button not found or disabled. Reached last page. {repr(e)}"
@@ -142,24 +177,28 @@ class ClevelandSpeechScraper(SpeechScraper):
                     f"Next button not found or disabled. Reached last page. {repr(e)}"
                 )
                 break
+            except Exception as e:
+                print(f"Error occurred while clicking the next button: {e}")
+                break
 
-        self.speech_infos_by_year = speech_infos_by_year
+        # 更新保存
+        if self.save and speech_infos_by_year != existed_speech_infos:
+            json_update(self.speech_infos_filename, speech_infos_by_year)
+        print(f"Speech infos of {self.__fed_name__} have been extracted.")
         return speech_infos_by_year
 
     def extract_single_speech(self, speech_info: dict):
-        speech = {"speaker": "", "position": "", "highlights": "", "content": ""}
         try:
             self.driver.get(speech_info["href"])
             # 等待加载完
             WebDriverWait(self.driver, 10).until(
                 EC.presence_of_element_located((By.ID, "content"))
             )
-
             # 主内容元素
             main_content = self.driver.find_element(By.ID, "content")
             rich_text = main_content.find_element(
-                By.CSS_SELECTOR,
-                "div.row.component.column-splitter > div.col-12.col-lg-8.cf-indent--left.cf-indent--right.cf-section__main > div > div:nth-child(1) > div > div.component.rich-text > div",
+                By.XPATH,
+                '//*[@id="content"]/div[3]/div[1]/div/div[1]/div/div[4]/div',
             )
             if rich_text:
                 content = "\n\n".join(
@@ -185,34 +224,34 @@ class ClevelandSpeechScraper(SpeechScraper):
                     )
                 )
 
-            speech = {
-                "content": content,
-            }
+            speech = {**speech_info, "content": content}
         except Exception as e:
             print(
                 "Error when extracting speech content from {href}. {error}".format(
                     href=speech_info["href"], error=repr(e)
                 )
             )
-            speech = {"content": ""}
+            speech = {**speech_info, "content": ""}
             print(
                 "{} {} {} content failed.".format(
                     speech_info["speaker"], speech_info["date"], speech_info["title"]
                 )
             )
-        speech.update(speech_info)
         return speech
 
     def extract_speeches(
-        self, speech_infos_by_year: dict, start_date: str = "Jan 01, 2006"
+        self,
+        speech_infos_by_year: dict,
+        existed_speeches: dict,
+        start_date: str = "Jan 01, 2006",
     ):
         """搜集每篇演讲的内容"""
         # 获取演讲的开始时间
         start_date = parse_datestring(start_date)
         start_year = start_date.year
-        
-        # 获取每年的演讲内容 
-        speeches_by_year = {}
+
+        # 获取每年的演讲内容
+        speeches_by_year = deepcopy(existed_speeches)
         failed = []
         for year, single_year_infos in speech_infos_by_year.items():
             # 跳过之前的年份
@@ -242,12 +281,13 @@ class ClevelandSpeechScraper(SpeechScraper):
                             title=speech_info["title"],
                         )
                     )
-                single_year_speeches.append(single_speech)
+                elif single_speech.get("date") and single_speech.get("title"):
+                    single_year_speeches.append(single_speech)
             speeches_by_year[year] = single_year_speeches
             if self.save:
                 json_update(
                     self.SAVE_PATH + f"{self.__fed_name__}_speeches_{year}.json",
-                    single_year_speeches
+                    single_year_speeches,
                 )
             print(f"Speeches of {year} collected.")
         # 保存演讲内容
@@ -256,10 +296,10 @@ class ClevelandSpeechScraper(SpeechScraper):
             json_dump(
                 failed, self.SAVE_PATH + f"{self.__fed_name__}_failed_speech_infos.json"
             )
-            # 更新已存储的演讲内容 
+        if self.save and speeches_by_year != existed_speeches:
+            # 更新已存储的演讲内容
             json_update(
-                self.SAVE_PATH + f"{self.__fed_name__}_speeches.json",
-                speeches_by_year
+                self.SAVE_PATH + f"{self.__fed_name__}_speeches.json", speeches_by_year
             )
         return speeches_by_year
 
@@ -267,101 +307,43 @@ class ClevelandSpeechScraper(SpeechScraper):
         """收集每篇演讲的信息
 
         Returns:
-            _type_: _description_
+            dict: 按自然年整理的演讲内容
         """
         # 提取每年演讲的基本信息（不含正文和highlights等）
-        # if os.path.exists(self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"):
-        #     speech_infos = json_load(
-        #         self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
-        #     )
-        #     # 查看已有的最新的演讲日期
-        #     latest_year = max([k for k, _ in speech_infos.items()])
-        #     existed_lastest = max(
-        #         [
-        #             parse_datestring(speech_info["date"])
-        #             for speech_info in speech_infos[latest_year]
-        #         ]
-        #     ).strftime("%b %d, %Y")
-        #     logger.info("Speech Infos Data already exists, skip collecting infos.")
-        # else:
-        speech_infos = self.extract_speech_infos()
-        if self.save:
-            json_dump(
-                speech_infos,
-                self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json",
-            )
-        existed_lastest = "May 28, 2006"
+        print(
+            "==" * 20
+            + f"Start collecting speech infos of {self.__fed_name__}"
+            + "==" * 20
+        )
+        # 载入已存储的演讲信息
+        if os.path.exists(self.speech_infos_filename):
+            existed_speech_infos = json_load(self.speech_infos_filename)
+        else:
+            existed_speech_infos = {}
+        speech_infos = self.extract_speech_infos(existed_speech_infos)
+
+        # 提取已存储的演讲
+        if os.path.exists(self.speeches_filename):
+            existed_speeches = json_load(self.speeches_filename)
+            # 查看已有的最新的演讲日期
+            existed_lastest = get_latest_speech_date(existed_speeches)
+        else:
+            existed_speeches = {}
+            existed_lastest = "Jan 01, 2006"
 
         # 提取演讲正文内容
-        speeches = self.extract_speeches(speech_infos, existed_lastest)
+        print(
+            "==" * 20
+            + f"Start extracting speech content of {self.__fed_name__} from {existed_lastest}"
+            + "==" * 20
+        )
+        speeches = self.extract_speeches(
+            speech_infos_by_year=speech_infos,
+            existed_speeches=existed_speeches,
+            start_date=existed_lastest,
+        )
+        print("==" * 20 + f"{self.__fed_name__} finished." + "==" * 20)
         return speeches
-
-    def extract_lastest_speech_date(self):
-        """获取最近演讲的信息"""
-        try:
-            # 设置时间范围为最早和最晚
-            from_years_element = self.driver.find_element(By.ID, "fromYears")
-            from_years_options = [
-                int(option.text)
-                for option in Select(from_years_element).options
-                if option.text.isdigit()
-            ]
-            from_years_element.send_keys(str(min(from_years_options)))
-
-            to_years_element = self.driver.find_element(By.ID, "toYears")
-            to_years_options = [
-                int(option.text)
-                for option in Select(to_years_element).options
-                if option and option.text.isdigit()
-            ]
-            to_years_element.send_keys(str(max(to_years_options)))
-            # 点击搜寻按键
-            search_button = self.driver.find_element(
-                By.CSS_SELECTOR, "button.btn.btn-link[aria-label='Submit Filters']"
-            )
-            search_button.click()
-            # 等待页面
-            WebDriverWait(self.driver, 10).until(
-                EC.presence_of_element_located(
-                    (By.XPATH, "//*[@id='content']/div[3]/div[1]/search-results/div")
-                )
-            )
-            time.sleep(2.0)
-        except Exception as e:
-            print(f"Error setting date range: {e}")
-
-        soup = BeautifulSoup(self.driver.page_source, "html.parser")
-        speech_items = soup.find_all("li", class_="result-item")
-        # 提取最早的演讲的日期，锁定第一个演讲元素
-        latest_date = (
-            speech_items[0]
-            .find("div", class_="date-reference")
-            .text.split(" | ")[0]
-            .strip()
-        )
-        return parse_datestring(latest_date)
-
-    def update(self):
-        """更新报告
-
-        Returns:
-            _type_: _description_
-        """
-        # 读取本地演讲信息
-        speech_infos = json_load(
-            self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
-        )
-        # 查看最新的演讲日期
-        latest_year = max([k for k, _ in speech_infos.items()])
-        existed_lastest = max(
-            [
-                parse_datestring(speech_info["date"])
-                for speech_info in speech_infos[latest_year]
-            ]
-        )
-        # 获取网页上最新的报告日期
-        latest_speech_date = self.extract_lastest_speech_date()
-        return latest_speech_date > existed_lastest
 
 
 def test_extract_single_speech():

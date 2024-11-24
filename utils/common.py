@@ -71,6 +71,25 @@ def parse_datestring(date_str: str, format: str=None) -> datetime:
         raise Exception(msg=msg)
 
 
+def get_latest_speech_date(obj: dict | list):
+    """获取字典中演讲的最新日期"""
+    if isinstance(obj, dict):
+        # 查看已有的最新的演讲日期
+        dates = []
+        for _, v in obj.items():
+            for x in v:
+                dates.append(parse_datestring(x["date"]))
+    elif isinstance(obj, list):
+        dates = []
+        for x in obj:
+            dates.append(parse_datestring(x["date"]))
+    else:
+        msg = f"TypeError: unsupported type {type(obj)}."
+        print(msg)
+        dates = []
+    return max(dates).strftime("%b %d, %Y") if dates else None
+
+
 # def stardard_datestring(date_str: str) -> str:
 #     return parse_datestring(date_str).strftime("%Y-%m-%d")
 
