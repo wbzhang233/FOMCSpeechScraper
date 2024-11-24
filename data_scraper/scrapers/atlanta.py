@@ -325,12 +325,8 @@ class AtlantaSpeechScraper(SpeechScraper):
                 )
         # 更新保存
         if self.save:
-            json_update(
-                self.SAVE_PATH + f"{self.__fed_name__}_failed_speech_infos.json", failed
-            )
-            json_update(
-                self.SAVE_PATH + f"{self.__fed_name__}_speeches.json", speeches_by_year
-            )
+            json_update(self.failed_speech_infos_filename, failed)
+            json_update(self.speeches_filename, speeches_by_year)
         return speeches_by_year
 
     def collect(self, mode: str = "update"):
