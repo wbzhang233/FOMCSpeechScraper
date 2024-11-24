@@ -9,6 +9,7 @@
 """
 
 from collections import OrderedDict
+from copy import deepcopy
 import os
 import re
 import pandas as pd
@@ -20,11 +21,52 @@ import time
 from datetime import datetime
 
 from data_scraper.scrapers.scraper import SpeechScraper
-from utils.common import parse_datestring
+from utils.common import get_latest_speech_date, parse_datestring
 from utils.file_saver import json_dump, json_load, json_update, update_records
 from utils.logger import get_logger
 
 today = datetime.today()
+
+
+def regex_date_from_summary(summary: str):
+    # 从摘要中匹配日期. Evans-charles 2018-2022年摘要
+    pattern = r"presented on (.*?),"
+    match = re.search(pattern, summary)
+    if match:
+        month_date = match.group(1)
+    else:
+        return ""
+
+    pattern = r", (\d{4}),"
+    match = re.search(pattern, summary)
+    if match:
+        year = match.group(1)
+    else:
+        return ""
+
+    return f"{month_date}, {year}".strip()
+
+
+def purified_date(date_str: str):
+    """将带-日期字符串标准化.
+
+    Args:
+        date_str (str): _description_
+
+    Returns:
+        _type_: _description_
+    """
+    if "-" not in date_str:
+        return date_str
+    else:
+        # 拆分日期和月
+        splits = date_str.split(",")
+        month, date = splits[0].split(" ")
+        date = date.split("-")[-1].strip()
+        result = "{month} {date}, {year}".format(
+            month=month, date=date, year=splits[1].strip()
+        )
+        return result
 
 
 class ChicagoSpeechScraper(SpeechScraper):
@@ -32,6 +74,7 @@ class ChicagoSpeechScraper(SpeechScraper):
     __fed_name__ = "chicago"
     __name__ = f"{__fed_name__.title()}SpeechScraper"
     SAVE_PATH = f"../../data/fed_speeches/{__fed_name__}_fed_speeches/"
+    ERALYEST_YEAR = 2006
 
     logger = get_logger(
         logger_name=f"{__fed_name__}_speech_scraper", log_filepath="../../log/"
@@ -44,6 +87,18 @@ class ChicagoSpeechScraper(SpeechScraper):
         os.makedirs(self.SAVE_PATH, exist_ok=True)
         print(f"{self.SAVE_PATH} has been created.")
         self.save = auto_save
+        # 保存文件的文件名
+        self.speech_infos_filename = (
+            self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
+        )
+        self.speeches_filename = self.SAVE_PATH + f"{self.__fed_name__}_speeches.json"
+        self.failed_speech_infos_filename = (
+            self.SAVE_PATH + f"{self.__fed_name__}_failed_speech_infos.json"
+        )
+        # 额外新增：主席任期表信息
+        self.presidents_info_filename = (
+            self.SAVE_PATH + f"{self.__fed_name__}_presidents_info.json"
+        )
 
     def extract_speaker_name(self, text: str):
         """正则匹配演讲人姓名
@@ -66,7 +121,7 @@ class ChicagoSpeechScraper(SpeechScraper):
     def extract_speech_date(self, speech: dict):
         try:
             # 年份
-            year = speech["href"].split('/')[-2]
+            year = speech["href"].split("/")[-2]
             # 最后的划分日期
             title = speech["href"].split("/")[-1]
             month, date = title.split("-")[0], title.split("-")[1]
@@ -77,30 +132,87 @@ class ChicagoSpeechScraper(SpeechScraper):
             else:
                 # print(f"{month}. {date}, {year}")
                 speech_date = pd.to_datetime(f"{month}. {date}, {year}")
+            result = speech_date.strftime("%B %d, %Y")
             # 若记录日期为空、或者年份与识别日期年份不一致，则更新日期
             # print(
             #     "{} is going to be replace by {}".format(
             #         speech["date"], speech_date.date().strftime(format="%B %d, %Y")
             #     )
             # )
-            return speech_date.strftime("%B %d, %Y")  # speech["date"] =
+            return result
         except Exception as e:
-            msg = "Error  {} occured when processing {}.".format(repr(e), speech["href"])
+            msg = "Error  {} occured when processing {}.".format(
+                repr(e), speech["href"]
+            )
             print(msg)
             self.logger.info(msg=msg)
-            return None
 
-    def extract_president_speech_infos(self, president_info: dict):
+        # 再尝试根据摘要匹配日期.
+        try:
+            result = regex_date_from_summary(speech["summary"])
+            result = purified_date(result)
+        except Exception as e:
+            msg = "Error  {} occured when processing {}.".format(
+                repr(e), speech["href"]
+            )
+            print(msg)
+            self.logger.info(msg=msg)
+            result = ""
+
+        return result
+
+    def extract_president_infos(self):
+        """提取芝加哥历任行长的信息"""
+        if os.path.exists(self.presidents_info_filename):
+            presidents_infos = json_load(self.presidents_info_filename)
+            return presidents_infos
+
+        self.driver.get(self.URL)
+        # 搜寻历任每一任主席的资料
+        president_elements = self.driver.find_elements(
+            By.XPATH,
+            "//table[@class='focus-people']/tbody/tr/td[contains(@style, '!important;')]",
+        )
+        president_infos = []
+        for element in president_elements:
+            # 名字
+            name = element.find_element(By.XPATH, "./a[@title]").text
+            # 链接
+            href = element.find_element(By.XPATH, "./a[@title]").get_attribute("href")
+            paras = element.text.split("\n")
+            # 任期
+            start_year = paras[-1].split(" – ")[0].strip()
+            last_year = paras[-1].split(" – ")[-1].strip()
+            last_year = str(today.year) if last_year == "present" else last_year
+            # 名讳
+            order = paras[-2]
+            president_infos.append(
+                {
+                    "name": name,  # 名字
+                    "href": href,  # 主页链接
+                    "order": order,  # 任期
+                    "start_year": start_year,  # 任期开始年份
+                    "last_year": last_year,  # 任期结束年份
+                }
+            )
+        # 倒序
+        president_infos.reverse()
+        json_dump(president_infos, self.presidents_info_filename)
+        return president_infos
+
+    def extract_president_speech_infos(
+        self, president_info: dict, existed_speech_dates: set
+    ):
         """提取芝加哥联储某位行长的演讲信息
 
         Args:
-            president_info (dict): _description_
+            president_info (dict): 某位行长的演讲信息
         """
+        # 进入主席首页
         href = president_info["href"]
         self.driver.get(href)
-        time.sleep(1.0)
         WebDriverWait(self.driver, 10).until(
-            EC.visibility_of_all_elements_located((By.TAG_NAME, "body"))
+            EC.presence_of_element_located((By.TAG_NAME, "body"))
         )
         speech_infos = {}
         # 如果是Goolsbee，分流
@@ -123,23 +235,33 @@ class ChicagoSpeechScraper(SpeechScraper):
                 date = item.find_element(
                     By.XPATH, "./p[@class='cyan-publication-date']"
                 ).text.strip()
+                pdate = parse_datestring(date)
+                if pdate:
+                    date = pdate.strftime("%B %d, %Y")
+                if date in existed_speech_dates:
+                    break
                 summary = item.text.split("\n")[-1].strip()
                 # 按年收纳
                 year = str(parse_datestring(date).year)
                 speech_infos.setdefault(year, []).append(
                     {
                         "speaker": president_info["name"],
-                        "title": title,
-                        "href": href,
                         "date": date,
+                        "title": title,
                         "summary": summary,
+                        "href": href,
                     }
+                )
+                print(
+                    f"Speech info of {president_info['name']} {date} {title} collected."
                 )
         else:
             # 点击 Speeches
             click_speeches = self.driver.find_element(By.XPATH, "//label[@for='tab7']")
             click_speeches.click()
-            time.sleep(1.2)
+            WebDriverWait(self.driver, 10.0).until(
+                EC.presence_of_element_located((By.XPATH, "//section[@id='speeches']"))
+            )
             speech_items = self.driver.find_elements(
                 By.XPATH,
                 "//section[@id='speeches']/div[@class='peoplePublication__container']",
@@ -149,63 +271,49 @@ class ChicagoSpeechScraper(SpeechScraper):
                 href = item.find_element(By.XPATH, "./div/a[@href]").get_attribute(
                     "href"
                 )
-                # 根据href来解析日期
-                date = self.extract_speech_date({"href": href})
+                # 摘要中也隐含了日期
                 p_items = item.find_elements(By.TAG_NAME, "p")
                 summary = "\n\n".join([p.text for p in p_items]).strip()
+                # 根据href来解析日期
+                date = self.extract_speech_date({"href": href, "summary": summary})
+                if date in existed_speech_dates:
+                    break
                 # 查找上一个h3元素
                 year = item.find_element(By.XPATH, "./preceding-sibling::h3[1]").text
                 speech_infos.setdefault(year, []).append(
                     {
                         "speaker": president_info["name"],
-                        "title": title,
-                        "href": href,
                         "date": date,
+                        "title": title,
                         "summary": summary,
+                        "href": href,
                     }
                 )
-
+                print(
+                    f"Speech info of {president_info['name']} {date} {title} collected."
+                )
         return speech_infos
 
-    def extract_speech_infos(self):
+    def extract_speech_infos(self, existed_speech_infos: dict):
         """抽取演讲的信息"""
-        # 搜寻历任每一任主席的资料
-        president_elements = self.driver.find_elements(
-            By.XPATH,
-            "//table[@class='focus-people']/tbody/tr/td[contains(@style, '!important;')]",
-        )
-        president_infos = []
-        for element in president_elements:
-            # 名字
-            name = element.find_element(By.XPATH, "./a[@title]").text
-            # 链接
-            href = element.find_element(By.XPATH, "./a[@title]").get_attribute("href")
-            paras = element.text.split("\n")
-            # 任期
-            start_year = paras[-1].split(" – ")[0].strip()
-            last_year = paras[-1].split(" – ")[-1].strip()
-            last_year = str(today.year) if last_year == "present" else last_year
-            # 名讳
-            order = paras[-2]
-            president_infos.append(
-                {
-                    "name": name,
-                    "href": href,
-                    "order": order,
-                    "start_year": start_year,
-                    "last_year": last_year,
-                }
-            )
-
+        # 提取历任行长的信息
+        president_infos = self.extract_president_infos()
         # 主循环获取所有演讲信息
-        speech_infos_by_year = {}
+        speech_infos_by_year = deepcopy(existed_speech_infos)
         for president_info in president_infos:
             # 太早的不要
-            if int(president_info["start_year"]) < 1994:
+            if int(president_info["last_year"]) <= 2006:
                 continue
-            # 主席名称
-            # speaker = president_info['name']
-            infos = self.extract_president_speech_infos(president_info)
+            # 获取该行长已存在的演讲日期
+            existed_speech_dates = set()
+            for _, v in existed_speech_infos.items():
+                for speech_info in v:
+                    if speech_info["speaker"] == president_info["name"]:
+                        existed_speech_dates.add(speech_info["date"])
+            # 提取某位行长主页下的演讲信息
+            infos = self.extract_president_speech_infos(
+                president_info, existed_speech_dates
+            )
             for year, new_speech_infos in infos.items():
                 if year in speech_infos_by_year:
                     speech_infos_by_year[year] = update_records(
@@ -221,11 +329,14 @@ class ChicagoSpeechScraper(SpeechScraper):
                 print(msg)
                 self.logger.info(msg=msg)
         # 排个序
-        speech_infos_by_year = OrderedDict(sorted(speech_infos_by_year.items()))
+        speech_infos_by_year = OrderedDict(
+            sorted(speech_infos_by_year.items(), reverse=True)
+        )
         msg = "-" * 50 + "All speech infos was collected." + "-" * 50
         print(msg)
         self.logger.info(msg=msg)
-        self.speech_infos_by_year = speech_infos_by_year
+        if self.save and existed_speech_infos != speech_infos_by_year:
+            json_update(self.speech_infos_filename, speech_infos_by_year)
         return speech_infos_by_year
 
     def extract_single_speech(self, speech_info: dict):
@@ -233,10 +344,8 @@ class ChicagoSpeechScraper(SpeechScraper):
             self.driver.get(speech_info["href"])
             # 等待加载完
             WebDriverWait(self.driver, 10).until(
-                EC.visibility_of_all_elements_located((By.TAG_NAME, "body"))
+                EC.presence_of_element_located((By.TAG_NAME, "body"))
             )
-            time.sleep(1.2)
-
             # last updated date
             last_updated_elements = self.driver.find_elements(
                 By.CLASS_NAME, "cfedDetail__lastUpdated"
@@ -279,25 +388,26 @@ class ChicagoSpeechScraper(SpeechScraper):
                 )
             print(msg)
             self.logger.info(msg=msg)
-
-            speech = {"content": content}
+            speech = {**speech_info, "content": content}
         except Exception as e:
             msg = "Error when extracting speech content from {href}. {error}".format(
                 href=speech_info["href"], error=repr(e)
             )
             print(msg)
             self.logger.info(msg)
-            speech = {"content": ""}
+            speech = {**speech_info, "content": ""}
             msg = "{} {} {} content failed.".format(
                 speech_info["speaker"], speech_info["date"], speech_info["title"]
             )
             print(msg)
             self.logger.info(msg)
-        speech.update(speech_info)
         return speech
 
     def extract_speeches(
-        self, speech_infos_by_year: dict, start_date: str = "Jan 01, 2006"
+        self,
+        speech_infos_by_year: dict,
+        existed_speeches: dict,
+        start_date: str = "Jan 01, 2006",
     ):
         """搜集每篇演讲的内容"""
         # 获取演讲的开始时间
@@ -305,7 +415,7 @@ class ChicagoSpeechScraper(SpeechScraper):
         start_year = start_date.year
 
         # 获取每年的演讲内容
-        speeches_by_year = {}
+        speeches_by_year = deepcopy(existed_speeches)
         failed = []
         for year, single_year_infos in speech_infos_by_year.items():
             if not year.isdigit():
@@ -339,7 +449,8 @@ class ChicagoSpeechScraper(SpeechScraper):
                             title=speech_info["title"],
                         )
                     )
-                single_year_speeches.append(single_speech)
+                if single_speech["date"] and single_speech["title"]:
+                    single_year_speeches.append(single_speech)
             speeches_by_year[year] = single_year_speeches
             if self.save:
                 json_update(
@@ -353,6 +464,7 @@ class ChicagoSpeechScraper(SpeechScraper):
             json_dump(
                 failed, self.SAVE_PATH + f"{self.__fed_name__}_failed_speech_infos.json"
             )
+        if self.save and speeches_by_year != existed_speeches:
             # 更新已存储的演讲内容
             json_update(
                 self.SAVE_PATH + f"{self.__fed_name__}_speeches.json", speeches_by_year
@@ -363,34 +475,42 @@ class ChicagoSpeechScraper(SpeechScraper):
         """收集每篇演讲的信息
 
         Returns:
-            _type_: _description_
+            dict: 按自然年整理的演讲内容
         """
         # 提取每年演讲的基本信息（不含正文和highlights等）
-        # if os.path.exists(self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"):
-        #     speech_infos = json_load(
-        #         self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
-        #     )
-        #     # 查看已有的最新的演讲日期
-        #     latest_year = max([k for k, _ in speech_infos.items()])
-        #     existed_lastest = max(
-        #         [
-        #             parse_datestring(speech_info["date"])
-        #             for speech_info in speech_infos[latest_year]
-        #         ]
-        #     ).strftime("%b %d, %Y")
-        #     self.logger.info("Speech Infos Data already exists, skip collecting infos.")
-        #     existed_lastest = "Jan 01, 2024"
-        # else:
-        speech_infos = self.extract_speech_infos()
-        if self.save:
-            json_dump(
-                speech_infos,
-                self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json",
-            )
-        existed_lastest = "Oct 17, 2024"
+        print(
+            "==" * 20
+            + f"Start collecting speech infos of {self.__fed_name__}"
+            + "==" * 20
+        )
+        # 载入已存储的演讲信息
+        if os.path.exists(self.speech_infos_filename):
+            existed_speech_infos = json_load(self.speech_infos_filename)
+        else:
+            existed_speech_infos = {}
+        speech_infos = self.extract_speech_infos(existed_speech_infos)
+
+        # 提取已存储的演讲
+        if os.path.exists(self.speeches_filename):
+            existed_speeches = json_load(self.speeches_filename)
+            # 查看已有的最新的演讲日期
+            existed_lastest = get_latest_speech_date(existed_speeches)
+        else:
+            existed_speeches = {}
+            existed_lastest = "Jan 01, 2006"
 
         # 提取演讲正文内容
-        speeches = self.extract_speeches(speech_infos, existed_lastest)
+        print(
+            "==" * 20
+            + f"Start extracting speech content of {self.__fed_name__} from {existed_lastest}"
+            + "==" * 20
+        )
+        speeches = self.extract_speeches(
+            speech_infos_by_year=speech_infos,
+            existed_speeches=existed_speeches,
+            start_date=existed_lastest,
+        )
+        print("==" * 20 + f"{self.__fed_name__} finished." + "==" * 20)
         return speeches
 
 
@@ -419,8 +539,32 @@ def test():
     scraper = ChicagoSpeechScraper()
     scraper.collect()
 
+def drop_duplicates_speech_info():
+    filepath = "../../data/fed_speeches/chicago_fed_speeches/chicago_speech_infos.json"
+    existed = json_load(filepath)
+    unique = set()
+    result = {}
+    for year, single_year_infos in existed.items():
+        for info in single_year_infos:
+            tag = info['speaker'] + info['date']
+            if tag not in unique:
+                unique.add(tag)
+                result.setdefault(year, []).append(info)
+    json_dump(result, filepath)
+
+
+def test_purified_datestr():
+    for ds in ["October 9-10, 2024", "October 9, 2024"]:
+        print(purified_date(ds))
+
+    result = regex_date_from_summary(
+        "A speech presented on May 9, 2019, at the Federal Re"
+    )
+    print(result)
+
 
 if __name__ == "__main__":
     # test_extract_speech_infos()
     # test_extract_single_speech()
     test()
+    # drop_duplicates_speech_info()

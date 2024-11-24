@@ -1,0 +1,72 @@
+[
+    {
+        "name": "James B. McDougal",
+        "href": "https://www.chicagofed.org/people/m/mcdougal-james-b",
+        "order": "First Governor",
+        "start_year": "1914",
+        "last_year": "1934"
+    },
+    {
+        "name": "George J. Schaller",
+        "href": "https://www.chicagofed.org/people/s/schaller-george-j",
+        "order": "Second President",
+        "start_year": "1934",
+        "last_year": "1941"
+    },
+    {
+        "name": "Clifford S. Young",
+        "href": "https://www.chicagofed.org/people/y/young-clifford-s",
+        "order": "Third President",
+        "start_year": "1941",
+        "last_year": "1956"
+    },
+    {
+        "name": "Carl E. Allen",
+        "href": "https://www.chicagofed.org/people/a/allen-carl-e",
+        "order": "Fourth President",
+        "start_year": "1956",
+        "last_year": "1961"
+    },
+    {
+        "name": "Charles J. Scanlon",
+        "href": "https://www.chicagofed.org/people/s/scanlon-charles-j",
+        "order": "Fifth President",
+        "start_year": "1962",
+        "last_year": "1970"
+    },
+    {
+        "name": "Robert P. Mayo",
+        "href": "https://www.chicagofed.org/people/m/mayo-robert-p",
+        "order": "Sixth President",
+        "start_year": "1970",
+        "last_year": "1981"
+    },
+    {
+        "name": "Silas Keehn",
+        "href": "https://www.chicagofed.org/people/k/keehn-silas",
+        "order": "Seventh President",
+        "start_year": "1981",
+        "last_year": "1994"
+    },
+    {
+        "name": "Michael H. Moskow",
+        "href": "https://www.chicagofed.org/people/m/moskow-michael-h",
+        "order": "Eighth President",
+        "start_year": "1994",
+        "last_year": "2007"
+    },
+    {
+        "name": "Charles L. Evans",
+        "href": "https://www.chicagofed.org/people/e/evans-charles",
+        "order": "Ninth President",
+        "start_year": "2007",
+        "last_year": "2023"
+    },
+    {
+        "name": "Austan D. Goolsbee",
+        "href": "https://www.chicagofed.org/utilities/about-us/office-of-the-president/office-of-the-president-home",
+        "order": "Tenth President",
+        "start_year": "2023",
+        "last_year": "2024"
+    }
+]
