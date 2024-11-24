@@ -44,7 +44,7 @@ class SpeechScraper(object):
         if not url:
             raise ValueError("No url provided.")
         # 先进入主页
-        self.driver.get(url)
+        # self.driver.get(url)
 
     @property
     def save_path(self):

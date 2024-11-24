@@ -8,6 +8,7 @@
 @Desc    :   10J 堪萨斯城联储讲话数据爬取
 """
 
+from copy import deepcopy
 import os
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -24,8 +25,8 @@ import time
 import requests
 
 from data_scraper.scrapers.scraper import SpeechScraper
-from utils.common import parse_datestring
-from utils.file_saver import json_dump, json_load, json_update
+from utils.common import get_latest_speech_date, parse_datestring
+from utils.file_saver import json_dump, json_load, json_update, update_records
 from utils.logger import logger
 from collections import OrderedDict
 from PyPDF2 import PdfReader
@@ -34,7 +35,7 @@ from PyPDF2 import PdfReader
 def read_pdf_file(pdf_filename: str):
     if os.path.exists(pdf_filename):
         reader = PdfReader(pdf_filename)
-        print(">--|--<" * 20)
+        print("-*---" * 20)
         print("{} has been read.".format(pdf_filename))
         return "\n\n".join([page.extract_text() for page in reader.pages]).strip("\n ")
     else:
@@ -91,10 +92,19 @@ class KansasCitySpeechScraper(SpeechScraper):
         os.makedirs(self.SAVE_PATH, exist_ok=True)
         print(f"{self.SAVE_PATH} has been created.")
         self.save = auto_save
+        # 保存路径
+        self.speech_infos_filename = (
+            self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
+        )
+        self.speeches_filename = self.SAVE_PATH + f"{self.__fed_name__}_speeches.json"
+        self.failed_speech_infos_filename = (
+            self.SAVE_PATH + f"{self.__fed_name__}_failed_speech_infos.json"
+        )
 
-    def extract_speech_infos(self):
-        """抽取演讲的信息"""
+    def filter_setting(self, presidents: list=None):
         try:
+            if not presidents:
+                presidents = ["Thomas M. Hoenig", "Esther L. George", "Jeffrey Schmid"]
             # 设置speakers
             filter_buttons = self.driver.find_elements(
                 By.XPATH,
@@ -103,9 +113,8 @@ class KansasCitySpeechScraper(SpeechScraper):
             filter_buttons[0].click()
             speaker_filter = self.driver.find_element(By.NAME, "6-12")
             select = Select(speaker_filter)
-            select.select_by_visible_text("Thomas M. Hoenig")
-            select.select_by_visible_text("Esther L. George")
-            select.select_by_visible_text("Jeffrey Schmid")
+            for president in presidents:
+                select.select_by_visible_text(president)
             # 选取
             person_elements = speaker_filter.find_elements(
                 By.XPATH,
@@ -132,16 +141,14 @@ class KansasCitySpeechScraper(SpeechScraper):
             # 点击apply_filters
             apply_filter_button = self.driver.find_element(
                 By.XPATH,
-                "//button[(@type='button') and (contains(text(), 'Apply Filters'))]",
+                '//*[@id="search"]/div/div/div/div[2]/mnt-button[@name="apply"]',
             )
             apply_filter_button.click()
 
             # 等待页面
-            time.sleep(3.0)
             WebDriverWait(self.driver, 10).until(
                 EC.presence_of_all_elements_located((By.XPATH, "//*[@id='mainContent']"))
             )
-
             # 设置每页展示100个
             perpage_number_button = self.driver.find_element(
                 By.XPATH,
@@ -158,16 +165,28 @@ class KansasCitySpeechScraper(SpeechScraper):
             )
             perpage_100.click()
             # 等待页面
-            time.sleep(5.0)
+            # time.sleep(5.0)
             WebDriverWait(self.driver, 10).until(
                 EC.visibility_of_all_elements_located((By.CLASS_NAME, "clear"))
             )
         except Exception as e:
             print(f"Error setting date range: {e}")
 
+    def extract_speech_infos(self, existed_speech_infos: dict):
+        """抽取演讲的信息"""
+        self.driver.get(self.URL)
+        # 设置筛选的信息
+        self.filter_setting()
+
+        # 已经存储的日期.
+        existed_speech_dates = set()
+        for _, single_year_infos in existed_speech_infos.items():
+            existed_speech_dates.update([info["date"] for info in single_year_infos])
+
         # 主循环获取所有演讲信息
-        speech_infos_by_year = {}
-        while True:
+        speech_infos_by_year = deepcopy(existed_speech_infos)
+        _continue = True
+        while _continue:
             speech_items = self.driver.find_elements(
                 By.XPATH, "//div[@class='result-list']/div[@class='clear']"
             )
@@ -176,7 +195,12 @@ class KansasCitySpeechScraper(SpeechScraper):
                 date = item.find_element(
                     By.XPATH, ".//span[contains(@class, 'date')]/time"
                 ).text.strip()
-                year = int(date.split(",")[-1].strip())
+                # 如果元素已经在列表中，则跳过
+                if date in existed_speech_dates:
+                    print(f"Date {date} already exists in the list. Continue.")
+                    _continue = False
+                    break
+                year = date.split(",")[-1].strip()
                 if year not in speech_infos_by_year:
                     speech_infos_by_year[year] = []
                 # 提取演讲者
@@ -197,6 +221,12 @@ class KansasCitySpeechScraper(SpeechScraper):
                         "href": href,
                     }
                 )
+                print("Info of {} | {} {} collected.".format(
+                    date, speaker, title
+                ))
+
+            if not _continue:
+                break
 
             try:
                 next_page_button = self.driver.find_element(
@@ -206,6 +236,15 @@ class KansasCitySpeechScraper(SpeechScraper):
                 next_page_button.click()
                 # 等待页面加载
                 time.sleep(2.0)
+                # 等待页面加载
+                WebDriverWait(self.driver, 10).until(
+                    EC.presence_of_all_elements_located(
+                        (
+                            By.XPATH,
+                            "//div[@class='result-list']",
+                        )
+                    )
+                )
             except NoSuchElementException as e:
                 print(
                     f"Next button not found or disabled. Reached last page. {repr(e)}"
@@ -222,8 +261,13 @@ class KansasCitySpeechScraper(SpeechScraper):
                 )
                 break
 
-        speech_infos_by_year = OrderedDict(speech_infos_by_year.items())
-        self.speech_infos_by_year = speech_infos_by_year
+        # 排序
+        speech_infos_by_year = OrderedDict(
+            sorted(speech_infos_by_year.items(), key=lambda x: int(x[0]), reverse=True)
+        )
+        # 保存
+        if self.save and speech_infos_by_year!=existed_speech_dates:
+            json_update(self.speech_infos_filename, speech_infos_by_year)
         return speech_infos_by_year
 
     def extract_single_speech(self, speech_info: dict):
@@ -235,7 +279,7 @@ class KansasCitySpeechScraper(SpeechScraper):
                 pdf_filename = href.split("/")[-1]
                 # 如果不存在，就下载
                 _times = 0
-                while (not is_download_existed(self.DOWNLOAD_PATH + pdf_filename)) and _times<=10:
+                while (not is_download_existed(self.DOWNLOAD_PATH + pdf_filename)) and _times<=1:
                     self.driver.get(href)
                     time.sleep(1.0)
                     _times +=1
@@ -269,11 +313,13 @@ class KansasCitySpeechScraper(SpeechScraper):
                     speech_info["speaker"], speech_info["date"], speech_info["title"]
                 )
             )
-        speech.update(speech_info)
-        return speech
+        return {**speech_info, **speech}
 
     def extract_speeches(
-        self, speech_infos_by_year: dict, start_date: str = "Jan 01, 2006"
+        self, 
+        speech_infos_by_year: dict, 
+        existed_speeches: dict,
+        start_date: str = "Jan 01, 2006"
     ):
         """搜集每篇演讲的内容"""
         # 获取演讲的开始时间
@@ -281,7 +327,7 @@ class KansasCitySpeechScraper(SpeechScraper):
         start_year = start_date.year
 
         # 获取每年的演讲内容
-        speeches_by_year = {}
+        speeches_by_year = deepcopy(existed_speeches)
         failed = []
         for year, single_year_infos in speech_infos_by_year.items():
             # 跳过之前的年份
@@ -305,14 +351,20 @@ class KansasCitySpeechScraper(SpeechScraper):
                     # 记录提取失败的报告
                     failed.append(single_speech)
                     logger.warning(
-                        "Extract {speaker} {date} {title}".format(
+                        "Failed to extract {speaker} {date} {title} failed.".format(
                             speaker=speech_info["speaker"],
                             date=speech_info["date"],
                             title=speech_info["title"],
                         )
                     )
                 single_year_speeches.append(single_speech)
-            speeches_by_year[year] = single_year_speeches
+                print("Extracted speech {speaker} {date} {title}".format(
+                    speaker=speech_info["speaker"],
+                    date=speech_info["date"],
+                    title=speech_info["title"],
+                ))
+            # 更新
+            speeches_by_year[year] = update_records(speeches_by_year[year], single_year_speeches)
             if self.save:
                 json_update(
                     self.SAVE_PATH + f"{self.__fed_name__}_speeches_{year}.json",
@@ -322,49 +374,51 @@ class KansasCitySpeechScraper(SpeechScraper):
         # 保存演讲内容
         if self.save:
             # 保存读取失败的演讲内容
-            json_dump(
-                failed, self.SAVE_PATH + f"{self.__fed_name__}_failed_speech_infos.json"
-            )
+            json_dump(failed, self.failed_speech_infos_filename)
             # 更新已存储的演讲内容
-            json_update(
-                self.SAVE_PATH + f"{self.__fed_name__}_speeches.json", speeches_by_year
-            )
+            json_update(self.speeches_filename, speeches_by_year)
         return speeches_by_year
 
     def collect(self):
         """收集每篇演讲的信息
 
         Returns:
-            _type_: _description_
+            dict: 按自然年整理的演讲内容
         """
         # 提取每年演讲的基本信息（不含正文和highlights等）
-        if not os.path.exists(self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"):
-            speech_infos = json_load(
-                self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
-            )
-            # 查看已有的最新的演讲日期
-            latest_year = max([k for k, _ in speech_infos.items()])
-            existed_lastest = max(
-                [
-                    parse_datestring(speech_info["date"])
-                    for speech_info in speech_infos[latest_year]
-                ]
-            ).strftime("%b %d, %Y")
-            logger.info("Speech Infos Data already exists, skip collecting infos.")
-            existed_lastest = "Jan 01, 2006"
+        print(
+            "==" * 20
+            + f"Start collecting speech infos of {self.__fed_name__}"
+            + "==" * 20
+        )
+        # 载入已存储的演讲信息
+        if os.path.exists(self.speech_infos_filename):
+            existed_speech_infos = json_load(self.speech_infos_filename)
         else:
-            speech_infos = self.extract_speech_infos()
-            if self.save:
-                json_dump(
-                    speech_infos,
-                    self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json",
-                )
-            # existed_lastest = "Jan 01, 2006"
-            existed_lastest = "Oct 21, 2024"
+            existed_speech_infos = {}
+        speech_infos = self.extract_speech_infos(existed_speech_infos)
+
+        # 提取已存储的演讲
+        if os.path.exists(self.speeches_filename):
+            existed_speeches = json_load(self.speeches_filename)
+            # 查看已有的最新的演讲日期
+            existed_lastest = get_latest_speech_date(existed_speeches)
+        else:
+            existed_speeches = {}
+            existed_lastest = "Jan 01, 2006"
 
         # 提取演讲正文内容
-        speech_infos = OrderedDict(speech_infos.items())
-        speeches = self.extract_speeches(speech_infos, existed_lastest)
+        print(
+            "==" * 20
+            + f"Start extracting speech content of {self.__fed_name__} from {existed_lastest}"
+            + "==" * 20
+        )
+        speeches = self.extract_speeches(
+            speech_infos_by_year=speech_infos,
+            existed_speeches=existed_speeches,
+            start_date=existed_lastest,
+        )
+        print("==" * 20 + f"{self.__fed_name__} finished." + "==" * 20)
         return speeches
 
 

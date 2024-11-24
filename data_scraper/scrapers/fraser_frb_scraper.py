@@ -125,29 +125,38 @@ class FRASERFRBSpeechScraper:
                 "year": "Unknown",
                 "date": "",
                 "text_url": "",
+                "api_url": "",
+                "pdf_url": "",
             }
         try:
-            # 打开链接，找到下载按键 -> 找到text_url，获取
+            # 获取item的年份、日期、text_url
             response = FRESERScraper.fecth_item(item_id=item_id)
-            response = response["records"][0]
             # 获取日期 dateIssued
             date = parse_datestring(response["originInfo"]["sortDate"])
             year = str(date.year)
             date = date.strftime("%B %d, %Y")
             # text_url
             text_url = response["location"]["textUrl"][0]
+            # api_url
+            api_url = response["location"]["apiUrl"][0]
+            # pdf_url
+            pdf_url = response["location"]["pdfUrl"][0]
             return {
                 "year": year,
                 "date": date,
                 "text_url": text_url,
+                "api_url": api_url,
+                "pdf_url": pdf_url,
             }
         except Exception as e:
-            msg = "Error {} occured when fetching item content".format(repr(e))
+            msg = "Error {} occured when fetching item {} info.".format(repr(e), item_id)
             print(msg)
             return {
                 "year": "Unknown",
                 "date": "",
                 "text_url": "",
+                "api_url": "",
+                "pdf_url": "",
             }
 
     def fetch_title_all_items(self, title_info: str):
@@ -163,21 +172,21 @@ class FRASERFRBSpeechScraper:
         # 演讲人
         speaker = title_info["title"].split("of")[-1].strip()
         # 搜集每个讲话的数据, 直接使用title-toc接口获取 (无法调通)
-        try:
-            if (
-                not isinstance(title_info["title_id"], str)
-                or not title_info["title_id"].isdigit()
-            ):
-                msg = "{} is not title id.".format(title_info["title_id"])
-                return {}
-            result = FRESERScraper.fecth_title_toc(title_id=int(title_info["title_id"]))
-            if result and len(result) != 0:
-                return result
-        except Exception as e:
-            msg = "通过fetch title toc接口获取title_id: {}失败. Error: {}".format(
-                title_info["title_id"], repr(e)
-            )
-            pass
+        # try:
+        #     if (
+        #         not isinstance(title_info["title_id"], str)
+        #         or not title_info["title_id"].isdigit()
+        #     ):
+        #         msg = "{} is not title id.".format(title_info["title_id"])
+        #         return {}
+        #     result = FRESERScraper.fecth_title_toc(title_id=int(title_info["title_id"]))
+        #     if result and len(result) != 0:
+        #         return result
+        # except Exception as e:
+        #     msg = "通过fetch title toc接口获取title_id: {}失败. Error: {}".format(
+        #         title_info["title_id"], repr(e)
+        #     )
+        #     pass
 
         # 开始爬取每篇报告的text_url
         self.driver.get(title_info["href"])
@@ -206,13 +215,13 @@ class FRASERFRBSpeechScraper:
                 )
             )
             # 找到所有条目，搜集链接
-            items = self.driver.find_elements(
+            item = self.driver.find_element(
                 By.XPATH,
-                "//div[@class='browse-by-list list']/ul[@data-section='{section_name}']/li/a[@data-id and @id]".format(
+                "//div[@class='browse-by-list list']/ul[@data-section='{section_name}']/li[last()]/a[@data-id and @id]".format(
                     section_name=decade.text
                 ),
             )
-            for item in items:
+            while item:
                 try:
                     # 标题
                     item_name = item.text.strip()
@@ -237,13 +246,23 @@ class FRASERFRBSpeechScraper:
                         )
                         result.setdefault(speech["year"], []).append(speech)
                         print(
-                            "Item {item_id}. {speaker} | {title} | {date} was collected.".format(
+                            "Item {item_id}. {speaker} | {title} | {date} 的信息已收集.".format(
                                 item_id=item_id,
                                 speaker=speaker,
                                 title=item_name,
                                 date=speech["date"],
                             )
                         )
+                    else:
+                        print(
+                            "Item {item_id}. {speaker} | {title} | {date} 不在收集范围内.".format(
+                                item_id=item_id,
+                                speaker=speaker,
+                                title=item_name,
+                                date=speech["date"],
+                            )
+                        )
+                        break
                 except StaleElementReferenceException as e:  # type: ignore
                     msg = f"item failed. {repr(e)}"
                     print(msg)
@@ -251,7 +270,15 @@ class FRASERFRBSpeechScraper:
                     msg = f"item {item} failed. {repr(e)}"
                     print(msg)
                     continue
-
+                # 找到上一个兄弟节点
+                preceding_siblings = item.find_elements(
+                    By.XPATH,
+                    "..//preceding-sibling::li[1]/a[@data-id and @id]",
+                )
+                if len(preceding_siblings)==0:
+                    break
+                else:
+                    item = preceding_siblings[0]
         return result
 
     def extract_speech_infos(self):
@@ -293,7 +320,8 @@ class FRASERFRBSpeechScraper:
             msg = f"{president} has {len(speeches)} speeches collected."
             print("=" * 80)
 
-        self.speech_infos_by_year = sort_speeches_dict(speech_infos_by_year)
+        speech_infos_by_year = sort_speeches_dict(speech_infos_by_year)
+        self.speech_infos_by_year = speech_infos_by_year
         # 更新基本信息.
         json_update(
             self.SAVE_PATH + f"{self.__frb_name__}_speech_infos.json",
@@ -382,6 +410,7 @@ class FRASERFRBSpeechScraper:
                     self.SAVE_PATH + f"{self.__frb_name__}_speeches_{year}.json",
                     single_year_speeches,
                 )
+                print("-" * 40 + f' {self.__frb_name__}: {year} -> {len(single_year_infos)} have saved.' + '-'*40)
             print(
                 "{} speeches of {} collected.".format(len(speeches_by_year[year]), year)
             )
@@ -400,31 +429,55 @@ class FRASERFRBSpeechScraper:
             dict: 按自然年份整理的讲话数据. dict<str, list[dict]>
         """
         # 先收集历任行长演讲的基本信息（不含正文和highlights等）
+        # if os.path.exists(
+        #     self.SAVE_PATH + f"{self.__frb_name__}_speech_infos.json"
+        # ):
+        #     # 若已经存在基本信息，则加载进来.
+        #     speech_infos = json_load(
+        #         self.SAVE_PATH + f"{self.__frb_name__}_speech_infos.json"
+        #     )
+        #     # 查看已有的最新的演讲日期
+        #     latest_year = max([k for k, _ in speech_infos.items() if k.isdigit()])
+        #     existed_lastest = max(
+        #         [
+        #             parse_datestring(speech_info["date"])
+        #             for speech_info in speech_infos[latest_year]
+        #         ]
+        #     ).strftime("%b %d, %Y")
+        #     print("Speech Infos Data already exists, skip collecting infos.")
+        #     # existed_lastest = "October 01, 2023"
+        # else:
+        # 否则，去获取基本信息
+        speech_infos = self.extract_speech_infos()
+        if self.save:
+            json_dump(
+                speech_infos,
+                self.SAVE_PATH + f"{self.__frb_name__}_speech_infos.json",
+            )
+
+        # 最新日期
         if os.path.exists(
-            self.SAVE_PATH + f"{self.__frb_name__}_speech_infos.json"
+            self.SAVE_PATH + f"{self.__frb_name__}_speeches.json"
         ):
-            # 若已经存在基本信息，则加载进来.
-            speech_infos = json_load(
-                self.SAVE_PATH + f"{self.__frb_name__}_speech_infos.json"
+            # 获取最新的演讲日期
+            existed_speeches = json_load(
+                self.SAVE_PATH + f"{self.__frb_name__}_speeches.json"
             )
             # 查看已有的最新的演讲日期
-            latest_year = max([k for k, _ in speech_infos.items() if k.isdigit()])
-            existed_lastest = max(
-                [
-                    parse_datestring(speech_info["date"])
-                    for speech_info in speech_infos[latest_year]
-                ]
-            ).strftime("%b %d, %Y")
-            print("Speech Infos Data already exists, skip collecting infos.")
-            # existed_lastest = "October 01, 2023"
+            existed_speech_dates = [
+                k for k, _ in existed_speeches.items() if k.isdigit()
+            ]
+            if existed_speech_dates:
+                latest_year = max(existed_speech_dates)
+                existed_lastest = max(
+                    [
+                        parse_datestring(speech["date"])
+                        for speech in existed_speeches[latest_year]
+                    ]
+                ).strftime("%b %d, %Y")
+            else:
+                existed_lastest = "Jan. 01, 2006"
         else:
-            # 否则，去获取基本信息
-            speech_infos = self.extract_speech_infos()
-            if self.save:
-                json_dump(
-                    speech_infos,
-                    self.SAVE_PATH + f"{self.__frb_name__}_speech_infos.json",
-                )
             existed_lastest = "Jan. 01, 2006"
 
         # 提取演讲正文内容
@@ -435,6 +488,7 @@ class FRASERFRBSpeechScraper:
         speeches = self.extract_speeches(speech_infos, existed_lastest)
         speeches = sort_speeches_dict(speeches)
         json_update(self.SAVE_PATH + f"{self.__frb_name__}_speeches.json", speeches)
+        print('-'*50 + f'Speeches of {self.__frb_name__} have extracted.' + '-'*50)
         return speeches
 
 
@@ -460,66 +514,68 @@ SERIES_MAPPING = [
     #     "series_id": 9014,
     #     "frb_name": "boston",
     # },
-    {
-        "url": "https://fraser.stlouisfed.org/series/statements-speeches-presidents-federal-reserve-bank-new-york-6744",
-        "series_id": 6744,
-        "frb_name": "newyork",
-    },
-    {
-        "url": "https://fraser.stlouisfed.org/series/statements-speeches-presidents-federal-reserve-bank-philadelphia-4516",
-        "series_id": 4516,
-        "frb_name": "philadelphia",
-    },
-    {
-        "url": "https://fraser.stlouisfed.org/series/statements-speeches-presidents-federal-reserve-bank-cleveland-3764",
-        "series_id": 3764,
-        "frb_name": "cleveland",
-    },
-    {
-        "url": "https://fraser.stlouisfed.org/series/statements-speeches-presidents-federal-reserve-bank-richmond-6826",
-        "series_id": 6826,
-        "frb_name": "richmond",
-    },
-    {
-        "url": "https://fraser.stlouisfed.org/series/statements-speeches-presidents-federal-reserve-bank-atlanta-5168",
-        "series_id": 5168,
-        "frb_name": "atlanta",
-    },
-    {
-        "url": "https://fraser.stlouisfed.org/series/statements-speeches-presidents-federal-reserve-bank-chicago-5968",
-        "series_id": 5968,
-        "frb_name": "chicago",
-    },
-    {
-        "url": "https://fraser.stlouisfed.org/series/statements-speeches-presidents-federal-reserve-bank-st-louis-3767",
-        "series_id": 3767,
-        "frb_name": "st-louis",
-    },
+    # {
+    #     "url": "https://fraser.stlouisfed.org/series/statements-speeches-presidents-federal-reserve-bank-new-york-6744",
+    #     "series_id": 6744,
+    #     "frb_name": "newyork",
+    # },
+    # {
+    #     "url": "https://fraser.stlouisfed.org/series/statements-speeches-presidents-federal-reserve-bank-philadelphia-4516",
+    #     "series_id": 4516,
+    #     "frb_name": "philadelphia",
+    # },
+    # {
+    #     "url": "https://fraser.stlouisfed.org/series/statements-speeches-presidents-federal-reserve-bank-cleveland-3764",
+    #     "series_id": 3764,
+    #     "frb_name": "cleveland",
+    # },
+    # TODO 待重新收集
+    # {
+    #     "url": "https://fraser.stlouisfed.org/series/statements-speeches-presidents-federal-reserve-bank-richmond-6826",
+    #     "series_id": 6826,
+    #     "frb_name": "richmond",
+    # },
+    # # TODO 先暂时跳过
+    # {
+    #     "url": "https://fraser.stlouisfed.org/series/statements-speeches-presidents-federal-reserve-bank-atlanta-5168",
+    #     "series_id": 5168,
+    #     "frb_name": "atlanta",
+    # },
+    # {
+    #     "url": "https://fraser.stlouisfed.org/series/statements-speeches-presidents-federal-reserve-bank-chicago-5968",
+    #     "series_id": 5968,
+    #     "frb_name": "chicago",
+    # },
+    # {
+    #     "url": "https://fraser.stlouisfed.org/series/statements-speeches-presidents-federal-reserve-bank-st-louis-3767",
+    #     "series_id": 3767,
+    #     "frb_name": "st-louis",
+    # },
     {
         "url": "https://fraser.stlouisfed.org/series/statements-speeches-presidents-federal-reserve-bank-minneapolis-3765",
         "series_id": 3765,
         "frb_name": "minneapolis",
     },
-    {
-        "url": "https://fraser.stlouisfed.org/series/statements-speeches-presidents-federal-reserve-bank-kansas-city-9271",
-        "series_id": 9271,
-        "frb_name": "kansas-city",
-    },
-    {
-        "url": "https://fraser.stlouisfed.org/series/statements-speeches-presidents-federal-reserve-bank-dallas-6145",
-        "series_id": 6145,
-        "frb_name": "dallas",
-    },
-    {
-        "url": "https://fraser.stlouisfed.org/series/statements-speeches-presidents-federal-reserve-bank-san-francisco-3766",
-        "series_id": 3766,
-        "frb_name": "san-francisco",
-    },
-    {
-        "url": "https://fraser.stlouisfed.org/series/statements-speeches-federal-open-market-committee-participants-3761",
-        "series_id": 3761,
-        "frb_name": "fomc_participants",
-    },
+    # {
+    #     "url": "https://fraser.stlouisfed.org/series/statements-speeches-presidents-federal-reserve-bank-kansas-city-9271",
+    #     "series_id": 9271,
+    #     "frb_name": "kansas-city",
+    # },
+    # {
+    #     "url": "https://fraser.stlouisfed.org/series/statements-speeches-presidents-federal-reserve-bank-dallas-6145",
+    #     "series_id": 6145,
+    #     "frb_name": "dallas",
+    # },
+    # {
+    #     "url": "https://fraser.stlouisfed.org/series/statements-speeches-presidents-federal-reserve-bank-san-francisco-3766",
+    #     "series_id": 3766,
+    #     "frb_name": "san-francisco",
+    # },
+    # {
+    #     "url": "https://fraser.stlouisfed.org/series/statements-speeches-federal-open-market-committee-participants-3761",
+    #     "series_id": 3761,
+    #     "frb_name": "fomc_participants",
+    # },
 ]
 
 SERIES_URL_PREFIX = "https://fraser.stlouisfed.org/series/{series_id}"
@@ -527,11 +583,12 @@ SERIES_URL_PREFIX = "https://fraser.stlouisfed.org/series/{series_id}"
 
 def test():
     for item in SERIES_MAPPING:
-        print("=====" * 20)
-        print("{} is starting...".format(item["frb_name"]))
+        print("===" * 20 + "Start scraper {} ".format(item["frb_name"]) + "===" * 20)
+        print("\n")
         scraper = FRASERFRBSpeechScraper(url=item["url"], frb_name=item["frb_name"])
         scraper.collect()
-        print("{} over.".format(item["frb_name"]))
+        print("\n")
+        print("===" * 20 + "Scraper {} end.".format(item["frb_name"]) + "===" * 20)
 
 
 if __name__ == "__main__":

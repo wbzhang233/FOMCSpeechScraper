@@ -19,6 +19,7 @@ from scraper import SpeechScraper
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.remote.webelement import WebElement
 from utils.file_saver import json_dump, json_load, json_update
 
 PROMPT = """
@@ -69,41 +70,47 @@ class RichmondSpeechScraper(SpeechScraper):
                 # print(f"Year Item {year_name} is not clickable. {repr(e)}")
                 print(repr(e))
 
-    def click_years(self, accordian):
-        title_element = accordian.find_element(
+    def click_years(self):
+        title_element = self.driver.find_element(
             By.XPATH,
-            "//li//a[starts-with(@href, 'javascript:;')]",
+            "//div[contains(@class,'component')]/ul[@class='accordion']/li",  # //a[starts-with(@href, 'javascript:;')]
         )
 
         while title_element:
-            title_text = title_element.text.strip()
-            year, num = title_text.split(" ")
-            if not (year.isdigit() and int(year) == 2024):
-                continue
             try:
-                # 检查内容区域是否已经展开
-                content_div = title_element.find_element(
-                    By.XPATH, "./following-sibling::div[contains(@class, 'content')]"
-                )
-                if content_div.get_attribute("style") != "display: block;":
-                    # 如果内容区域没有展开，则点击标题
-                    title_element.click()
-                    # 等待内容区域展开
-                    time.sleep
-                    WebDriverWait(self.driver, 5).until(
-                        EC.text_to_be_present_in_element(
-                            (
-                                By.XPATH,
-                                "./following-sibling::div[contains(@class, 'content')]",
-                            ),
-                            "data-id",
-                        )
-                    )
+                # 获取标题，太早的不点击
+                year_title = title_element.find_element(
+                    By.CSS_SELECTOR, "a[href]"
+                ).text.strip()
+                year_str = year_title[0:4]
+                if year_str.isdigit() and int(year_str)<2024:
+                    break
+                # 如果内容区域没有展开，则点击标题
+                title_element.click()
+                # 等待内容区域展开
+                time.sleep(1.0)
+                # WebDriverWait(self.driver, 3).until(
+                #     EC.visibility_of_all_elements_located(
+                #         (
+                #             By.XPATH,
+                #             "//ul[@class='accordion']/li/div[contains(@class, 'content')]",
+                #         )
+                #     )
+                # )
             except Exception as e:
                 print(
                     f"Error when clicking year {title_element.text.strip()}. {repr(e)}"
                 )
                 pass
+            # 寻找下一个按键
+            following_siblings = title_element.find_elements(
+                By.XPATH, "following-sibling::li[1]"
+            )
+            if len(following_siblings)==0:
+                break
+            else:
+                title_element = following_siblings[0]
+        print("=="*20 + "All years title was expanded." + "=="*20)
 
     def extract_speech_infos(self):
         # 点击view more
@@ -121,10 +128,7 @@ class RichmondSpeechScraper(SpeechScraper):
             "/html/body/div[1]/main/div/div/div/div[2]/div[2]/div[1]/ul",
         )
         # option 1:
-        self.click_years(accordian)
-
-        # option 2:
-        # self.expand_all(accordian)
+        self.click_years()
 
         speeches_by_year = accordian.find_elements(By.TAG_NAME, "li")
         speech_infos_by_year = {}
@@ -335,9 +339,9 @@ def test_extract_single_speech():
 
 
 def test():
-    richmond = RichmondSpeechScraper()
+    richmond = RichmondSpeechScraper(auto_save=True)
     result = richmond.collect()
-    print(result)
+    # print(result)
 
 
 if __name__ == "__main__":

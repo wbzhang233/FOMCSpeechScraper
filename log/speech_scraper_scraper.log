@@ -403,3 +403,39 @@
 2024-10-28 18:36:25,655 - speech_scraper - INFO - 2024 updated.
 2024-10-28 19:38:38,214 - speech_scraper - INFO - Speech Infos Data already exists, skip collecting infos.
 2024-10-30 09:33:01,518 - speech_scraper - ERROR - JSON file was not existed. New file ../../data/fed_speeches/stlouis_fed_speeches/stlouis_speeches.json created.
+2024-11-15 09:54:00,310 - speech_scraper - ERROR - JSON file was not existed. New file ../data/fed_speeches/bog_fed_speeches/bog_fed_speeches_2021.json created.
+2024-11-15 09:57:21,568 - speech_scraper - ERROR - JSON file was not existed. New file ../data/fed_speeches/bog_fed_speeches/bog_fed_speeches_2020.json created.
+2024-11-15 10:03:18,343 - speech_scraper - ERROR - JSON file was not existed. New file ../data/fed_speeches/bog_fed_speeches/bog_fed_speeches_2019.json created.
+2024-11-15 10:06:57,083 - speech_scraper - ERROR - JSON file was not existed. New file ../data/fed_speeches/bog_fed_speeches/bog_fed_speeches_2018.json created.
+2024-11-15 10:12:16,656 - speech_scraper - ERROR - JSON file was not existed. New file ../data/fed_speeches/bog_fed_speeches/bog_fed_speeches_2017.json created.
+2024-11-15 10:16:00,314 - speech_scraper - ERROR - JSON file was not existed. New file ../data/fed_speeches/bog_fed_speeches/bog_fed_speeches_2016.json created.
+2024-11-15 10:20:31,860 - speech_scraper - ERROR - JSON file was not existed. New file ../data/fed_speeches/bog_fed_speeches/bog_fed_speeches_2015.json created.
+2024-11-15 10:23:58,530 - speech_scraper - ERROR - JSON file was not existed. New file ../data/fed_speeches/bog_fed_speeches/bog_fed_speeches_2014.json created.
+2024-11-15 10:28:29,420 - speech_scraper - ERROR - JSON file was not existed. New file ../data/fed_speeches/bog_fed_speeches/bog_fed_speeches_2013.json created.
+2024-11-15 11:06:00,402 - speech_scraper - ERROR - JSON file was not existed. New file ../data/fed_speeches/bog_fed_speeches/bog_fed_speeches_2012.json created.
+2024-11-18 11:47:03,316 - speech_scraper - ERROR - JSON file was not existed. New file ../data/fed_speeches/bog_fed_speeches/bog_fed_speeches.json created.
+2024-11-21 15:56:45,817 - speech_scraper - ERROR - Error occurred when sorting speech records. Error: AttributeError("'NoneType' object has no attribute 'items'")
+2024-11-21 15:57:12,109 - speech_scraper - ERROR - Error occurred when sorting speech records. Error: TypeError("parse_datestring() got an unexpected keyword argument 'reverse'")
+2024-11-22 16:06:14,715 - speech_scraper - ERROR - JSON file was not existed. New file newyork_fed_speeches\newyork_fed_speeches_2024.json created.
+2024-11-22 16:06:14,719 - speech_scraper - ERROR - JSON file was not existed. New file newyork_fed_speeches\newyork_fed_speeches_all.json created.
+2024-11-22 17:10:11,377 - speech_scraper - ERROR - Error occurred when sorting speech records. Error: AttributeError("'NoneType' object has no attribute 'items'")
+2024-11-22 17:11:51,015 - speech_scraper - ERROR - Error occurred when sorting speech records. Error: AttributeError("'NoneType' object has no attribute 'items'")
+2024-11-22 17:20:23,864 - speech_scraper - ERROR - JSON file was not existed. New file ../data/fed_speeches/newyork_fed_speeches/newyork_fed_speeches.json created.
+2024-11-22 18:06:22,857 - speech_scraper - ERROR - Error occurred when sorting speech records. Error: KeyError('speaker')
+2024-11-22 18:28:47,962 - speech_scraper - ERROR - Error occurred when sorting speech records. Error: KeyError('speaker')
+2024-11-22 18:28:49,434 - speech_scraper - ERROR - Error occurred when sorting speech records. Error: KeyError('speaker')
+2024-11-22 18:28:52,091 - speech_scraper - ERROR - Error occurred when sorting speech records. Error: KeyError('speaker')
+2024-11-22 18:28:57,095 - speech_scraper - ERROR - Error occurred when sorting speech records. Error: ValueError("invalid literal for int() with base 10: '2017-19'")
+2024-11-22 18:28:58,515 - speech_scraper - ERROR - Error occurred when sorting speech records. Error: KeyError('speaker')
+2024-11-22 18:29:00,812 - speech_scraper - ERROR - Error occurred when sorting speech records. Error: KeyError('speaker')
+2024-11-22 18:29:05,836 - speech_scraper - ERROR - Error occurred when sorting speech records. Error: TypeError("string indices must be integers, not 'str'")
+2024-11-22 18:29:06,990 - speech_scraper - ERROR - Error occurred when sorting speech records. Error: ValueError("invalid literal for int() with base 10: 'Unknown'")
+2024-11-22 18:29:08,234 - speech_scraper - ERROR - Error occurred when sorting speech records. Error: ValueError("invalid literal for int() with base 10: 'Unknown'")
+2024-11-23 19:03:20,896 - speech_scraper - INFO - 2017 updated.
+2024-11-23 19:03:21,650 - speech_scraper - INFO - 2018 updated.
+2024-11-23 19:03:22,540 - speech_scraper - INFO - 2019 updated.
+2024-11-23 19:03:23,612 - speech_scraper - INFO - 2020 updated.
+2024-11-23 19:03:24,717 - speech_scraper - INFO - 2021 updated.
+2024-11-23 19:03:26,431 - speech_scraper - INFO - 2022 updated.
+2024-11-23 19:03:28,385 - speech_scraper - INFO - 2023 updated.
+2024-11-23 19:03:30,337 - speech_scraper - INFO - 2024 updated.

@@ -389,28 +389,28 @@ class BostonSpeechScraper(SpeechScraper):
             dict: 演讲内容 dict<year, list[dict]>
         """
         # 提取每年演讲的基本信息（不含正文和highlights等）
-        if os.path.exists(self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"):
-            speech_infos = json_load(
-                self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
+        # if os.path.exists(self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"):
+        #     speech_infos = json_load(
+        #         self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
+        #     )
+        #     # 查看已有的最新的演讲日期
+        #     # latest_year = max([k for k, _ in speech_infos.items() if k.isdigit()])
+        #     # dates = []
+        #     # for speech_info in speech_infos[latest_year]:
+        #     #     speech_date = parse_datestring(speech_info["date"])
+        #     #     if isinstance(speech_date, datetime):
+        #     #         dates.append(speech_date)
+        #     # existed_lastest = max(dates).strftime("%b %d, %Y")
+        #     existed_lastest = "Jan 01, 2006"
+        #     logger.info("Speech Infos Data already exists, skip collecting infos.")
+        # else:
+        speech_infos = self.extract_speech_infos()
+        if self.save:
+            json_dump(
+                speech_infos,
+                self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json",
             )
-            # 查看已有的最新的演讲日期
-            # latest_year = max([k for k, _ in speech_infos.items() if k.isdigit()])
-            # dates = []
-            # for speech_info in speech_infos[latest_year]:
-            #     speech_date = parse_datestring(speech_info["date"])
-            #     if isinstance(speech_date, datetime):
-            #         dates.append(speech_date)
-            # existed_lastest = max(dates).strftime("%b %d, %Y")
-            existed_lastest = "Jan 01, 2006"
-            logger.info("Speech Infos Data already exists, skip collecting infos.")
-        else:
-            speech_infos = self.extract_speech_infos()
-            if self.save:
-                json_dump(
-                    speech_infos,
-                    self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json",
-                )
-            existed_lastest = "Jan 01, 2006"
+        existed_lastest = "Oct 25, 2024"
 
         # 提取演讲正文内容
         speeches = self.extract_speeches(speech_infos, existed_lastest)

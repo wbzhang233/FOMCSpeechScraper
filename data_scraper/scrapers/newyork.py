@@ -40,9 +40,7 @@ class NewYorkSpeechScraper(SpeechScraper):
         self.speech_infos_filename = (
             self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
         )
-        self.speeches_filename = (
-            self.SAVE_PATH + f"{self.__fed_name__}_fed_speeches.json"
-        )
+        self.speeches_filename = self.SAVE_PATH + f"{self.__fed_name__}_speeches.json"
         self.failed_speech_infos_filename = (
             self.SAVE_PATH + f"{self.__fed_name__}_failed_speech_infos.json"
         )
@@ -144,7 +142,11 @@ class NewYorkSpeechScraper(SpeechScraper):
                 "/html/body/div/div/div[@class='ts-contact-info'][1]",
             )
             date_text = date_elemments[0].text.strip()
-            posted_date = [line.replace("Posted", "").strip() for line in date_text.split("\n") if "Posted" in line]
+            posted_date = [
+                line.replace("Posted", "").strip()
+                for line in date_text.split("\n")
+                if "Posted" in line
+            ]
             date = posted_date[0] if posted_date else date_text.split("\n")[0]
         except Exception as e:
             print("Error {} occured when extract speech date.".format(repr(e)))
@@ -232,8 +234,11 @@ class NewYorkSpeechScraper(SpeechScraper):
             single_year_speeches = []
             for speech_info in single_year_infos:
                 # 跳过start_date之前的演讲
-                if parse_datestring(speech_info["date"]) <= start_date \
-                or parse_datestring(speech_info["date"]) >= datetime.datetime(2017, 1, 1):
+                if parse_datestring(
+                    speech_info["date"]
+                ) <= start_date or parse_datestring(
+                    speech_info["date"]
+                ) >= datetime.datetime(2017, 1, 1):
                     logger.info(
                         "Skip speech {date} {title} cause' it's earlier than start_date.".format(
                             date=speech_info["date"],
@@ -298,8 +303,7 @@ class NewYorkSpeechScraper(SpeechScraper):
             + "==" * 20
         )
         # 提取每年演讲的基本信息（不含正文和highlights等）
-        # speech_infos = self.extract_speech_infos(mode=mode)
-        speech_infos = json_load(self.speech_infos_filename)
+        speech_infos = self.extract_speech_infos(mode=mode)
         # 提取已存储的演讲
         if os.path.exists(self.speeches_filename):
             existed_speeches = json_load(self.speeches_filename)

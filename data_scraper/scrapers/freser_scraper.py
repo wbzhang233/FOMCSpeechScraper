@@ -179,9 +179,10 @@ class FRESERScraper:
                 params=params,
                 headers={"X-API-Key": FRESERScraper.API_KEY},
             )
-            result = json.loads(response.content.decode())
+            response = json.loads(response.content.decode())
+            result = response["records"][0]
         except Exception as e:
-            logger.error(f"请求失败，请检查网络连接或参数是否正确。{repr(e)}")
+            logger.error(f"获取Item {item_id}的信息遇到错误. {repr(e)}")
             result = {}
 
         return result

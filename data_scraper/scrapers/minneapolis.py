@@ -18,7 +18,7 @@ from datetime import datetime
 
 from data_scraper.scrapers.scraper import SpeechScraper
 from utils.common import parse_datestring
-from utils.file_saver import json_dump, json_load, json_update
+from utils.file_saver import json_dump, json_load, json_update, sort_speeches_dict
 from utils.logger import logger
 
 today = datetime.today()
@@ -196,6 +196,9 @@ class MinneapolisSpeechScraper(SpeechScraper):
                         )
                     )
                 single_year_speeches.append(single_speech)
+            single_year_speeches = sorted(
+                single_year_speeches, key=lambda x: parse_datestring(x["date"]), reverse=True
+            )
             speeches_by_year[year] = single_year_speeches
             if self.save:
                 json_update(
@@ -210,6 +213,7 @@ class MinneapolisSpeechScraper(SpeechScraper):
                 failed, self.SAVE_PATH + f"{self.__fed_name__}_failed_speech_infos.json"
             )
             # 更新已存储的演讲内容
+            speeches_by_year = sort_speeches_dict(speeches_by_year)
             json_update(
                 self.SAVE_PATH + f"{self.__fed_name__}_speeches.json", speeches_by_year
             )
