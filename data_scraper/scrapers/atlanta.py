@@ -25,7 +25,7 @@ from selenium.common.exceptions import TimeoutException
 from bs4 import BeautifulSoup
 
 from data_scraper.scrapers.scraper import SpeechScraper
-from utils.common import parse_datestring
+from utils.common import get_latest_speech_date, parse_datestring
 from utils.file_saver import (
     json_load,
     json_update,
@@ -37,7 +37,6 @@ from utils.logger import get_logger
 
 class AtlantaSpeechScraper(SpeechScraper):
     URL = "https://www.atlantafed.org/news/speeches"
-    # URL = "https://www.atlantafed.org/about/atlantafed/outreach/events"
     __fed_name__ = "atlanta"
     __name__ = f"{__fed_name__.title()}SpeechScraper"
     SAVE_PATH = f"../../data/fed_speeches/{__fed_name__}_fed_speeches/"
@@ -53,6 +52,14 @@ class AtlantaSpeechScraper(SpeechScraper):
         os.makedirs(self.SAVE_PATH, exist_ok=True)
         print(f"{self.SAVE_PATH} has been created.")
         self.save = auto_save
+        # 保存文件的文件名
+        self.speech_infos_filename = (
+            self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
+        )
+        self.speeches_filename = self.SAVE_PATH + f"{self.__fed_name__}_speeches.json"
+        self.failed_speech_infos_filename = (
+            self.SAVE_PATH + f"{self.__fed_name__}_failed_speech_infos.json"
+        )
 
     @staticmethod
     def parse_speaker(speech_content: WebElement):
@@ -235,10 +242,7 @@ class AtlantaSpeechScraper(SpeechScraper):
 
     def extract_speech_infos(self, mode: str = "history"):
         """Extract speech infos from the website."""
-        # 获取下拉框控件的所有选项
-        print(
-            "==" * 25 + "Start scraping speech infos of {self.__fed_name__}" + "=" * 25
-        )
+        self.driver.get(self.URL)
         # 获取选项中的所有年份
         years = sorted(
             [
@@ -250,7 +254,6 @@ class AtlantaSpeechScraper(SpeechScraper):
             ],
             reverse=True,
         )
-
         # 从日期最近的开始爬取 已存储的中所没有的.
         speech_infos_by_year = {}
         for i, year in enumerate(years):
@@ -268,16 +271,10 @@ class AtlantaSpeechScraper(SpeechScraper):
                 )
                 + "-" * 40
             )
+
         # 与已存储的信息做合并更新
-        json_update(
-            self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json",
-            speech_infos_by_year,
-        )
-        print(
-            "=" * 25
-            + f"All speech infos of {self.__fed_name__} fetched and saved."
-            + "=" * 25
-        )
+        if self.save:
+            json_update(self.speech_infos_filename, speech_infos_by_year)
         return speech_infos_by_year
 
     def extract_speeches(
@@ -342,37 +339,28 @@ class AtlantaSpeechScraper(SpeechScraper):
         Returns:
             _type_: _description_
         """
+        print(
+            "==" * 25 + "Start scraping speech infos of {self.__fed_name__}" + "=" * 25
+        )
         # 获取最新的演讲信息
         speech_infos = self.extract_speech_infos(mode=mode)
-        if self.save:
-            json_update(
-                self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json", speech_infos
-            )
-
-        # 查看已有的最新的演讲日期
-        existed_speeches_filepath = (
-            self.SAVE_PATH + f"{self.__fed_name__}_speeches.json"
+        print(
+            "=" * 25
+            + f"All speech infos of {self.__fed_name__} fetched and saved."
+            + "=" * 25
         )
-        if os.path.exists(existed_speeches_filepath):
-            # 已存在的演讲日期
-            existed_speeches = json_load(existed_speeches_filepath)
-            # 按年整理的speeches
-            speech_years = [k for k, _ in existed_speeches.items()]
-            latest_year = max(speech_years)
-            # 早于已存在日期的则不再收集.
-            existed_lastest = max(
-                [
-                    parse_datestring(speech["date"])
-                    for speech in existed_speeches[latest_year]
-                ]
-            ).strftime("%b %d, %Y")
+        # 查看已有的最新的演讲日期
+        if os.path.exists(self.speeches_filename):
+            # 已存在的演讲
+            existed_speeches = json_load(self.speeches_filename)
+            existed_lastest = get_latest_speech_date(existed_speeches)
         else:
             existed_lastest = "Jan 01, 2006"
 
         # 提取演讲内容
         speeches = self.extract_speeches(speech_infos, existed_lastest)
         if self.save:
-            json_update(self.SAVE_PATH + f"{self.__fed_name__}_speeches.json", speeches)
+            json_update(self.speeches_filename, speeches)
         return speeches
 
 
