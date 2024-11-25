@@ -539,18 +539,7 @@ def test():
     scraper = ChicagoSpeechScraper()
     scraper.collect()
 
-def drop_duplicates_speech_info():
-    filepath = "../../data/fed_speeches/chicago_fed_speeches/chicago_speech_infos.json"
-    existed = json_load(filepath)
-    unique = set()
-    result = {}
-    for year, single_year_infos in existed.items():
-        for info in single_year_infos:
-            tag = info['speaker'] + info['date']
-            if tag not in unique:
-                unique.add(tag)
-                result.setdefault(year, []).append(info)
-    json_dump(result, filepath)
+
 
 
 def test_purified_datestr():

@@ -44,10 +44,10 @@ def update_records(
         # 使用 `sorted()` 函数根据 `date` 字段进行升序排序
         if sort_field == "date":
             sorted_records = sorted(
-                unique_list, key=lambda x: parse_datestring(x["date"])
+                unique_list, key=lambda x: parse_datestring(x["date"], reverse=True)
             )
         else:
-            sorted_records = sorted(unique_list, key=lambda x: x[sort_field])
+            sorted_records = sorted(unique_list, key=lambda x: x[sort_field], reverse=True)
         return sorted_records
     except Exception as e:
         msg = f"Records update failed. Error: {repr(e)}"
@@ -190,17 +190,21 @@ def sort_speeches_dict(
     try:
         result = {}
         for year, single_year_speeches in speeches_by_year.items():
-            # 过滤掉没有日期、标题或者作者的记录
+            if not year.isdigit():
+                continue
+            # 使用required_keys 过滤掉没有日期、标题或者作者的记录
             single_year = [
                 unify_speech_date(speech)
                 for speech in single_year_speeches
                 if all([speech.get(key) for key in required_keys])
             ]
+            # 按日期降序排序
             result[year] = sorted(
                 single_year,
                 key=lambda x: parse_datestring(x[sort_filed]),
                 reverse=True,
             )
+        # 按年降序排序
         result = OrderedDict(
             sorted(result.items(), key=lambda x: int(x[0]), reverse=True)
         )
@@ -211,13 +215,28 @@ def sort_speeches_dict(
     return result
 
 
-def sort_speeches_app(district: str = "sanfrancisco"):
+def sort_speeches_app(district: str = "dallas"):
     filepath = f"../data/fed_speeches/{district}_fed_speeches/{district}_speeches.json"
     speeches = json_load(filepath)
     speeches = sort_speeches_dict(speeches)
     json_dump(speeches, filepath)
     print(f"{district}_speeches have sorted.")
 
+
+def drop_duplicates_speech_info_app(district: str = "dallas", tag_fields: list=['speaker', 'date', 'title']):
+    filepath = (
+        f"../data/fed_speeches/{district}_fed_speeches/{district}_speech_infos.json"
+    )
+    existed = json_load(filepath)
+    unique = set()
+    result = {}
+    for year, single_year_infos in existed.items():
+        for info in single_year_infos:
+            tag = "|".join([info.get(field) for field in tag_fields])
+            if tag not in unique:
+                unique.add(tag)
+                result.setdefault(year, []).append(info)
+    json_dump(result, filepath)
 
 def test_update_dict():
     existed = {
@@ -260,4 +279,5 @@ def test_json_load():
 if __name__ == "__main__":
     # test_json_load()
     # test_update_dict()
-    sort_speeches_app()
+    # sort_speeches_app()
+    drop_duplicates_speech_info_app()

@@ -30,8 +30,10 @@ date_patterns = [
 """,  # %b. %d, %Y
 ]
 
+STANDRAD_DATE_FORMAT = "%B %d, %Y"
 
-def parse_datestring(date_str: str, format: str=None) -> datetime:
+
+def parse_datestring(date_str: str, format: str=None, silent:bool=False) -> datetime:
     """日期字符串标准化
 
     Args:
@@ -46,7 +48,8 @@ def parse_datestring(date_str: str, format: str=None) -> datetime:
         result = pd.to_datetime(date_str, format=format).to_pydatetime()
         return result
     except Exception as e:
-        print("date string {} transformed to datetime failed. {}".format(date_str, repr(e)))
+        if not silent:
+            print("date string {} transformed to datetime failed. {}".format(date_str, repr(e)))
         pass
 
     try:
@@ -63,11 +66,13 @@ def parse_datestring(date_str: str, format: str=None) -> datetime:
         return result
     except ValueError as e:
         msg = f"Parse datestring {date_str} failed. {repr(e)}"
-        print(msg)
+        if not silent:
+            print(msg)
         raise ValueError(msg=msg)
     except Exception as e:
         msg = f"Parse datestring {date_str} failed. {repr(e)}"
-        print(date_str + f" | {repr(e)}")
+        if not silent:
+            print(date_str + f" | {repr(e)}")
         raise Exception(msg=msg)
 
 
