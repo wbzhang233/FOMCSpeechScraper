@@ -31,9 +31,13 @@ date_patterns = [
 ]
 
 STANDRAD_DATE_FORMAT = "%B %d, %Y"
+EARLYEST_YEAR = 2006
+EARLYEST_EXTRACT_DATE = "Jan 01, 2006"
 
 
-def parse_datestring(date_str: str, format: str=None, silent:bool=False) -> datetime:
+def parse_datestring(
+    date_str: str, format: str = None, silent: bool = False
+) -> datetime:
     """日期字符串标准化
 
     Args:
@@ -49,14 +53,18 @@ def parse_datestring(date_str: str, format: str=None, silent:bool=False) -> date
         return result
     except Exception as e:
         if not silent:
-            print("date string {} transformed to datetime failed. {}".format(date_str, repr(e)))
+            print(
+                "date string {} transformed to datetime failed. {}".format(
+                    date_str, repr(e)
+                )
+            )
         pass
 
     try:
         if re.fullmatch(date_patterns[0], date_str, re.IGNORECASE | re.VERBOSE):
             result = datetime.strptime(date_str, "%B %d, %Y")
         elif re.fullmatch(date_patterns[1], date_str, re.IGNORECASE | re.VERBOSE):
-            date_str = date_str.replace('Sept', 'Sep').replace('sept', 'sep')
+            date_str = date_str.replace("Sept", "Sep").replace("sept", "sep")
             result = datetime.strptime(date_str, "%b %d, %Y")
         elif re.fullmatch(date_patterns[2], date_str, re.IGNORECASE | re.VERBOSE):
             date_str = date_str.replace("Sept", "Sep").replace("sept", "sep")
@@ -95,16 +103,13 @@ def get_latest_speech_date(obj: dict | list):
     return max(dates).strftime("%b %d, %Y") if dates else None
 
 
-# def stardard_datestring(date_str: str) -> str:
-#     return parse_datestring(date_str).strftime("%Y-%m-%d")
-
-if __name__ == "__main__":
+def test_parse_datestring():
     dates = []
     for year_str in [
         "Sep 23, 2024",
         "Oct 23, 1995",
         "Sept 23, 2024",
-        "Sept. 25, 2024" , 
+        "Sept. 25, 2024",
         "May 06, 2024",
         "March 20, 1997",
     ]:
@@ -112,3 +117,7 @@ if __name__ == "__main__":
         print(date)
         dates.append(date)
     print(max(dates))
+
+
+if __name__ == "__main__":
+    test_parse_datestring()

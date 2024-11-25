@@ -15,6 +15,36 @@ from utils.common import parse_datestring
 from utils.logger import logger
 
 
+DEFAULT_KEY_ORDER = [
+    "speaker",
+    "position",
+    "date",
+    "title",
+    "summary",
+    "highlights",
+    "item_id",
+    "href",
+    "text_url",
+    "api_url",
+    "pdf_url",
+    "youtube_link",
+    "content",
+]
+
+
+def unify_speech_dict(dt: dict, order: list = None, necessary_keys: list=None):
+    if not order:
+        order = DEFAULT_KEY_ORDER
+    if not necessary_keys:
+        necessary_keys = ['speaker', 'date', 'title']
+
+    result = {}
+    for key in DEFAULT_KEY_ORDER:
+        if dt.get(key) or key in necessary_keys:
+            result[key] = dt.get(key)
+    return result
+
+
 def update_records(
     records: list[dict],
     new: list[dict],
@@ -30,13 +60,16 @@ def update_records(
     """
     if not tag_fields:
         tag_fields = ["speaker", "date", "title"]
-    records.extend(new)
+
     try:
+        if not new or len(new)==0:
+            new = []
+        records.extend(new)
         # 使用字典去重，确保每个 field 只出现一次. 第一次的值会被第二次的值覆盖
         unique_data = {}
         for item in records:
             tag = " ".join([str(item[field]) for field in tag_fields])
-            unique_data[tag] = item
+            unique_data[tag] = unify_speech_dict(item, necessary_keys=tag_fields)
 
         # 将去重后的字典转换回列表
         unique_list = list(unique_data.values())
@@ -44,10 +77,12 @@ def update_records(
         # 使用 `sorted()` 函数根据 `date` 字段进行升序排序
         if sort_field == "date":
             sorted_records = sorted(
-                unique_list, key=lambda x: parse_datestring(x["date"], reverse=True)
+                unique_list, key=lambda x: parse_datestring(x["date"]), reverse=True
             )
         else:
-            sorted_records = sorted(unique_list, key=lambda x: x[sort_field], reverse=True)
+            sorted_records = sorted(
+                unique_list, key=lambda x: x[sort_field], reverse=True
+            )
         return sorted_records
     except Exception as e:
         msg = f"Records update failed. Error: {repr(e)}"
@@ -64,7 +99,7 @@ def update_dict(existed: dict, obj: dict, **kwargs):
                 logger.info(f"{k} updated.")
             else:
                 existed[k] = v
-        existed = OrderedDict(sorted(existed.items()))
+        existed = OrderedDict(sorted(existed.items(), reverse=True))
     except Exception as e:
         msg = "Error {} occurred when update dict.".format(repr(e))
         logger.error(msg)
@@ -109,8 +144,9 @@ def json_update(filepath: str, obj, **kwargs):
     Args:
         filepath (str): _description_
     """
+    # 载入已有文件
     exist_obj = json_load(filepath)
-    if isinstance(exist_obj, dict):
+    if isinstance(exist_obj, dict) and isinstance(obj, dict):
         for k, v in obj.items():
             if k in exist_obj:
                 exist_obj[k] = update_records(exist_obj[k], v, **kwargs)
@@ -120,7 +156,7 @@ def json_update(filepath: str, obj, **kwargs):
         exist_obj = sort_speeches_dict(exist_obj)
         json_dump(exist_obj, filepath)
         return exist_obj
-    elif isinstance(exist_obj, list):
+    elif isinstance(exist_obj, list) and isinstance(obj, list):
         exist_obj = update_records(exist_obj, obj, **kwargs)
         exist_obj = sort_speeches_records(exist_obj)
         json_dump(exist_obj, filepath)
@@ -223,7 +259,9 @@ def sort_speeches_app(district: str = "dallas"):
     print(f"{district}_speeches have sorted.")
 
 
-def drop_duplicates_speech_info_app(district: str = "dallas", tag_fields: list=['speaker', 'date', 'title']):
+def drop_duplicates_speech_info_app(
+    district: str = "dallas", tag_fields: list = ["speaker", "date", "title"]
+):
     filepath = (
         f"../data/fed_speeches/{district}_fed_speeches/{district}_speech_infos.json"
     )
@@ -237,6 +275,7 @@ def drop_duplicates_speech_info_app(district: str = "dallas", tag_fields: list=[
                 unique.add(tag)
                 result.setdefault(year, []).append(info)
     json_dump(result, filepath)
+
 
 def test_update_dict():
     existed = {
