@@ -15,6 +15,7 @@ from utils.common import parse_datestring
 from utils.logger import logger
 
 
+# speech字典中key的顺序
 DEFAULT_KEY_ORDER = [
     "speaker",
     "position",
@@ -33,6 +34,16 @@ DEFAULT_KEY_ORDER = [
 
 
 def unify_speech_dict(dt: dict, order: list = None, necessary_keys: list=None):
+    """统一speech和speech_info字典中键的顺序
+
+    Args:
+        dt (dict): _description_
+        order (list, optional): _description_. Defaults to None.
+        necessary_keys (list, optional): _description_. Defaults to None.
+
+    Returns:
+        _type_: _description_
+    """
     if not order:
         order = DEFAULT_KEY_ORDER
     if not necessary_keys:
@@ -68,7 +79,7 @@ def update_records(
         # 使用字典去重，确保每个 field 只出现一次. 第一次的值会被第二次的值覆盖
         unique_data = {}
         for item in records:
-            tag = " ".join([str(item[field]) for field in tag_fields])
+            tag = tuple(item.get(field) for field in tag_fields)
             unique_data[tag] = unify_speech_dict(item, necessary_keys=tag_fields)
 
         # 将去重后的字典转换回列表

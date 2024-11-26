@@ -32,27 +32,75 @@ from utils.common import (
     get_latest_speech_date,
     parse_datestring,
 )
-from utils.file_saver import json_dump, json_load, json_update, update_records
+from utils.file_saver import (
+    json_dump,
+    json_load,
+    json_update,
+    unify_speech_dict,
+    update_records,
+)
 
 logger = get_logger("boston_speech_scraper", log_filepath="../../log")
 
+# 波士顿联储历任行长任期
+BOSTON_PRESIDENT_TIMELINE = {
+    "Susan M. Collins": ("July 1, 2022", "present"),
+    "Kenneth C. Montgomery": ("October 1, 2021", "June 30, 2022"), # 临时行长. 因此position不为President
+    "Eric S. Rosengren": ("July 23, 2007", "September 30, 2021"),
+    "Cathy E. Minehan": ("July 13, 1994", "July 22, 2007"),
+}
+
 
 def correct(speech_infos_by_year: dict):
+    """修正讲话历史数据，尤其是过滤掉非行长以及保留临时代行长的演讲
+    """
     try:
         new_result = {}
         for year, single_year_infos in speech_infos_by_year.items():
             for i, info in enumerate(single_year_infos):
-                if "," in info.get("speaker") and not info.get("position"):
-                    # splits = info.get("speaker").split(",")
-                    # info["speaker"] = splits[0].strip()
-                    # info["position"] = splits[1].strip()
-                    # if not info["position"].startswith("President"):
+                if "," in info.get("speaker"):
+                    splits = info.get("speaker").split(",")
+                    # 舍弃非行长
+                    # if not splits[1].strip().startswith("President"):
                     #     continue
-                    # else:
-                    #     new_result.setdefault(year, []).append(single_year_infos[i])
-                    continue
+                    info["speaker"] = splits[0].strip()
+                    # 舍弃非任期内的非行长
+                    if (
+                        info["speaker"] not in BOSTON_PRESIDENT_TIMELINE
+                        # or parse_datestring(info["date"])
+                        # < parse_datestring(
+                        #     BOSTON_PRESIDENT_TIMELINE.get(info["speaker"])[0]
+                        # )
+                        # or parse_datestring(info["date"])
+                        # > parse_datestring(
+                        #     BOSTON_PRESIDENT_TIMELINE.get(info["speaker"])[1]
+                        # )
+                    ):
+                        continue
+                    info.setdefault("position", splits[1].strip())
+                    info = unify_speech_dict(
+                        info, necessary_keys=["speaker", "position", "date", "title"]
+                    )
+                    new_result.setdefault(year, []).append(info)
                 else:
-                    new_result.setdefault(year, []).append(single_year_infos[i])
+                    # 舍弃非任期内或非行长的演讲
+                    if (
+                        info["speaker"] not in BOSTON_PRESIDENT_TIMELINE
+                        # or parse_datestring(info["date"])
+                        # < parse_datestring(
+                        #     BOSTON_PRESIDENT_TIMELINE.get(info["speaker"])[0]
+                        # )
+                        # or parse_datestring(info["date"])
+                        # > parse_datestring(
+                        #     BOSTON_PRESIDENT_TIMELINE.get(info["speaker"])[1]
+                        # )
+                    ):
+                        continue
+                    info.setdefault("position", "President & Chief Executive Officer")
+                    info = unify_speech_dict(
+                        info, necessary_keys=["speaker", "position", "date", "title"]
+                    )
+                    new_result.setdefault(year, []).append(info)
     except Exception as e:
         print(f"Error {repr(e)} when correct.")
         new_result = speech_infos_by_year
@@ -151,8 +199,8 @@ class BostonSpeechScraper(SpeechScraper):
             splits = speaker.split(",", maxsplit=2)
             speaker = splits[0].strip()
             position = splits[-1].strip()
-            # 非行长过滤掉
-            if not position.startswith("President"):
+            # 非行长过滤掉,但保留临时行长.
+            if not position.startswith("President") or speaker not in BOSTON_PRESIDENT_TIMELINE:
                 return None
 
             speech_info = {
@@ -237,7 +285,6 @@ class BostonSpeechScraper(SpeechScraper):
                 if (
                     speech_info
                     and speech_info.get("href").startswith("https://www.bostonfed.org/")
-                    and speech_info["position"].startswith("President")
                 ):
                     print(
                         "{date} | {title}. {speaker}\n".format(
@@ -260,9 +307,6 @@ class BostonSpeechScraper(SpeechScraper):
             counts += len(speech_infos_single_year)
         # 存储到类中
         print(f"Extracted {counts} speeches from Boston Fed.")
-        # TODO 仅运行一次就好
-        # speech_infos_by_year = correct(speech_infos_by_year)
-        # json_dump(self.speech_infos_filename, speech_infos_by_year)
         if self.save and speech_infos_by_year != existed_speech_infos:
             json_update(self.speech_infos_filename, speech_infos_by_year)
         return speech_infos_by_year
@@ -414,10 +458,6 @@ class BostonSpeechScraper(SpeechScraper):
             json_dump(failed, self.failed_speech_infos_filename)
             # 更新已存储的演讲内容
         if self.save and speeches_by_year != existed_speeches:
-            # # TODO 近运行一次
-            # result = {}
-            # for k, v in speeches_by_year.items():
-            #     result.setdefault(k, update_records(v, {}))
             json_update(self.speeches_filename, speeches_by_year)
         return speeches_by_year
 
@@ -500,7 +540,18 @@ def test():
     scraper.collect()
 
 
+def correct_speeches():
+    speeches = json_load(
+        "../../data/fed_speeches/boston_fed_speeches/boston_speeches.json",
+    )
+    speeches = correct(speeches)
+    json_dump(
+        speeches, "../../data/fed_speeches/boston_fed_speeches/boston_speeches.json"
+    )
+
+
 if __name__ == "__main__":
     # test_extract_speech_infos()
     # test_extract_single_speech()
     test()
+    # correct_speeches()
