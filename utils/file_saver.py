@@ -19,6 +19,7 @@ from utils.logger import logger
 DEFAULT_KEY_ORDER = [
     "speaker",
     "position",
+    "year",
     "date",
     "title",
     "summary",
@@ -33,7 +34,7 @@ DEFAULT_KEY_ORDER = [
 ]
 
 
-def unify_speech_dict(dt: dict, order: list = None, necessary_keys: list=None):
+def unify_speech_dict(dt: dict, order: list = None, necessary_keys: list=None, drop_keys: list=None):
     """统一speech和speech_info字典中键的顺序
 
     Args:
@@ -60,7 +61,7 @@ def update_records(
     records: list[dict],
     new: list[dict],
     tag_fields: list[str] = None,
-    sort_field: str = "date",
+    sort_field: str = None,
 ):
     """对records格式的list进行去重
     Args:
@@ -71,6 +72,8 @@ def update_records(
     """
     if not tag_fields:
         tag_fields = ["speaker", "date", "title"]
+    if not sort_field:
+        sort_field = "date"
 
     try:
         if not new or len(new)==0:
@@ -109,7 +112,7 @@ def update_dict(existed: dict, obj: dict, **kwargs):
                 existed[k] = update_records(existed[k], v, **kwargs)
                 logger.info(f"{k} updated.")
             else:
-                existed[k] = v
+                existed[k] = update_records(v, {}, **kwargs)
         existed = OrderedDict(sorted(existed.items(), reverse=True))
     except Exception as e:
         msg = "Error {} occurred when update dict.".format(repr(e))
@@ -153,7 +156,7 @@ def json_update(filepath: str, obj, **kwargs):
     """更新已存储的json文件
 
     Args:
-        filepath (str): _description_
+        filepath (str): json文件路径
     """
     # 载入已有文件
     exist_obj = json_load(filepath)
@@ -164,7 +167,7 @@ def json_update(filepath: str, obj, **kwargs):
                 logger.info(f"{k} updated.")
             else:
                 exist_obj[k] = v
-        exist_obj = sort_speeches_dict(exist_obj)
+        exist_obj = sort_speeches_dict(exist_obj, **kwargs)
         json_dump(exist_obj, filepath)
         return exist_obj
     elif isinstance(exist_obj, list) and isinstance(obj, list):
@@ -205,9 +208,12 @@ def unify_speech_date(dt: dict):
     return dt
 
 
-def sort_speeches_records(speeches: list, sort_filed: str = "date"):
+def sort_speeches_records(speeches: list, sort_filed: str = None):
     if speeches is None or speeches == []:
         return speeches
+    
+    if not sort_filed:
+        sort_filed = "date"
     else:
         # 先统一日期格式
         speeches = [
@@ -222,8 +228,8 @@ def sort_speeches_records(speeches: list, sort_filed: str = "date"):
 
 def sort_speeches_dict(
     speeches_by_year: dict,
-    sort_filed: str = "date",
-    required_keys: list = ["date", "title"],
+    sort_filed: str = None,
+    required_keys: list = None,
 ):
     """对讲话字典进行排序
 
@@ -234,6 +240,11 @@ def sort_speeches_dict(
     Returns:
         dict: 降序排序后的讲话稿字典.
     """
+    if not sort_filed:
+        sort_filed = "date"
+    if not required_keys:
+        required_keys = ["date", "title"]
+
     try:
         result = {}
         for year, single_year_speeches in speeches_by_year.items():
@@ -241,7 +252,7 @@ def sort_speeches_dict(
                 continue
             # 使用required_keys 过滤掉没有日期、标题或者作者的记录
             single_year = [
-                unify_speech_date(speech)
+                unify_speech_dict(unify_speech_date(speech))
                 for speech in single_year_speeches
                 if all([speech.get(key) for key in required_keys])
             ]
@@ -326,8 +337,27 @@ def test_json_load():
         print("Succeed.")
 
 
+def transfer_frb_speeches_app(existed_speech_path: str, new_speech_dirs: str):
+    # 原有的演讲合并到现在的演讲目录中
+    existed = json_load(existed_speech_path)
+    for year in range(2006, 2016):
+        filename = f"{new_speech_dirs}/philadelphia_speeches_{year}.json"
+        original = json_load(filename)
+        if not original:
+            original = []
+        existed = update_dict(existed, {f"{year}": original})
+
+    existed = sort_speeches_dict(existed)
+    json_dump(existed, existed_speech_path)
+
+
 if __name__ == "__main__":
     # test_json_load()
     # test_update_dict()
     # sort_speeches_app()
-    drop_duplicates_speech_info_app()
+    # drop_duplicates_speech_info_app()
+
+    transfer_frb_speeches_app(
+        "../data/fed_speeches/philadelphia_fed_speeches/philadelphia_speeches.json",
+        "../data/frb_speeches/philadelphia",
+    )

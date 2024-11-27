@@ -10,13 +10,13 @@
 
 import json
 import requests
-from requests.exceptions import (
-    HTTPError,
-    ConnectionError,
-    Timeout,
-    TooManyRedirects,
-    RequestException,
-)
+# from requests.exceptions import (
+#     HTTPError,
+#     ConnectionError,
+#     Timeout,
+#     TooManyRedirects,
+#     RequestException,
+# )
 from utils.logger import get_logger
 
 logger = get_logger("FRESERLogger", log_filepath="../../log/")
@@ -53,6 +53,8 @@ class FRESERScraper:
     __fed_name__ = "FRESER"
     __name__ = f"{__fed_name__.title()}SpeechScraper"
     SAVE_PATH = f"../../data/fed_speeches/{__fed_name__}_fed_speeches/"
+    # 超时时长
+    TIMEOUT = 10.0
 
     @staticmethod
     def fetch_txt(txt_url: str):
@@ -69,23 +71,27 @@ class FRESERScraper:
             print(msg)
             return "$NOT TXT URL$"
         try:
-            response = requests.get(txt_url, timeout=5.0)
+            response = requests.get(txt_url, timeout=FRESERScraper.TIMEOUT)
             response.raise_for_status()  # 检查响应状态码是否为200
             result = response.text
-        except HTTPError as http_err:
-            print(f"HTTP error occurred: {http_err}")
-        except ConnectionError as conn_err:
-            print(f"Connection error occurred: {conn_err}")
-        except Timeout as timeout_err:
-            print(f"Timeout error occurred: {timeout_err}")
-        except TooManyRedirects as redirect_err:
-            print(f"Too many redirects error occurred: {redirect_err}")
-
-        except RequestException as req_err:
-            print(f"Request error occurred: {req_err}")
+        # except HTTPError as http_err:
+        #     print(f"HTTP error occurred: {http_err}")
+        #     result = "$HTTPERROR$"
+        # except ConnectionError as conn_err:
+        #     print(f"Connection error occurred: {conn_err}")
+        #     result = "$CONNECTION ERROR$"
+        # except Timeout as timeout_err:
+        #     print(f"Timeout error occurred: {timeout_err}")
+        #     result = "$TIMEOUT ERROR$"
+        # except TooManyRedirects as redirect_err:
+        #     print(f"Too many redirects error occurred: {redirect_err}")
+        #     result = "$TOOMANY REDIRECTS ERROR$"
+        # except RequestException as req_err:
+        #     print(f"Request error occurred: {req_err}")
+        #     result = "$REQUEST EXCEPTION$"
         except Exception as e:
             msg = f"Failed to fetch text. Error: {repr(e)}"
-            logger.error(msg)
+            # logger.error(msg)
             print(msg)
             result = ""
 
@@ -108,6 +114,7 @@ class FRESERScraper:
                 + "/api/title/{titleId}".format(titleId=title_id),
                 params=params,
                 headers={"X-API-Key": FRESERScraper.API_KEY},
+                timeout=FRESERScraper.TIMEOUT,
             )
             result = json.loads(response.content.decode())
         except Exception as e:
@@ -134,6 +141,7 @@ class FRESERScraper:
                 url=FRESERScraper.API_SERVER + service_type.format(titleId=title_id),
                 params=params,
                 headers={"X-API-Key": FRESERScraper.API_KEY},
+                timeout=FRESERScraper.TIMEOUT,
             )
             result = json.loads(response.content.decode())
         except Exception as e:
@@ -153,6 +161,7 @@ class FRESERScraper:
                 url=FRESERScraper.API_SERVER
                 + "/api/title/{titleId}/toc".format(titleId=title_id),
                 headers={"X-API-Key": FRESERScraper.API_KEY},
+                timeout=FRESERScraper.TIMEOUT,
             )
             result = json.loads(response.content.decode())
         except Exception as e:
@@ -178,6 +187,7 @@ class FRESERScraper:
                 + "/api/item/{itemId}".format(itemId=item_id),
                 params=params,
                 headers={"X-API-Key": FRESERScraper.API_KEY},
+                timeout=FRESERScraper.TIMEOUT,
             )
             response = json.loads(response.content.decode())
             result = response["records"][0]

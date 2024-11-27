@@ -8,14 +8,17 @@
 @Desc    :   FRASER 爬取十二家地区联储银行行长讲话的爬虫
 """
 
+from copy import deepcopy
 import os
 import time
+# import time
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import StaleElementReferenceException
+from selenium.webdriver.remote.webelement import WebElement
 from freser_scraper import FRESERScraper
 from utils.common import parse_datestring
 from utils.file_saver import (
@@ -23,6 +26,7 @@ from utils.file_saver import (
     json_load,
     json_update,
     sort_speeches_dict,
+    unify_speech_dict,
     update_dict,
 )
 
@@ -58,20 +62,29 @@ class FRASERFRBSpeechScraper:
         self.driver.get(self.URL)
         # 等待主内容加载完
         time.sleep(2.0)
-        WebDriverWait(self.driver, 10).until(
+        title = WebDriverWait(self.driver, 10).until(
             EC.element_to_be_clickable(
-                (By.XPATH, "//ul[@class='browse-by-list']/li[span]")
+                (By.XPATH, "//ul[@class='browse-by-list']/li/span")
             )
         )
-        title = self.driver.find_element(
-            By.XPATH, "//ul[@class='browse-by-list']/li[span]"
-        )
-        while title:
+        while isinstance(title, WebElement):
+            if not title.is_displayed() or not title.is_enabled():
+                msg = f"title {title.text} is not clickable. Next"
+                # 寻找下一个兄弟节点
+                follow_siblings = title.find_elements(
+                    By.XPATH, "..//following-sibling::li[1]/span"
+                )
+                if len(follow_siblings) == 0:
+                    break
+                else:
+                    title = follow_siblings[0]
+                continue
+
             title.click()
             time.sleep(3.0)
             WebDriverWait(self.driver, 10).until(
-                EC.visibility_of_all_elements_located(
-                    (By.XPATH, "//div[contains(@class, 'browse-by-right')]")
+                EC.text_to_be_present_in_element(
+                    (By.XPATH, "//div[contains(@class, 'browse-by-right')]"), title.text
                 )
             )
             # 名称
@@ -83,6 +96,21 @@ class FRASERFRBSpeechScraper:
                 dialog = self.driver.find_element(
                     By.XPATH, "//div[@class='modal-dialog' and @role='document']"
                 )
+                # # 只收集任期囊括2006年以后的行长
+                # date_issued = self.driver.find_element(
+                #     By.XPATH, '//*[@id="records"]/div/div[2]/p[1]/span[2]'
+                # ).text
+                # last_year = date_issued.split('-')[-1].strip()
+                # if last_year.isdigit() and int(last_year) < 2006:
+                #     # 寻找下一个兄弟节点
+                #     follow_siblings = title.find_elements(
+                #         By.XPATH, "..//following-sibling::li[1]/span"
+                #     )
+                #     if len(follow_siblings) == 0:
+                #         break
+                #     else:
+                #         title = follow_siblings[0]
+                #     continue
 
                 href = dialog.find_element(
                     By.XPATH, "//input[@id='share-url' and @value]"
@@ -90,19 +118,19 @@ class FRASERFRBSpeechScraper:
                 # title-id
                 title_id = href.split("/")[-1].split("-")[-1]
                 assert title_id.isdigit(), "奇怪的事情发生了. {href}后缀不是title_id."
+                title_infos.append(
+                    {"title": title_name, "href": href, "title_id": title_id}
+                )
             except AssertionError as e:
-                pass
+                print(repr(e))
             except Exception as e:
                 msg = "Error when fetching series titles: {}".format(repr(e))
                 print(msg)
-                href = None
-                title_id = None
-            title_infos.append(
-                {"title": title_name, "href": href, "title_id": title_id}
-            )
+
             # 寻找下一个兄弟节点
             follow_siblings = title.find_elements(
-                By.XPATH, "following-sibling::li[span][1]"
+                By.XPATH,
+                "..//following-sibling::li[1]/span"
             )
             if len(follow_siblings) == 0:
                 break
@@ -121,13 +149,7 @@ class FRASERFRBSpeechScraper:
             _type_: _description_
         """
         if not item_id.isdigit():
-            return {
-                "year": "Unknown",
-                "date": "",
-                "text_url": "",
-                "api_url": "",
-                "pdf_url": "",
-            }
+            return None
         try:
             # 获取item的年份、日期、text_url
             response = FRESERScraper.fecth_item(item_id=item_id)
@@ -141,23 +163,139 @@ class FRASERFRBSpeechScraper:
             api_url = response["location"]["apiUrl"][0]
             # pdf_url
             pdf_url = response["location"]["pdfUrl"][0]
-            return {
+            result = {
                 "year": year,
                 "date": date,
                 "text_url": text_url,
                 "api_url": api_url,
                 "pdf_url": pdf_url,
             }
-        except Exception as e:
-            msg = "Error {} occured when fetching item {} info.".format(repr(e), item_id)
+        except KeyError as e:
+            msg = "Error {} occured when fetching item {} info.".format(
+                repr(e), item_id
+            )
             print(msg)
-            return {
-                "year": "Unknown",
-                "date": "",
-                "text_url": "",
-                "api_url": "",
-                "pdf_url": "",
-            }
+            result = None
+        except Exception as e:
+            msg = "Error {} occured when fetching item {} info.".format(
+                repr(e), item_id
+            )
+            print(msg)
+            result = None
+        return result
+
+    def fetch_title_toc(self, title_info: dict):
+        """获取某个title下的table of contents，即所有items的信息
+
+        Args:
+            title_info (dict): title信息
+
+        Returns:
+            dict: _description_
+        """
+        try:
+            if (
+                not isinstance(title_info["title_id"], str)
+                or not title_info["title_id"].isdigit()
+            ):
+                msg = "{} is not title id.".format(title_info["title_id"])
+                print(msg)
+                return {}
+            result = FRESERScraper.fecth_title_toc(title_id=int(title_info["title_id"]))
+            if result and len(result) != 0:
+                return result
+        except Exception as e:
+            msg = "通过fetch title toc接口获取title_id: {}失败. Error: {}".format(
+                title_info["title_id"], repr(e)
+            )
+            print(msg)
+            result = {}
+        return result
+
+    def collect_items_of_single_decade(
+        self, item_infos: dict, decade: str, speaker: str
+    ):
+        """收集某个年代的所有item信息
+
+        Args:
+            item_infos (dict): _description_
+            decade (WebElement): _description_
+            speaker (str): _description_
+
+        Returns:
+            _type_: _description_
+        """
+        result = deepcopy(item_infos)
+        # 找到所有条目，搜集链接
+        item = self.driver.find_element(
+            By.XPATH,
+            "//div[@class='browse-by-list list']/ul[@data-section='{section_name}']/li[last()]/a[@data-id and @id]".format(
+                section_name=decade
+            ),
+        )
+        while isinstance(item, WebElement):
+            try:
+                # 标题
+                item_name = item.text.strip()
+                # 链接
+                item_link = item.get_attribute("href")
+                item_id = item.get_attribute("data-id")
+                # 获取演讲条目的内容
+                speech = self.fetch_item_info(item_id)
+                # 只保留2006年后的speech item
+                if (
+                    isinstance(speech, dict)
+                    and isinstance(speech["year"], str)
+                    and speech["year"].isdigit()
+                    and int(speech["year"]) >= 2006
+                ):
+                    speech.update(
+                        {
+                            "speaker": speaker,
+                            "item_id": item_id,
+                            "title": item_name,
+                            "href": item_link,
+                        }
+                    )
+                    speech = unify_speech_dict(speech)
+                    item_year = speech["year"]
+                    result.setdefault(item_year, []).append(speech)
+                    print(
+                        "Item {item_id}. {speaker} | {date} | {title} 的信息已收集.".format(
+                            item_id=item_id,
+                            speaker=speaker,
+                            title=item_name,
+                            date=speech["date"],
+                        )
+                    )
+                else:
+                    date_hint = speech.get("date") if isinstance(speech, dict) else ""
+                    print(
+                        "Item {item_id}. {speaker} | {date} | {title} 不在收集范围内.".format(
+                            item_id=item_id,
+                            speaker=speaker,
+                            title=item_name,
+                            date=date_hint,
+                        )
+                    )
+                    # break
+            except StaleElementReferenceException as e:  # type: ignore
+                msg = f"Item {item_id} | {item_name}failed. {repr(e)}"
+                print(msg)
+            except Exception as e:
+                msg = f"Item {item_id} | {item_name} failed. {repr(e)}"
+                print(msg)
+            # 找到上一个兄弟节点
+            preceding_siblings = item.find_elements(
+                By.XPATH,
+                "..//preceding-sibling::li[1]/a[@data-id and @id]",
+            )
+            if len(preceding_siblings) == 0:
+                break
+            else:
+                item = preceding_siblings[0]
+
+        return result
 
     def fetch_title_all_items(self, title_info: str):
         """搜集某个title下所有讲话的文本数据
@@ -166,27 +304,11 @@ class FRASERFRBSpeechScraper:
             title_link (str): _description_
         """
         # 如果不是title，就跳过.
-        if title_info["href"].split('/')[-2] != "title":
+        if title_info["href"].split("/")[-2] != "title":
             print("{} is not a FRASER title.".format(title_info["href"]))
             return {}
         # 演讲人
         speaker = title_info["title"].split("of")[-1].strip()
-        # 搜集每个讲话的数据, 直接使用title-toc接口获取 (无法调通)
-        # try:
-        #     if (
-        #         not isinstance(title_info["title_id"], str)
-        #         or not title_info["title_id"].isdigit()
-        #     ):
-        #         msg = "{} is not title id.".format(title_info["title_id"])
-        #         return {}
-        #     result = FRESERScraper.fecth_title_toc(title_id=int(title_info["title_id"]))
-        #     if result and len(result) != 0:
-        #         return result
-        # except Exception as e:
-        #     msg = "通过fetch title toc接口获取title_id: {}失败. Error: {}".format(
-        #         title_info["title_id"], repr(e)
-        #     )
-        #     pass
 
         # 开始爬取每篇报告的text_url
         self.driver.get(title_info["href"])
@@ -194,91 +316,46 @@ class FRASERFRBSpeechScraper:
             By.XPATH,
             "//ul[@class='navbar-nav']/li[(@data-section) and (contains(@class, 'nav-item jump-to-section'))]",
         )
-        WebDriverWait(self.driver, 5).until(EC.element_to_be_clickable(locator))
+        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable(locator))
         result = {}
         # 点击每一个年代
         decade_buttons = self.driver.find_elements(locator[0], locator[1])
-        for decade in decade_buttons:
-            # 过滤年代
-            decade_str = decade.text.strip("").rstrip("s")
-            if decade_str not in ["2000", "2010", "2020", "2030"]:
-                continue
-            decade.click()
-            # 等待所有元素可用
-            time.sleep(1.0)
-            WebDriverWait(self.driver, 5).until(
-                EC.visibility_of_all_elements_located(
-                    (
-                        By.XPATH,
-                        "//div[@class='browse-by-list list']/ul/li/a[@data-id and @id]",
-                    )
-                )
-            )
-            # 找到所有条目，搜集链接
-            item = self.driver.find_element(
-                By.XPATH,
-                "//div[@class='browse-by-list list']/ul[@data-section='{section_name}']/li[last()]/a[@data-id and @id]".format(
-                    section_name=decade.text
-                ),
-            )
-            while item:
-                try:
-                    # 标题
-                    item_name = item.text.strip()
-                    # 链接
-                    item_link = item.get_attribute("href")
-                    item_id = item.get_attribute("data-id")
-                    # 获取演讲条目的内容
-                    speech = self.fetch_item_info(item_id)
-                    # 只保留2006年后的speech item
-                    if (
-                        isinstance(speech["year"], str)
-                        and speech["year"].isdigit()
-                        and int(speech["year"]) >= 2006
-                    ):
-                        speech.update(
-                            {
-                                "item_id": item_id,
-                                "speaker": speaker,
-                                "title": item_name,
-                                "href": item_link,
-                            }
-                        )
-                        result.setdefault(speech["year"], []).append(speech)
-                        print(
-                            "Item {item_id}. {speaker} | {title} | {date} 的信息已收集.".format(
-                                item_id=item_id,
-                                speaker=speaker,
-                                title=item_name,
-                                date=speech["date"],
-                            )
-                        )
-                    else:
-                        print(
-                            "Item {item_id}. {speaker} | {title} | {date} 不在收集范围内.".format(
-                                item_id=item_id,
-                                speaker=speaker,
-                                title=item_name,
-                                date=speech["date"],
-                            )
-                        )
-                        break
-                except StaleElementReferenceException as e:  # type: ignore
-                    msg = f"item failed. {repr(e)}"
-                    print(msg)
-                except Exception as e:
-                    msg = f"item {item} failed. {repr(e)}"
-                    print(msg)
+        for decade_button in decade_buttons:
+            try:
+                # 过滤年代
+                decade_str = decade_button.text.strip("").rstrip("s")
+                if decade_str not in ["2000", "2010", "2020", "2030"]:
                     continue
-                # 找到上一个兄弟节点
-                preceding_siblings = item.find_elements(
-                    By.XPATH,
-                    "..//preceding-sibling::li[1]/a[@data-id and @id]",
-                )
-                if len(preceding_siblings)==0:
-                    break
+
+                # 等待该元素可点击
+                if EC.element_to_be_clickable(decade_button)(self.driver):
+                    decade_button.click()
+                    # 等待所有元素可用
+                    WebDriverWait(self.driver, 5).until(
+                        EC.visibility_of_all_elements_located(
+                            (
+                                By.XPATH,
+                                "//div[@class='browse-by-list list']/ul/li/a[@data-id and @id]",
+                            )
+                        )
+                    )
                 else:
-                    item = preceding_siblings[0]
+                    print(
+                        "==" * 35
+                        + f"The button {decade_button.text} is not clickable."
+                        + "==" * 35
+                    )
+                    # continue
+                # 收集该年代的所有信息
+                result = self.collect_items_of_single_decade(
+                    item_infos=result, decade=decade_button.text, speaker=speaker
+                )
+            except Exception as e:
+                print(
+                    f"收集{speaker}在{decade_button.text}的item信息遇到错误: {repr(e)}. 跳过该年代."
+                )
+                pass
+
         return result
 
     def extract_speech_infos(self):
@@ -295,8 +372,9 @@ class FRASERFRBSpeechScraper:
         else:
             # 获取St. Louis集合下的历任行长的FRESER-title信息
             title_infos = self.fetch_series_all_titles()
-            json_update(
-                self.SAVE_PATH + f"{self.__frb_name__}_title_infos.json", title_infos
+            json_dump(
+                title_infos,
+                self.SAVE_PATH + f"{self.__frb_name__}_title_infos.json"
             )
         msg = f"{len(title_infos)} titles found."
         print(msg)
@@ -321,12 +399,13 @@ class FRASERFRBSpeechScraper:
             print("=" * 80)
 
         speech_infos_by_year = sort_speeches_dict(speech_infos_by_year)
-        self.speech_infos_by_year = speech_infos_by_year
         # 更新基本信息.
-        json_update(
-            self.SAVE_PATH + f"{self.__frb_name__}_speech_infos.json",
-            speech_infos_by_year,
-        )
+        if self.save:
+            json_update(
+                self.SAVE_PATH + f"{self.__frb_name__}_speech_infos.json",
+                speech_infos_by_year,
+
+            )
         return speech_infos_by_year
 
     def extract_single_speech(self, speech_info: dict):
@@ -346,14 +425,14 @@ class FRASERFRBSpeechScraper:
                     speech_info["speaker"], speech_info["date"], speech_info["title"]
                 )
             )
-            speech = {**speech_info, **{"content": content}}
+            speech = {**speech_info, "content": content}
         except Exception as e:
             print(
                 "Error when extracting speech content from {href}. {error}".format(
                     href=speech_info["href"], error=repr(e)
                 )
             )
-            speech = {**speech_info, **{"content": ""}}
+            speech = {**speech_info, "content": ""}
             print(
                 "{}, {}, {} content failed.".format(
                     speech_info["speaker"], speech_info["date"], speech_info["title"]
@@ -402,7 +481,16 @@ class FRASERFRBSpeechScraper:
                             title=speech_info["title"],
                         )
                     )
-                single_year_speeches.append(single_speech)
+                else:
+                    single_speech = unify_speech_dict(single_speech)
+                    single_year_speeches.append(single_speech)
+                    print(
+                        "{speaker}, {date} | {title} extracted.".format(
+                            speaker=speech_info["speaker"],
+                            date=speech_info["date"],
+                            title=speech_info["title"],
+                        )
+                    )
             speeches_by_year[year] = single_year_speeches
             # 按年度保存演讲
             if self.save:
@@ -410,7 +498,11 @@ class FRASERFRBSpeechScraper:
                     self.SAVE_PATH + f"{self.__frb_name__}_speeches_{year}.json",
                     single_year_speeches,
                 )
-                print("-" * 40 + f' {self.__frb_name__}: {year} -> {len(single_year_infos)} have saved.' + '-'*40)
+                print(
+                    "-" * 40
+                    + f" {self.__frb_name__}: {year} -> {len(single_year_infos)} have saved."
+                    + "-" * 40
+                )
             print(
                 "{} speeches of {} collected.".format(len(speeches_by_year[year]), year)
             )
@@ -419,6 +511,10 @@ class FRASERFRBSpeechScraper:
             json_dump(
                 failed,
                 self.SAVE_PATH + f"{self.__frb_name__}_failed_speech_infos.json",
+            )
+            speeches_by_year = sort_speeches_dict(speeches_by_year)
+            json_update(
+                self.SAVE_PATH + f"{self.__frb_name__}_speeches.json", speeches_by_year
             )
         return speeches_by_year
 
@@ -449,16 +545,9 @@ class FRASERFRBSpeechScraper:
         # else:
         # 否则，去获取基本信息
         speech_infos = self.extract_speech_infos()
-        if self.save:
-            json_dump(
-                speech_infos,
-                self.SAVE_PATH + f"{self.__frb_name__}_speech_infos.json",
-            )
 
         # 最新日期
-        if os.path.exists(
-            self.SAVE_PATH + f"{self.__frb_name__}_speeches.json"
-        ):
+        if os.path.exists(self.SAVE_PATH + f"{self.__frb_name__}_speeches.json"):
             # 获取最新的演讲日期
             existed_speeches = json_load(
                 self.SAVE_PATH + f"{self.__frb_name__}_speeches.json"
@@ -480,15 +569,15 @@ class FRASERFRBSpeechScraper:
         else:
             existed_lastest = "Jan. 01, 2006"
 
+        existed_lastest = "Jan. 01, 2006"
         # 提取演讲正文内容
         print("-" * 100)
         print("Extract speeches start from {}".format(existed_lastest))
         print("-" * 100)
         # 获取历史行长的演讲记录
         speeches = self.extract_speeches(speech_infos, existed_lastest)
-        speeches = sort_speeches_dict(speeches)
-        json_update(self.SAVE_PATH + f"{self.__frb_name__}_speeches.json", speeches)
-        print('-'*50 + f'Speeches of {self.__frb_name__} have extracted.' + '-'*50)
+
+        print("-" * 50 + f"Speeches of {self.__frb_name__} have extracted." + "-" * 50)
         return speeches
 
 
@@ -509,33 +598,37 @@ def test_extract_single_speech():
 
 
 SERIES_MAPPING = [
+    # 已获取
     # {
     #     "url": "https://fraser.stlouisfed.org/series/statements-speeches-presidents-federal-reserve-bank-boston-9014",
     #     "series_id": 9014,
     #     "frb_name": "boston",
     # },
-    # {
-    #     "url": "https://fraser.stlouisfed.org/series/statements-speeches-presidents-federal-reserve-bank-new-york-6744",
-    #     "series_id": 6744,
-    #     "frb_name": "newyork",
-    # },
+    # 尚未爬取
+    {
+        "url": "https://fraser.stlouisfed.org/series/statements-speeches-presidents-federal-reserve-bank-new-york-6744",
+        "series_id": 6744,
+        "frb_name": "newyork",
+    },
+    # 已获取
     # {
     #     "url": "https://fraser.stlouisfed.org/series/statements-speeches-presidents-federal-reserve-bank-philadelphia-4516",
     #     "series_id": 4516,
     #     "frb_name": "philadelphia",
     # },
+    # 已获取
     # {
     #     "url": "https://fraser.stlouisfed.org/series/statements-speeches-presidents-federal-reserve-bank-cleveland-3764",
     #     "series_id": 3764,
     #     "frb_name": "cleveland",
     # },
-    # TODO 待重新收集
+    # 已获取
     # {
     #     "url": "https://fraser.stlouisfed.org/series/statements-speeches-presidents-federal-reserve-bank-richmond-6826",
     #     "series_id": 6826,
     #     "frb_name": "richmond",
     # },
-    # # TODO 先暂时跳过
+    # 已获取
     # {
     #     "url": "https://fraser.stlouisfed.org/series/statements-speeches-presidents-federal-reserve-bank-atlanta-5168",
     #     "series_id": 5168,
@@ -546,30 +639,35 @@ SERIES_MAPPING = [
     #     "series_id": 5968,
     #     "frb_name": "chicago",
     # },
+    # 已爬取
     # {
     #     "url": "https://fraser.stlouisfed.org/series/statements-speeches-presidents-federal-reserve-bank-st-louis-3767",
     #     "series_id": 3767,
-    #     "frb_name": "st-louis",
+    #     "frb_name": "stlouis",
     # },
-    {
-        "url": "https://fraser.stlouisfed.org/series/statements-speeches-presidents-federal-reserve-bank-minneapolis-3765",
-        "series_id": 3765,
-        "frb_name": "minneapolis",
-    },
+    # 明尼阿波利斯比较奇葩，只有1991年以前的演讲数据
+    # {
+    #     "url": "https://fraser.stlouisfed.org/series/statements-speeches-presidents-federal-reserve-bank-minneapolis-3765",
+    #     "series_id": 3765,
+    #     "frb_name": "minneapolis",
+    # },
+    # 已获取
     # {
     #     "url": "https://fraser.stlouisfed.org/series/statements-speeches-presidents-federal-reserve-bank-kansas-city-9271",
     #     "series_id": 9271,
-    #     "frb_name": "kansas-city",
+    #     "frb_name": "kansascity",
     # },
+    # 已爬取 26号晚
     # {
     #     "url": "https://fraser.stlouisfed.org/series/statements-speeches-presidents-federal-reserve-bank-dallas-6145",
     #     "series_id": 6145,
     #     "frb_name": "dallas",
     # },
+    # 已爬取 26号晚
     # {
     #     "url": "https://fraser.stlouisfed.org/series/statements-speeches-presidents-federal-reserve-bank-san-francisco-3766",
     #     "series_id": 3766,
-    #     "frb_name": "san-francisco",
+    #     "frb_name": "sanfrancisco",
     # },
     # {
     #     "url": "https://fraser.stlouisfed.org/series/statements-speeches-federal-open-market-committee-participants-3761",
