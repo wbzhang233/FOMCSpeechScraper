@@ -24,7 +24,12 @@ import time
 
 from data_scraper.scrapers.scraper import SpeechScraper
 from utils.common import get_latest_speech_date, parse_datestring
-from utils.file_saver import json_dump, json_load, json_update, update_dict, update_records
+from utils.file_saver import (
+    json_dump,
+    json_load,
+    json_update,
+    update_records,
+)  # update_dict
 from utils.logger import logger
 
 
@@ -61,7 +66,7 @@ class PhiladelphiaSpeechScraper(SpeechScraper):
             "//*[@id='content']/section[1]/div/div/div[@class='search-sort']/ul/li[.='Most Recent']/button",
         )
         sory_by_button.click()
-        time.sleep(0.5)
+        time.sleep(2.0)
 
         # 已经存储的日期.
         existed_speech_dates = set()
@@ -208,10 +213,10 @@ class PhiladelphiaSpeechScraper(SpeechScraper):
         return speech
 
     def extract_speeches(
-        self, 
-        speech_infos_by_year: dict, 
+        self,
+        speech_infos_by_year: dict,
         existed_speeches: dict,
-        start_date: str = "Jan 01, 2006"
+        start_date: str = "Jan 01, 2006",
     ):
         """搜集每篇演讲的内容"""
         # 获取演讲的开始时间
@@ -257,7 +262,9 @@ class PhiladelphiaSpeechScraper(SpeechScraper):
                         title=speech_info["title"],
                     )
                 )
-            speeches_by_year[year] = update_records(speeches_by_year[year], single_year_speeches)
+            speeches_by_year[year] = update_records(
+                speeches_by_year[year], single_year_speeches
+            )
             if self.save:
                 json_update(
                     self.SAVE_PATH + f"{self.__fed_name__}_speeches_{year}.json",
