@@ -265,7 +265,6 @@ def sort_speeches_dict(
         for year, single_year_speeches in speeches_by_year.items():
             if not year.isdigit():
                 continue
-            # TODO
             # 使用字典去重，确保每个 field 只出现一次. 第一次的值会被第二次的值覆盖
             unique_data = {}
             for item in single_year_speeches:
@@ -274,10 +273,8 @@ def sort_speeches_dict(
                     unique_data[tag] = unify_speech_dict(
                         unify_speech_date(item), necessary_keys=tag_fields
                     )
-
             # 将去重后的字典转换回列表
             single_year = list(unique_data.values())
-
             # 按日期降序排序
             result[year] = sorted(
                 single_year,
@@ -285,9 +282,7 @@ def sort_speeches_dict(
                 reverse=True,
             )
         # 按年降序排序
-        result = OrderedDict(
-            sorted(result.items(), key=lambda x: int(x[0]), reverse=True)
-        )
+        result = OrderedDict(sorted(result.items(), key=lambda x: int(x[0]), reverse=True))
     except Exception as e:
         msg = f"Error occurred when sorting speech records. Error: {repr(e)}"
         logger.error(msg)

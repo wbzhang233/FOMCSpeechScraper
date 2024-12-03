@@ -8,11 +8,12 @@
 @Desc    :   5E 里奇蒙德联储行长讲话数据爬取
 """
 
+from copy import deepcopy
 import os
 import sys
 import time
 
-from utils.common import parse_datestring
+from utils.common import get_latest_speech_date, parse_datestring
 
 sys.path.append("../../")
 from scraper import SpeechScraper
@@ -20,7 +21,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.remote.webelement import WebElement
-from utils.file_saver import json_dump, json_load, json_update
+from utils.file_saver import json_dump, json_load, json_update, sort_speeches_dict
 
 PROMPT = """
 下面这个链接是Richmond联储官员讲话的网址。
@@ -35,7 +36,7 @@ https://www.richmondfed.org/press_room/speeches
 class RichmondSpeechScraper(SpeechScraper):
     URL = "https://www.richmondfed.org/press_room/speeches"  # ?mode=archive#2
     SAVE_PATH = "../../data/fed_speeches/richmond_fed_speeches/"
-    __fed_name__ = "richmond_fed"
+    __fed_name__ = "richmond"
 
     def __init__(self, url: str = None, auto_save: bool = True):
         super().__init__(url)
@@ -43,8 +44,16 @@ class RichmondSpeechScraper(SpeechScraper):
         self.speeches_by_year = None
         os.makedirs(self.SAVE_PATH, exist_ok=True)
         self.save = auto_save
+        # 保存文件的文件名
+        self.speech_infos_filename = (
+            self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
+        )
+        self.speeches_filename = self.SAVE_PATH + f"{self.__fed_name__}_speeches.json"
+        self.failed_speech_infos_filename = (
+            self.SAVE_PATH + f"{self.__fed_name__}_failed_speech_infos.json"
+        )
 
-    def expand_all(self, accordian):
+    def expand_all(self, accordian: WebElement):
         """展开所有年份
 
         Args:
@@ -53,9 +62,7 @@ class RichmondSpeechScraper(SpeechScraper):
         year_links = accordian.find_elements(By.CSS_SELECTOR, "li a[data-anchor-id]")
         for i, link in enumerate(year_links):
             try:
-                # year_name = link.text.split("\n")[0] if len(link.text.split("\n")) > 1 else link.text
                 link.click()
-                # print(f"Year Item: {year_name} done.")
                 # 等待加载完
                 time.sleep(1.0)
                 WebDriverWait(self.driver, 10).until(
@@ -67,10 +74,10 @@ class RichmondSpeechScraper(SpeechScraper):
                     )
                 )
             except Exception as e:
-                # print(f"Year Item {year_name} is not clickable. {repr(e)}")
                 print(repr(e))
 
     def click_years(self):
+        """逐个点击所有年份标题展开"""
         title_element = self.driver.find_element(
             By.XPATH,
             "//div[contains(@class,'component')]/ul[@class='accordion']/li",  # //a[starts-with(@href, 'javascript:;')]
@@ -83,20 +90,12 @@ class RichmondSpeechScraper(SpeechScraper):
                     By.CSS_SELECTOR, "a[href]"
                 ).text.strip()
                 year_str = year_title[0:4]
-                if year_str.isdigit() and int(year_str)<2024:
+                if year_str.isdigit() and int(year_str) < 2024:
                     break
                 # 如果内容区域没有展开，则点击标题
                 title_element.click()
                 # 等待内容区域展开
                 time.sleep(1.0)
-                # WebDriverWait(self.driver, 3).until(
-                #     EC.visibility_of_all_elements_located(
-                #         (
-                #             By.XPATH,
-                #             "//ul[@class='accordion']/li/div[contains(@class, 'content')]",
-                #         )
-                #     )
-                # )
             except Exception as e:
                 print(
                     f"Error when clicking year {title_element.text.strip()}. {repr(e)}"
@@ -106,13 +105,13 @@ class RichmondSpeechScraper(SpeechScraper):
             following_siblings = title_element.find_elements(
                 By.XPATH, "following-sibling::li[1]"
             )
-            if len(following_siblings)==0:
+            if len(following_siblings) == 0:
                 break
             else:
                 title_element = following_siblings[0]
-        print("=="*20 + "All years title was expanded." + "=="*20)
+        print("==" * 20 + "All years title was expanded." + "==" * 20)
 
-    def extract_speech_infos(self):
+    def pre_setting(self):
         # 点击view more
         view_more = self.driver.find_element(
             By.XPATH, "//*[@id='pi_center_column']/div[2]/a"
@@ -129,9 +128,23 @@ class RichmondSpeechScraper(SpeechScraper):
         )
         # option 1:
         self.click_years()
+        return accordian
+
+    def extract_speech_infos(self, existed_speech_infos:dict):
+        """抽取演讲的基本信息
+
+        Returns:
+            dict: 按年整理的基本信息
+        """
+        # 预先点击控件，并返回accordian元素
+        accordian = self.pre_setting()
+        # 已经存储的日期.
+        existed_speech_dates = set()
+        for _, single_year_infos in existed_speech_infos.items():
+            existed_speech_dates.update([info["date"] for info in single_year_infos])
 
         speeches_by_year = accordian.find_elements(By.TAG_NAME, "li")
-        speech_infos_by_year = {}
+        speech_infos_by_year = deepcopy(existed_speech_infos)
         # 获取每一年的演讲
         for single_year_speeches in speeches_by_year:
             # 标题
@@ -150,6 +163,9 @@ class RichmondSpeechScraper(SpeechScraper):
                     By.CSS_SELECTOR,
                     "section > div.data__pub-container > span.data__date",
                 ).text
+                # 若已存在，则跳出循环
+                if parse_datestring(date) in existed_speech_dates:
+                    break
                 # 标题
                 title_element = data_row.find_element(
                     By.CSS_SELECTOR, "section.data__group > div.data__title"
@@ -172,12 +188,12 @@ class RichmondSpeechScraper(SpeechScraper):
                 speaker = "\n\n".join([p.text for p in speaker_paragraphs])
 
                 speech_info = {
+                    "speaker": speaker,
                     "year": year,
                     "date": date,
                     "title": title,
-                    "href": href,
                     "summary": summary,
-                    "speaker": speaker,
+                    "href": href,
                 }
                 speech_infos_single_year.append(speech_info)
                 # 寻找下一个兄弟节点的 data_row
@@ -189,8 +205,15 @@ class RichmondSpeechScraper(SpeechScraper):
                 else:
                     data_row = next_siblings[0]
             speech_infos_by_year[year] = speech_infos_single_year
-        # 存储到类中
-        self.speech_infos_by_year = speech_infos_by_year
+        # 排序并去重
+        speech_infos_by_year = sort_speeches_dict(
+            speech_infos_by_year,
+            sort_filed="date",
+            required_keys=["date", "title", "href"],
+            tag_fields=["date", "href"],
+        )
+        if self.save:
+            json_update(self.speech_infos_filename, speech_infos_by_year)
         return speech_infos_by_year
 
     def extract_single_speech(self, speech_info: dict):
@@ -200,7 +223,7 @@ class RichmondSpeechScraper(SpeechScraper):
             speech_info (_type_): _description_
 
         Returns:
-            _type_: _description_
+            dict: 单篇演讲稿内容
         """
         try:
             href = speech_info["href"]
@@ -210,10 +233,6 @@ class RichmondSpeechScraper(SpeechScraper):
                 EC.presence_of_element_located((By.CLASS_NAME, "tmplt.speech"))
             )
 
-            # 演讲标题
-            speech_title = self.driver.find_element(
-                By.CSS_SELECTOR, "#pi_center_column > div.tmplt.speech > h2"
-            ).text
             # 重点
             highlights_elements = self.driver.find_elements(
                 By.CSS_SELECTOR,
@@ -230,18 +249,17 @@ class RichmondSpeechScraper(SpeechScraper):
             content_elements = content.find_elements(By.TAG_NAME, "p")
             contents = "\n\n".join([p.text for p in content_elements])
             speech = {
-                "speech_title": speech_title,
+                **speech_info,
                 "highlights": highlights,
                 "content": contents,
             }
         except Exception as e:
             print(f"Error when extracting speech content from {href}. Error: {e}")
             speech = {
-                "speech_title": "Error",
-                "highlights": "Error",
-                "content": "Error",
+                **speech_info,
+                "highlights": "",
+                "content": "",
             }
-        speech.update(speech_info)
         return speech
 
     def extract_speeches(self, speech_infos_by_year: dict, start_date: str):
@@ -283,36 +301,47 @@ class RichmondSpeechScraper(SpeechScraper):
                     singe_year_speeches,
                 )
         if self.save:
-            json_dump(
-                failed, self.SAVE_PATH + f"{self.__fed_name__}_failed_speech_infos.json"
-            )
+            json_dump(failed, self.failed_speech_infos_filename)
         return speeches_by_year
 
     def collect(self):
         """演讲内容收集
 
         Returns:
-            _type_: _description_
+            dict: 按年整理的演讲稿字典
         """
-        # if os.path.exists(self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"):
-        #     speech_infos = json_load(
-        #         self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
-        #     )
-        #     print("Speech Infos Data already exists, skip collecting.")
-        # else:
+        # 提取每年演讲的基本信息（不含正文和highlights等）
+        print(
+            "==" * 20
+            + f"Start collecting speech infos of {self.__fed_name__}"
+            + "==" * 20
+        )
+        if os.path.exists(self.speech_infos_filename):
+            existed_speech_infos = json_load(self.speech_infos_filename)
+        else:
+            existed_speech_infos = {}
         # 提取每年演讲的信息
-        speech_infos = self.extract_speech_infos()
-        if self.save:
-            json_update(
-                self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json", speech_infos
-            )
+        speech_infos = self.extract_speech_infos(existed_speech_infos)
 
-        existed_lastest = "Oct 02, 2024"
+        # 提取已存储的演讲
+        if os.path.exists(self.speeches_filename):
+            existed_speeches = json_load(self.speeches_filename)
+            # 查看已有的最新的演讲日期
+            existed_lastest = get_latest_speech_date(existed_speeches)
+        else:
+            existed_speeches = {}
+            # existed_lastest = EARLYEST_EXTRACT_DATE
+            existed_lastest = "November 12, 2024"
 
         # 提取演讲内容
+        print(
+            "==" * 20
+            + f"Start extracting speech content of {self.__fed_name__} from {existed_lastest}"
+            + "==" * 20
+        )
         speeches = self.extract_speeches(speech_infos, existed_lastest)
         if self.save:
-            json_update(self.SAVE_PATH + f"{self.__fed_name__}_speeches.json", speeches)
+            json_update(self.speeches_filename, speeches)
         return speeches
 
 
@@ -341,7 +370,11 @@ def test_extract_single_speech():
 def test():
     richmond = RichmondSpeechScraper(auto_save=True)
     result = richmond.collect()
-    # print(result)
+    print(
+        "="*100
+        + "Richmond Scraper Done."
+        + "="*100
+    )
 
 
 if __name__ == "__main__":
