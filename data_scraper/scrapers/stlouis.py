@@ -40,6 +40,17 @@ class StLouisSpeechScraper(SpeechScraper):
         os.makedirs(self.SAVE_PATH, exist_ok=True)
         print(f"{self.SAVE_PATH} has been created.")
         self.save = auto_save
+        # 保存文件的文件名
+        self.speech_infos_filename = (
+            self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
+        )
+        self.speeches_filename = self.SAVE_PATH + f"{self.__fed_name__}_speeches.json"
+        self.failed_speech_infos_filename = (
+            self.SAVE_PATH + f"{self.__fed_name__}_failed_speech_infos.json"
+        )
+        self.title_infos_filename = (
+            self.SAVE_PATH + f"{self.__fed_name__}_title_infos.json"
+        )
 
     def fetch_series_all_titles(self):
         """提取FRESER上某个series的所有子title
@@ -209,12 +220,6 @@ class StLouisSpeechScraper(SpeechScraper):
                     msg = f"item {item} failed. {repr(e)}"
                     print(msg)
                     self.logger.warning(msg)
-                    # speech = {
-                    #     "title": item_name,
-                    #     "href": item_link,
-                    #     "item_id": item_id,
-                    #     "speaker": speaker
-                    # }
                     continue
 
         return result
@@ -226,16 +231,12 @@ class StLouisSpeechScraper(SpeechScraper):
             speech_infos_by_year (dict): 按年整理的演讲的基本信息. dict<year, list[dict]>
         """
         # 搜寻历任主席的title链接
-        if os.path.exists(self.SAVE_PATH + f"{self.__fed_name__}_title_infos.json"):
-            title_infos = json_load(
-                self.SAVE_PATH + f"{self.__fed_name__}_title_infos.json"
-            )
+        if os.path.exists(self.title_infos_filename):
+            title_infos = json_load(self.title_infos_filename)
         else:
             # 获取St. Louis集合下的历任行长的FRESER-title信息
             title_infos = self.fetch_series_all_titles()
-            json_update(
-                self.SAVE_PATH + f"{self.__fed_name__}_title_infos.json", title_infos
-            )
+            json_update(self.title_infos_filename, title_infos)
         msg = f"{len(title_infos)} titles found."
         print(msg)
         print("-" * 100)
@@ -262,10 +263,8 @@ class StLouisSpeechScraper(SpeechScraper):
 
         self.speech_infos_by_year = speech_infos_by_year
         # 更新基本信息.
-        json_update(
-            self.SAVE_PATH + f"{self.__fed_name__}_speech_infos_by_year.json",
-            speech_infos_by_year,
-        )
+        if self.save:
+            json_update(self.speech_infos_filename, speech_infos_by_year)
         return speech_infos_by_year
 
     def extract_single_speech(self, speech_info: dict):
@@ -285,20 +284,19 @@ class StLouisSpeechScraper(SpeechScraper):
                     speech_info["speaker"], speech_info["date"], speech_info["title"]
                 )
             )
-            speech = {"content": content}
+            speech = {**speech_info, "content": content}
         except Exception as e:
             print(
                 "Error when extracting speech content from {href}. {error}".format(
                     href=speech_info["href"], error=repr(e)
                 )
             )
-            speech = {"content": ""}
+            speech = {**speech_info, "content": ""}
             print(
                 "{}, {}, {} content failed.".format(
                     speech_info["speaker"], speech_info["date"], speech_info["title"]
                 )
             )
-        speech.update(speech_info)
         return speech
 
     def extract_current_speech_content(self, href: str):
@@ -456,10 +454,7 @@ class StLouisSpeechScraper(SpeechScraper):
             )
         if self.save:
             # 更新读取失败的演讲内容
-            json_dump(
-                failed,
-                self.SAVE_PATH + f"{self.__fed_name__}_failed_speech_infos.json",
-            )
+            json_dump(failed, self.failed_speech_infos_filename)
         return speeches_by_year
 
     def collect_speeches_of_former_presidents(self):
@@ -469,13 +464,9 @@ class StLouisSpeechScraper(SpeechScraper):
             dict: 按自然年份整理的讲话数据. dict<str, list[dict]>
         """
         # 先收集历任行长演讲的基本信息（不含正文和highlights等）
-        if os.path.exists(
-            self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
-        ):
+        if os.path.exists(self.speech_infos_filename):
             # 若已经存在基本信息，则加载进来.
-            speech_infos = json_load(
-                self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
-            )
+            speech_infos = json_load(self.speech_infos_filename)
             # 查看已有的最新的演讲日期
             latest_year = max([k for k, _ in speech_infos.items() if k.isdigit()])
             existed_lastest = max(
@@ -490,10 +481,7 @@ class StLouisSpeechScraper(SpeechScraper):
             # 否则，去获取基本信息
             speech_infos = self.extract_speech_infos()
             if self.save:
-                json_dump(
-                    speech_infos,
-                    self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json",
-                )
+                json_dump(speech_infos, self.speech_infos_filename)
             existed_lastest = "Jan. 01, 2024"
 
         # 提取演讲正文内容
@@ -513,19 +501,20 @@ class StLouisSpeechScraper(SpeechScraper):
         if mode == "Current":
             speeches = self.collect_speeches_of_current_president()
         elif mode == "All":
-            # speeches = self.collect_speeches_of_current_president()
+            # 先爬取现在的
+            speeches = self.collect_speeches_of_current_president()
             print("-" * 100)
             print("Speeches of Current president was scraped.")
+            # 在爬取历史前任行长的
             former_speeches = self.collect_speeches_of_former_presidents()
             print("Speeches of Fromer presidents was scraped.")
-            # update_dict(speeches, former_speeches)
-            speeches = former_speeches
+            speeches = update_dict(speeches, former_speeches)
         else:
             msg = "mode {mode} was not supported. Only `All` and `Current` was valid."
             print(msg)
         # 保存
         if self.save:
-            json_update(f"{self.__fed_name__}_speeches.json", speeches)
+            json_update(self.speeches_filename, speeches)
 
 
 def test_extract_speech_infos():
