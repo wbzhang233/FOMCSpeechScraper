@@ -34,7 +34,27 @@ DEFAULT_KEY_ORDER = [
 ]
 
 
-def unify_speech_dict(dt: dict, order: list = None, necessary_keys: list=None, drop_keys: list=None):
+def unify_speech_date(dt: dict):
+    """统一字典中的日期格式为 %B %d, %Y
+
+    Args:
+        dt (dict): 字典信息
+
+    Returns:
+        dict: 字典信息
+    """
+    try:
+        date = parse_datestring(dt["date"]).strftime("%B %d, %Y")
+        dt["date"] = date
+    except Exception as e:
+        print(f"{dt} Error: {e}")
+        pass
+    return dt
+
+
+def unify_speech_dict(
+    dt: dict, order: list = None, necessary_keys: list = None, drop_keys: list = None
+):
     """统一speech和speech_info字典中键的顺序
 
     Args:
@@ -48,7 +68,7 @@ def unify_speech_dict(dt: dict, order: list = None, necessary_keys: list=None, d
     if not order:
         order = DEFAULT_KEY_ORDER
     if not necessary_keys:
-        necessary_keys = ['speaker', 'date', 'title']
+        necessary_keys = ["speaker", "date", "title"]
 
     result = {}
     for key in DEFAULT_KEY_ORDER:
@@ -76,7 +96,9 @@ def update_records(
         sort_field = "date"
 
     try:
-        if not new or len(new)==0:
+        if not records:
+            records = []
+        if not new or len(new) == 0:
             new = []
         records.extend(new)
         # 使用字典去重，确保每个 field 只出现一次. 第一次的值会被第二次的值覆盖
@@ -190,48 +212,39 @@ def json_update(filepath: str, obj, **kwargs):
         return None
 
 
-def unify_speech_date(dt: dict):
-    """统一字典中的日期格式为 %B %d, %Y
-
-    Args:
-        dt (dict): 字典信息
-
-    Returns:
-        dict: 字典信息
-    """
-    try:
-        date = parse_datestring(dt["date"]).strftime("%B %d, %Y")
-        dt["date"] = date
-    except Exception as e:
-        print(f"{dt} Error: {e}")
-        pass
-    return dt
-
-
-def sort_speeches_records(speeches: list, sort_filed: str = None):
+def sort_speeches_records(
+    speeches: list, sort_filed: str = None, required_keys: list = None, **kwargs
+):
     if speeches is None or speeches == []:
         return speeches
-    
+
     if not sort_filed:
         sort_filed = "date"
-    else:
+    if not required_keys:
+        required_keys = ["date", "title"]
+
+    try:
         # 先统一日期格式
-        speeches = [
-            unify_speech_date(speech) for speech in speeches if speech.get(sort_filed)
+        result = [
+            unify_speech_dict(unify_speech_date(speech), **kwargs)
+            for speech in speeches
+            if all([speech.get(key) for key in required_keys])
         ]
         # 再排序
-        speeches = sorted(
-            speeches, key=lambda x: parse_datestring(x[sort_filed]), reverse=True
+        result = sorted(
+            result, key=lambda x: parse_datestring(x[sort_filed]), reverse=True
         )
-        return speeches
+    except Exception as e:
+        msg = f"Error occurred when sorting speech records. Error: {repr(e)}"
+        logger.error(msg)
+        result = speeches
+    return result
 
 
 def sort_speeches_dict(
-    speeches_by_year: dict,
-    sort_filed: str = None,
-    required_keys: list = None,
+    speeches_by_year: dict, sort_filed: str = None, required_keys: list = None, **kwargs
 ):
-    """对讲话字典进行排序
+    """对讲话字典进行排序.
 
     Args:
         speeches_by_year (dict): _description_
@@ -245,17 +258,26 @@ def sort_speeches_dict(
     if not required_keys:
         required_keys = ["date", "title"]
 
+    tag_fields = kwargs.get("tag_fields", ['date', 'title'])
+
     try:
         result = {}
         for year, single_year_speeches in speeches_by_year.items():
             if not year.isdigit():
                 continue
-            # 使用required_keys 过滤掉没有日期、标题或者作者的记录
-            single_year = [
-                unify_speech_dict(unify_speech_date(speech))
-                for speech in single_year_speeches
-                if all([speech.get(key) for key in required_keys])
-            ]
+            # TODO
+            # 使用字典去重，确保每个 field 只出现一次. 第一次的值会被第二次的值覆盖
+            unique_data = {}
+            for item in single_year_speeches:
+                if all([item.get(key) for key in required_keys]):
+                    tag = tuple(item.get(field) for field in tag_fields)
+                    unique_data[tag] = unify_speech_dict(
+                        unify_speech_date(item), necessary_keys=tag_fields
+                    )
+
+            # 将去重后的字典转换回列表
+            single_year = list(unique_data.values())
+
             # 按日期降序排序
             result[year] = sorted(
                 single_year,
@@ -271,32 +293,6 @@ def sort_speeches_dict(
         logger.error(msg)
         result = speeches_by_year
     return result
-
-
-def sort_speeches_app(district: str = "dallas"):
-    filepath = f"../data/fed_speeches/{district}_fed_speeches/{district}_speeches.json"
-    speeches = json_load(filepath)
-    speeches = sort_speeches_dict(speeches)
-    json_dump(speeches, filepath)
-    print(f"{district}_speeches have sorted.")
-
-
-def drop_duplicates_speech_info_app(
-    district: str = "dallas", tag_fields: list = ["speaker", "date", "title"]
-):
-    filepath = (
-        f"../data/fed_speeches/{district}_fed_speeches/{district}_speech_infos.json"
-    )
-    existed = json_load(filepath)
-    unique = set()
-    result = {}
-    for year, single_year_infos in existed.items():
-        for info in single_year_infos:
-            tag = "|".join([info.get(field) for field in tag_fields])
-            if tag not in unique:
-                unique.add(tag)
-                result.setdefault(year, []).append(info)
-    json_dump(result, filepath)
 
 
 def test_update_dict():
@@ -337,27 +333,8 @@ def test_json_load():
         print("Succeed.")
 
 
-def transfer_frb_speeches_app(existed_speech_path: str, new_speech_dirs: str):
-    # 原有的演讲合并到现在的演讲目录中
-    existed = json_load(existed_speech_path)
-    for year in range(2006, 2016):
-        filename = f"{new_speech_dirs}/philadelphia_speeches_{year}.json"
-        original = json_load(filename)
-        if not original:
-            original = []
-        existed = update_dict(existed, {f"{year}": original})
-
-    existed = sort_speeches_dict(existed)
-    json_dump(existed, existed_speech_path)
-
-
 if __name__ == "__main__":
     # test_json_load()
-    # test_update_dict()
+    test_update_dict()
     # sort_speeches_app()
     # drop_duplicates_speech_info_app()
-
-    transfer_frb_speeches_app(
-        "../data/fed_speeches/philadelphia_fed_speeches/philadelphia_speeches.json",
-        "../data/frb_speeches/philadelphia",
-    )
