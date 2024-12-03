@@ -369,7 +369,7 @@ def test_extract_single_speech():
 
 def test():
     richmond = RichmondSpeechScraper(auto_save=True)
-    result = richmond.collect()
+    richmond.collect()
     print(
         "="*100
         + "Richmond Scraper Done."
