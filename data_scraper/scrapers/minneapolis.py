@@ -8,7 +8,6 @@
 @Desc    :   9I 明尼阿波利斯联储行长讲话数据
 """
 
-from collections import OrderedDict
 import os
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -17,9 +16,14 @@ import time
 from datetime import datetime
 
 from data_scraper.scrapers.scraper import SpeechScraper
-from utils.common import parse_datestring
-from utils.file_saver import json_dump, json_load, json_update, sort_speeches_dict
-from utils.logger import logger
+from utils.common import STANDRAD_DATE_FORMAT, get_latest_speech_date, parse_datestring
+from utils.file_saver import (
+    json_dump,
+    json_load,
+    json_update,
+    sort_speeches_dict,
+    sort_speeches_records,
+)
 
 today = datetime.today()
 
@@ -28,19 +32,13 @@ class MinneapolisSpeechScraper(SpeechScraper):
     URL = "https://www.minneapolisfed.org/publications-archive/all-speeches"
     __fed_name__ = "minneapolis"
     __name__ = f"{__fed_name__.title()}SpeechScraper"
-    SAVE_PATH = f"../../data/fed_speeches/{__fed_name__}_fed_speeches/"
 
-    def __init__(self, url: str = None, auto_save: bool = True):
-        super().__init__(url)
+    def __init__(self, url: str = None, auto_save: bool = True, **kwargs):
+        super().__init__(url=url, auto_save=auto_save, **kwargs)
         self.speech_infos_by_year = None
         self.speeches_by_year = None
-        os.makedirs(self.SAVE_PATH, exist_ok=True)
-        print(f"{self.SAVE_PATH} has been created.")
-        self.save = auto_save
 
-    def extract_speech_infos(self):
-        """抽取演讲的信息"""
-        speech_infos_by_year = {}
+    def show_all(self):
         # 一直点击 Show Next 20 Items，直到不能点击
         while True:
             try:
@@ -50,6 +48,18 @@ class MinneapolisSpeechScraper(SpeechScraper):
                 msg = "Click the next button, some error {} occured.".format(repr(e))
                 print(msg)
                 break
+
+    def extract_speech_infos(self, existed_speech_infos: dict):
+        """抽取演讲的信息"""
+        # 展示所有项目
+        self.show_all()
+
+        # 已经存储的日期.
+        existed_speech_dates = set()
+        for _, single_year_infos in existed_speech_infos.items():
+            existed_speech_dates.update([info["date"] for info in single_year_infos])
+
+        speech_infos_by_year = {}
         # 搜集每个speech_info_items
         speech_info_items = self.driver.find_elements(
             By.XPATH, "//li[@class='i9-c-related-content__group--item']"
@@ -63,15 +73,30 @@ class MinneapolisSpeechScraper(SpeechScraper):
             # 日期
             date = speech_info_item.find_element(By.XPATH, "./div/div").text
             date = date.replace("Speech on ", "").strip()
+            # 如果已存在，则跳出循环.
+            if (
+                isinstance(parse_datestring(date), datetime)
+                and parse_datestring(date).strftime(STANDRAD_DATE_FORMAT)
+                in existed_speech_dates
+            ):
+                break
             # 年份
             year = date.split(",")[-1].strip()
             speech_infos_by_year.setdefault(year, []).append(
-                {"title": title, "href": href, "date": date}
+                {"date": date, "title": title, "href": href}
             )
 
+        # 合并
+        # speech_infos_by_year = update_dict(existed_speech_infos, speech_infos_by_year)
         # 排个序
-        speech_infos_by_year = OrderedDict(sorted(speech_infos_by_year.items()))
-        self.speech_infos_by_year = speech_infos_by_year
+        speech_infos_by_year = sort_speeches_dict(
+            speech_infos_by_year,
+            sort_filed="date",
+            required_keys=["date", "title", "href"],
+        )
+        # 保存
+        if self.save:
+            json_update(self.speech_infos_filename, speech_infos_by_year)
         return speech_infos_by_year
 
     def extract_single_speech(self, speech_info: dict):
@@ -139,20 +164,17 @@ class MinneapolisSpeechScraper(SpeechScraper):
                         speech_info["title"],
                     )
                 )
-            speech["content"] = content
         except Exception as e:
             print(
-                "Error when extracting speech content from {href}. {error}".format(
-                    href=speech_info["href"], error=repr(e)
+                "{} {} {} content failed. Error: {}".format(
+                    speech["speaker"],
+                    speech_info["date"],
+                    speech_info["title"],
+                    repr(e),
                 )
             )
-            print(
-                "{} {} {} content failed.".format(
-                    speech["speaker"], speech_info["date"], speech_info["title"]
-                )
-            )
-        speech.update(speech_info)
-        return speech
+            content = ""
+        return {**speech_info, "content": content}
 
     def extract_speeches(
         self, speech_infos_by_year: dict, start_date: str = "Jan 01, 2006"
@@ -177,7 +199,7 @@ class MinneapolisSpeechScraper(SpeechScraper):
                     speech_info.get("date")
                     and parse_datestring(speech_info["date"]) <= start_date
                 ):
-                    logger.info(
+                    self.logger.info(
                         "Skip speech {date} {title} cause' it's earlier than start_date.".format(
                             date=speech_info["date"],
                             title=speech_info["title"],
@@ -189,34 +211,30 @@ class MinneapolisSpeechScraper(SpeechScraper):
                 if single_speech["content"] == "":
                     # 记录提取失败的报告
                     failed.append(single_speech)
-                    logger.warning(
+                    self.logger.warning(
                         "Extract {date} {title}".format(
                             date=speech_info["date"],
                             title=speech_info["title"],
                         )
                     )
                 single_year_speeches.append(single_speech)
-            single_year_speeches = sorted(
-                single_year_speeches, key=lambda x: parse_datestring(x["date"]), reverse=True
-            )
+            single_year_speeches = sort_speeches_records(single_year_speeches)
             speeches_by_year[year] = single_year_speeches
             if self.save:
                 json_update(
-                    self.SAVE_PATH + f"{self.__fed_name__}_speeches_{year}.json",
+                    os.path.join(
+                        self.SAVE_PATH, f"{self.__fed_name__}_speeches_{year}.json"
+                    ),
                     single_year_speeches,
                 )
             print(f"Speeches of {year} collected.")
         # 保存演讲内容
         if self.save:
             # 保存读取失败的演讲内容
-            json_dump(
-                failed, self.SAVE_PATH + f"{self.__fed_name__}_failed_speech_infos.json"
-            )
+            json_dump(failed, self.failed_speech_infos_filename)
             # 更新已存储的演讲内容
             speeches_by_year = sort_speeches_dict(speeches_by_year)
-            json_update(
-                self.SAVE_PATH + f"{self.__fed_name__}_speeches.json", speeches_by_year
-            )
+            json_update(self.speeches_filename, speeches_by_year)
         return speeches_by_year
 
     def collect(self):
@@ -226,31 +244,33 @@ class MinneapolisSpeechScraper(SpeechScraper):
             _type_: _description_
         """
         # 提取每年演讲的基本信息（不含正文和highlights等）
-        # if os.path.exists(self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"):
-        #     speech_infos = json_load(
-        #         self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
-        #     )
-        #     # 查看已有的最新的演讲日期
-        #     latest_year = max([k for k, _ in speech_infos.items()])
-        #     existed_lastest = max(
-        #         [
-        #             parse_datestring(speech_info["date"])
-        #             for speech_info in speech_infos[latest_year]
-        #         ]
-        #     ).strftime("%b %d, %Y")
-        #     logger.info("Speech Infos Data already exists, skip collecting infos.")
-        #     existed_lastest = "Mar. 30, 2023"
-        # else:
-        speech_infos = self.extract_speech_infos()
-        if self.save:
-            json_dump(
-                speech_infos,
-                self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json",
-            )
-        existed_lastest = "Oct 21, 2024"
+        if os.path.exists(self.speech_infos_filename):
+            existed_speech_infos = json_load(self.speech_infos_filename)
+        else:
+            existed_speech_infos = {}
+        speech_infos = self.extract_speech_infos(existed_speech_infos)
+
+        # 提取已存储的演讲
+        if os.path.exists(self.speeches_filename):
+            existed_speeches = json_load(self.speeches_filename)
+            # 查看已有的最新的演讲日期
+            existed_lastest = get_latest_speech_date(existed_speeches)
+        else:
+            existed_speeches = {}
+            # existed_lastest = "Jan 01, 2006"
+            existed_lastest = "Oct 21, 2024"
 
         # 提取演讲正文内容
-        speeches = self.extract_speeches(speech_infos, existed_lastest)
+        print(
+            "==" * 20
+            + f"Start extracting speech content of {self.__fed_name__} from {existed_lastest}"
+            + "==" * 20
+        )
+        speeches = self.extract_speeches(
+            speech_infos_by_year=speech_infos,
+            start_date=existed_lastest,
+        )
+        print("==" * 20 + f"{self.__fed_name__} finished." + "==" * 20)
         return speeches
 
 
@@ -271,7 +291,9 @@ def test_extract_single_speech():
 
 
 def test():
-    scraper = MinneapolisSpeechScraper()
+    scraper = MinneapolisSpeechScraper(
+        output_dir="../../data/fed_speeches", log_dir="../../log"
+    )
     scraper.collect()
 
 

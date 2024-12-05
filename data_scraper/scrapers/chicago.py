@@ -21,9 +21,20 @@ import time
 from datetime import datetime
 
 from data_scraper.scrapers.scraper import SpeechScraper
-from utils.common import get_latest_speech_date, parse_datestring
-from utils.file_saver import json_dump, json_load, json_update, update_records
-from utils.logger import get_logger
+from utils.common import (
+    EARLYEST_EXTRACT_DATE,
+    EARLYEST_YEAR,
+    get_latest_speech_date,
+    parse_datestring,
+)
+from utils.file_saver import (
+    json_dump,
+    json_load,
+    json_update,
+    sort_speeches_dict,
+    sort_speeches_records,
+    update_records,
+)
 
 today = datetime.today()
 
@@ -73,31 +84,15 @@ class ChicagoSpeechScraper(SpeechScraper):
     URL = "https://www.chicagofed.org/people/chicago-fed-presidents"
     __fed_name__ = "chicago"
     __name__ = f"{__fed_name__.title()}SpeechScraper"
-    SAVE_PATH = f"../../data/fed_speeches/{__fed_name__}_fed_speeches/"
-    ERALYEST_YEAR = 2006
-
-    logger = get_logger(
-        logger_name=f"{__fed_name__}_speech_scraper", log_filepath="../../log/"
-    )
 
     def __init__(self, url: str = None, auto_save: bool = True, **kwargs):
-        super().__init__(url)
+        super().__init__(url=url, auto_save=auto_save, **kwargs)
         self.speech_infos_by_year = None
         self.speeches_by_year = None
-        os.makedirs(self.SAVE_PATH, exist_ok=True)
-        print(f"{self.SAVE_PATH} has been created.")
-        self.save = auto_save
-        # 保存文件的文件名
-        self.speech_infos_filename = (
-            self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
-        )
-        self.speeches_filename = self.SAVE_PATH + f"{self.__fed_name__}_speeches.json"
-        self.failed_speech_infos_filename = (
-            self.SAVE_PATH + f"{self.__fed_name__}_failed_speech_infos.json"
-        )
+        self.ERALYEST_YEAR = EARLYEST_YEAR
         # 额外新增：主席任期表信息
-        self.presidents_info_filename = (
-            self.SAVE_PATH + f"{self.__fed_name__}_presidents_info.json"
+        self.presidents_info_filename = os.path.join(
+            self.SAVE_PATH, f"{self.__fed_name__}_presidents_info.json"
         )
 
     def extract_speaker_name(self, text: str):
@@ -167,7 +162,6 @@ class ChicagoSpeechScraper(SpeechScraper):
             presidents_infos = json_load(self.presidents_info_filename)
             return presidents_infos
 
-        self.driver.get(self.URL)
         # 搜寻历任每一任主席的资料
         president_elements = self.driver.find_elements(
             By.XPATH,
@@ -317,9 +311,8 @@ class ChicagoSpeechScraper(SpeechScraper):
             for year, new_speech_infos in infos.items():
                 if year in speech_infos_by_year:
                     speech_infos_by_year[year] = update_records(
-                        speech_infos_by_year[year],
+                        speech_infos_by_year.get(year),
                         new_speech_infos,
-                        tag_fields=["speaker", "title"],
                     )
                 else:
                     speech_infos_by_year[year] = new_speech_infos
@@ -451,24 +444,25 @@ class ChicagoSpeechScraper(SpeechScraper):
                     )
                 if single_speech["date"] and single_speech["title"]:
                     single_year_speeches.append(single_speech)
-            speeches_by_year[year] = single_year_speeches
+            speeches_by_year[year] = sort_speeches_records(single_year_speeches)
             if self.save:
                 json_update(
-                    self.SAVE_PATH + f"{self.__fed_name__}_speeches_{year}.json",
+                    os.path.join(
+                        self.SAVE_PATH, f"{self.__fed_name__}_speeches_{year}.json"
+                    ),
                     single_year_speeches,
                 )
             print(f"Speeches of {year} collected.")
         # 保存演讲内容
+        speeches_by_year = sort_speeches_dict(
+            speeches_by_year, required_keys=["date", "title"]
+        )
         if self.save:
             # 保存读取失败的演讲内容
-            json_dump(
-                failed, self.SAVE_PATH + f"{self.__fed_name__}_failed_speech_infos.json"
-            )
+            json_dump(failed, self.failed_speech_infos_filename)
         if self.save and speeches_by_year != existed_speeches:
             # 更新已存储的演讲内容
-            json_update(
-                self.SAVE_PATH + f"{self.__fed_name__}_speeches.json", speeches_by_year
-            )
+            json_update(self.speeches_filename, speeches_by_year)
         return speeches_by_year
 
     def collect(self):
@@ -497,7 +491,7 @@ class ChicagoSpeechScraper(SpeechScraper):
             existed_lastest = get_latest_speech_date(existed_speeches)
         else:
             existed_speeches = {}
-            existed_lastest = "Jan 01, 2006"
+            existed_lastest = EARLYEST_EXTRACT_DATE
 
         # 提取演讲正文内容
         print(
@@ -536,10 +530,10 @@ def test_extract_single_speech():
 
 
 def test():
-    scraper = ChicagoSpeechScraper()
+    scraper = ChicagoSpeechScraper(
+        output_dir="../../data/fed_speeches", log_dir="../../log"
+    )
     scraper.collect()
-
-
 
 
 def test_purified_datestr():

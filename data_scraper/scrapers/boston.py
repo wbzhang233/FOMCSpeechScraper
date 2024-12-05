@@ -15,45 +15,45 @@ import re
 import sys
 import time
 
-from utils.pdf_downloader import is_download_existed, read_pdf_file
-
 
 sys.path.append("../../")
-from scraper import SpeechScraper
 
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.remote.webelement import WebElement
-from utils.logger import get_logger
+from selenium.webdriver.chrome.options import Options
+from data_scraper.scrapers.scraper import SpeechScraper
 from utils.common import (
     EARLYEST_EXTRACT_DATE,
     STANDRAD_DATE_FORMAT,
     get_latest_speech_date,
     parse_datestring,
 )
+from utils.pdf_downloader import is_download_existed, read_pdf_file
 from utils.file_saver import (
     json_dump,
     json_load,
     json_update,
+    sort_speeches_dict,
     unify_speech_dict,
     update_records,
 )
 
-logger = get_logger("boston_speech_scraper", log_filepath="../../log")
-
 # 波士顿联储历任行长任期
 BOSTON_PRESIDENT_TIMELINE = {
     "Susan M. Collins": ("July 1, 2022", "present"),
-    "Kenneth C. Montgomery": ("October 1, 2021", "June 30, 2022"), # 临时行长. 因此position不为President
+    "Kenneth C. Montgomery": (
+        "October 1, 2021",
+        "June 30, 2022",
+    ),  # 临时行长. 因此position不为President
     "Eric S. Rosengren": ("July 23, 2007", "September 30, 2021"),
     "Cathy E. Minehan": ("July 13, 1994", "July 22, 2007"),
 }
 
 
 def correct(speech_infos_by_year: dict):
-    """修正讲话历史数据，尤其是过滤掉非行长以及保留临时代行长的演讲
-    """
+    """修正讲话历史数据，尤其是过滤掉非行长以及保留临时代行长的演讲"""
     try:
         new_result = {}
         for year, single_year_infos in speech_infos_by_year.items():
@@ -111,24 +111,26 @@ class BostonSpeechScraper(SpeechScraper):
     URL = "https://www.bostonfed.org/news-and-events/speeches.aspx"
     __fed_name__ = "boston"
     __name__ = f"{__fed_name__.title()}SpeechScraper"
-    SAVE_PATH = f"../../data/fed_speeches/{__fed_name__}_fed_speeches/"
-    DOWNLOAD_PATH = "C:/Users/Administrator/Downloads/"
 
-    def __init__(self, url: str = None, auto_save: bool = True):
-        super().__init__(url)
+    def __init__(self, url: str = None, auto_save: bool = True, **kwargs):
+        # 预设PDF下载存储路径
+        pdf_save_dir = kwargs.get("pdf_save_dir", "../data/pdfs/")
+        self.DOWNLOAD_PATH = os.path.abspath(
+            os.path.join(pdf_save_dir, f"{self.__fed_name__}")
+        )
+        # PDF文件下载目录
+        self.prefs = {
+            "download.default_directory": self.DOWNLOAD_PATH,
+            "download.prompt_for_download": False,
+            "download.directory_upgrade": True,
+            "plugins.always_open_pdf_externally": True,  # 在外部程序中打开PDF文件
+        }
+        # 设置浏览器选项
+        chrome_options = Options()
+        chrome_options.add_experimental_option("prefs", self.prefs)
+        super().__init__(url=url, auto_save=auto_save, **kwargs)
         self.speech_infos_by_year = None
         self.speeches_by_year = None
-        os.makedirs(self.SAVE_PATH, exist_ok=True)
-        print(f"{self.SAVE_PATH} has been created.")
-        self.save = auto_save
-        # 保存文件的文件名
-        self.speech_infos_filename = (
-            self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
-        )
-        self.speeches_filename = self.SAVE_PATH + f"{self.__fed_name__}_speeches.json"
-        self.failed_speech_infos_filename = (
-            self.SAVE_PATH + f"{self.__fed_name__}_failed_speech_infos.json"
-        )
 
     def extract_speech_date(self, text: str, silent: bool = False):
         """提取段落中的日期
@@ -200,7 +202,10 @@ class BostonSpeechScraper(SpeechScraper):
             speaker = splits[0].strip()
             position = splits[-1].strip()
             # 非行长过滤掉,但保留临时行长.
-            if not position.startswith("President") or speaker not in BOSTON_PRESIDENT_TIMELINE:
+            if (
+                not position.startswith("President")
+                or speaker not in BOSTON_PRESIDENT_TIMELINE
+            ):
                 return None
 
             speech_info = {
@@ -208,8 +213,8 @@ class BostonSpeechScraper(SpeechScraper):
                 "position": position,
                 "date": date,
                 "title": title,
-                "href": href,
                 "summary": summary,
+                "href": href,
             }
         except Exception as e:
             print(f"Parse Speech Info Error: {e}")
@@ -223,7 +228,6 @@ class BostonSpeechScraper(SpeechScraper):
         Returns:
             _type_: _description_
         """
-        self.driver.get(self.URL)
         WebDriverWait(self.driver, 10).until(
             EC.presence_of_element_located((By.ID, "main-content"))
         )
@@ -282,9 +286,8 @@ class BostonSpeechScraper(SpeechScraper):
                     )
                 ):
                     break
-                if (
-                    speech_info
-                    and speech_info.get("href").startswith("https://www.bostonfed.org/")
+                if speech_info and speech_info.get("href").startswith(
+                    "https://www.bostonfed.org/"
                 ):
                     print(
                         "{date} | {title}. {speaker}\n".format(
@@ -302,11 +305,12 @@ class BostonSpeechScraper(SpeechScraper):
                 + "\n"
             )
             speech_infos_by_year[year] = update_records(
-                speech_infos_by_year[year], speech_infos_single_year
+                speech_infos_by_year.get(year), speech_infos_single_year
             )
             counts += len(speech_infos_single_year)
         # 存储到类中
         print(f"Extracted {counts} speeches from Boston Fed.")
+        speech_infos_by_year = sort_speeches_dict(speech_infos_by_year)
         if self.save and speech_infos_by_year != existed_speech_infos:
             json_update(self.speech_infos_filename, speech_infos_by_year)
         return speech_infos_by_year
@@ -333,7 +337,7 @@ class BostonSpeechScraper(SpeechScraper):
                 return content
         except Exception as e:
             print(f"Parse Speech Content Error: {e}")
-            return f"$HREF$:{href}"
+            return f"$HREF$: {href}"
 
     def extract_single_speech(self, speech_info: dict):
         """提取单篇演讲的内容
@@ -351,10 +355,6 @@ class BostonSpeechScraper(SpeechScraper):
                 EC.presence_of_all_elements_located((By.ID, "main-content"))
             )
 
-            # 演讲标题
-            # speech_title = self.driver.find_element(
-            #     By.XPATH, "//h1[contains(@class, 'title')]"
-            # ).text
             # 重点
             highlights_elements = self.driver.find_elements(
                 By.CSS_SELECTOR,
@@ -422,7 +422,7 @@ class BostonSpeechScraper(SpeechScraper):
                     continue
                 # 跳过start_date之前的演讲
                 if parse_datestring(speech_info["date"]) <= start_date:
-                    logger.info(
+                    self.logger.info(
                         "Skip speech {speaker} {date} {title} cause' it's earlier than start_date.".format(
                             speaker=speech_info["speaker"],
                             date=speech_info["date"],
@@ -435,7 +435,7 @@ class BostonSpeechScraper(SpeechScraper):
                 if single_speech["content"] == "":
                     # 记录提取失败的报告
                     failed.append(single_speech)
-                    logger.warning(
+                    self.logger.warning(
                         "Extract {speaker} {date} {title} failed.".format(
                             speaker=speech_info["speaker"],
                             date=speech_info["date"],
@@ -444,11 +444,13 @@ class BostonSpeechScraper(SpeechScraper):
                     )
                 single_year_speeches.append(single_speech)
             speeches_by_year[year] = update_records(
-                speeches_by_year[year], single_year_speeches
+                speeches_by_year.get(year), single_year_speeches
             )
             if self.save:
                 json_update(
-                    self.SAVE_PATH + f"{self.__fed_name__}_fed_speeches_{year}.json",
+                    os.path.join(
+                        self.SAVE_PATH, f"{self.__fed_name__}_speeches_{year}.json"
+                    ),
                     single_year_speeches,
                 )
             print(f"Speeches of {year} collected.")
@@ -456,7 +458,10 @@ class BostonSpeechScraper(SpeechScraper):
         if self.save:
             # 保存读取失败的演讲内容
             json_dump(failed, self.failed_speech_infos_filename)
-            # 更新已存储的演讲内容
+        # 更新已存储的演讲内容
+        speeches_by_year = sort_speeches_dict(
+            speeches_by_year, required_keys=["date", "title"]
+        )
         if self.save and speeches_by_year != existed_speeches:
             json_update(self.speeches_filename, speeches_by_year)
         return speeches_by_year
@@ -536,7 +541,11 @@ def test_extract_single_speech():
 
 
 def test():
-    scraper = BostonSpeechScraper()
+    scraper = BostonSpeechScraper(
+        output_dir="../../data/fed_speeches",
+        log_dir="../../log",
+        pdf_save_dir="../../data/pdfs",
+    )
     scraper.collect()
 
 

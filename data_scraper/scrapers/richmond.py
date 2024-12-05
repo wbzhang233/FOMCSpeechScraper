@@ -13,10 +13,10 @@ import os
 import sys
 import time
 
-from utils.common import get_latest_speech_date, parse_datestring
+from utils.common import EARLYEST_EXTRACT_DATE, get_latest_speech_date, parse_datestring
 
 sys.path.append("../../")
-from scraper import SpeechScraper
+from data_scraper.scrapers.scraper import SpeechScraper
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -35,29 +35,19 @@ https://www.richmondfed.org/press_room/speeches
 
 class RichmondSpeechScraper(SpeechScraper):
     URL = "https://www.richmondfed.org/press_room/speeches"  # ?mode=archive#2
-    SAVE_PATH = "../../data/fed_speeches/richmond_fed_speeches/"
     __fed_name__ = "richmond"
+    __name__ = f"{__fed_name__.title()}SpeechScraper"
 
-    def __init__(self, url: str = None, auto_save: bool = True):
-        super().__init__(url)
+    def __init__(self, url: str = None, auto_save: bool = True, **kwargs):
+        super().__init__(url=url, auto_save=auto_save, **kwargs)
         self.speech_infos_by_year = None
         self.speeches_by_year = None
-        os.makedirs(self.SAVE_PATH, exist_ok=True)
-        self.save = auto_save
-        # 保存文件的文件名
-        self.speech_infos_filename = (
-            self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
-        )
-        self.speeches_filename = self.SAVE_PATH + f"{self.__fed_name__}_speeches.json"
-        self.failed_speech_infos_filename = (
-            self.SAVE_PATH + f"{self.__fed_name__}_failed_speech_infos.json"
-        )
 
     def expand_all(self, accordian: WebElement):
         """展开所有年份
 
         Args:
-            accordian (_type_): _description_
+            accordian (WebElement): accordian元素
         """
         year_links = accordian.find_elements(By.CSS_SELECTOR, "li a[data-anchor-id]")
         for i, link in enumerate(year_links):
@@ -130,7 +120,7 @@ class RichmondSpeechScraper(SpeechScraper):
         self.click_years()
         return accordian
 
-    def extract_speech_infos(self, existed_speech_infos:dict):
+    def extract_speech_infos(self, existed_speech_infos: dict):
         """抽取演讲的基本信息
 
         Returns:
@@ -210,7 +200,7 @@ class RichmondSpeechScraper(SpeechScraper):
             speech_infos_by_year,
             sort_filed="date",
             required_keys=["date", "title", "href"],
-            tag_fields=["date", "href"],
+            tag_fields=["href"],
         )
         if self.save:
             json_update(self.speech_infos_filename, speech_infos_by_year)
@@ -297,11 +287,20 @@ class RichmondSpeechScraper(SpeechScraper):
             speeches_by_year[year] = singe_year_speeches
             if self.save:
                 json_update(
-                    self.SAVE_PATH + f"{self.__fed_name__}_speeches_{year}.json",
+                    os.path.join(
+                        self.SAVE_PATH, f"{self.__fed_name__}_speeches_{year}.json"
+                    ),
                     singe_year_speeches,
                 )
+        speeches_by_year = sort_speeches_dict(
+            speeches_by_year,
+            sort_filed="date",
+            required_keys=["speaker", "date", "title"],
+            tag_fields=["href"],
+        )
         if self.save:
             json_dump(failed, self.failed_speech_infos_filename)
+            json_update(self.speeches_filename, speeches_by_year)
         return speeches_by_year
 
     def collect(self):
@@ -330,8 +329,8 @@ class RichmondSpeechScraper(SpeechScraper):
             existed_lastest = get_latest_speech_date(existed_speeches)
         else:
             existed_speeches = {}
-            # existed_lastest = EARLYEST_EXTRACT_DATE
-            existed_lastest = "November 12, 2024"
+            existed_lastest = EARLYEST_EXTRACT_DATE
+            # existed_lastest = "November 12, 2024"
 
         # 提取演讲内容
         print(
@@ -368,13 +367,11 @@ def test_extract_single_speech():
 
 
 def test():
-    richmond = RichmondSpeechScraper(auto_save=True)
-    richmond.collect()
-    print(
-        "="*100
-        + "Richmond Scraper Done."
-        + "="*100
+    richmond = RichmondSpeechScraper(
+        auto_save=True, output_dir="../../data/fed_speeches", log_dir="../../log"
     )
+    richmond.collect()
+    print("=" * 100 + "Richmond Scraper Done." + "=" * 100)
 
 
 if __name__ == "__main__":

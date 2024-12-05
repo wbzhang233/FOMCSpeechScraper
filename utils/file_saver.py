@@ -26,6 +26,7 @@ DEFAULT_KEY_ORDER = [
     "highlights",
     "item_id",
     "href",
+    "url",
     "text_url",
     "api_url",
     "pdf_url",
@@ -74,6 +75,10 @@ def unify_speech_dict(
     for key in DEFAULT_KEY_ORDER:
         if dt.get(key) or key in necessary_keys:
             result[key] = dt.get(key)
+    # 将url统一为href字段
+    if dt.get("url"):
+        result["href"] = dt["url"]
+        del result["url"]
     return result
 
 
@@ -91,12 +96,12 @@ def update_records(
 
     """
     if not tag_fields:
-        tag_fields = ["speaker", "date", "title"]
+        tag_fields = ["href"]
     if not sort_field:
         sort_field = "date"
 
     try:
-        if not records:
+        if not records or len(records)==0:
             records = []
         if not new or len(new) == 0:
             new = []
@@ -258,7 +263,7 @@ def sort_speeches_dict(
     if not required_keys:
         required_keys = ["date", "title"]
 
-    tag_fields = kwargs.get("tag_fields", ['date', 'title'])
+    tag_fields = kwargs.get("tag_fields", ['href'])
 
     try:
         result = {}

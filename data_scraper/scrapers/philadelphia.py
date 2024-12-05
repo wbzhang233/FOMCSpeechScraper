@@ -14,23 +14,17 @@ import os
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import (
-    TimeoutException,
-    WebDriverException,
-    NoSuchElementException,
-)
-
 import time
 
 from data_scraper.scrapers.scraper import SpeechScraper
-from utils.common import get_latest_speech_date, parse_datestring
+from utils.common import EARLYEST_EXTRACT_DATE, get_latest_speech_date, parse_datestring
 from utils.file_saver import (
     json_dump,
     json_load,
     json_update,
+    sort_speeches_dict,
     update_records,
-)  # update_dict
-from utils.logger import logger
+)
 
 
 class PhiladelphiaSpeechScraper(SpeechScraper):
@@ -40,23 +34,11 @@ class PhiladelphiaSpeechScraper(SpeechScraper):
     FORMER_PRESIDENT_PLOSSER_URL = "https://www.philadelphiafed.org/the-economy/monetary-policy/speech-archive-president-plosser"
     __fed_name__ = "philadelphia"
     __name__ = f"{__fed_name__.title()}SpeechScraper"
-    SAVE_PATH = f"../../data/fed_speeches/{__fed_name__}_fed_speeches/"
 
-    def __init__(self, url: str = None, auto_save: bool = True):
-        super().__init__(url)
+    def __init__(self, url: str = None, auto_save: bool = True, **kwargs):
+        super().__init__(url=url, auto_save=auto_save, **kwargs)
         self.speech_infos_by_year = None
         self.speeches_by_year = None
-        os.makedirs(self.SAVE_PATH, exist_ok=True)
-        print(f"{self.SAVE_PATH} has been created.")
-        self.save = auto_save
-        # 保存文件的文件名
-        self.speech_infos_filename = (
-            self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
-        )
-        self.speeches_filename = self.SAVE_PATH + f"{self.__fed_name__}_speeches.json"
-        self.failed_speech_infos_filename = (
-            self.SAVE_PATH + f"{self.__fed_name__}_failed_speech_infos.json"
-        )
 
     def extract_speech_infos(self, existed_speech_infos: dict):
         """抽取演讲的信息"""
@@ -84,8 +66,6 @@ class PhiladelphiaSpeechScraper(SpeechScraper):
             )
 
             for item in speech_items:
-                # 话题类型记录一下
-                # date_topic = speech_items[i].get_attribute("data-topic")
                 # 提取日期
                 date = item.find_element(
                     By.XPATH,
@@ -119,7 +99,6 @@ class PhiladelphiaSpeechScraper(SpeechScraper):
                     {
                         "speaker": speaker,
                         "date": date,
-                        # "date_topic": date_topic,
                         "title": title,
                         "href": href,
                     }
@@ -137,22 +116,18 @@ class PhiladelphiaSpeechScraper(SpeechScraper):
                 self.driver.execute_script("arguments[0].click();", next_button)
                 # 等待页面加载
                 time.sleep(1.2)
-            except NoSuchElementException as e:
-                print(
-                    f"Next button not found or disabled. Reached last page. {repr(e)}"
-                )
-                break
-            except TimeoutException as e:
-                print(
-                    f"Next button not found or disabled. Reached last page. {repr(e)}"
-                )
-                break
-            except WebDriverException as e:
+            except Exception as e:
                 print(
                     f"Next button not found or disabled. Reached last page. {repr(e)}"
                 )
                 break
 
+        speech_infos_by_year = sort_speeches_dict(
+            speech_infos_by_year,
+            sort_field="date",
+            required_keys=["date", "title", "href"],
+            tag_fields=["href"],
+        )
         # 保存
         if self.save and speech_infos_by_year != existed_speech_dates:
             json_update(self.speech_infos_filename, speech_infos_by_year)
@@ -200,16 +175,14 @@ class PhiladelphiaSpeechScraper(SpeechScraper):
             speech = {**speech_info, "position": position, "content": content}
         except Exception as e:
             print(
-                "Error when extracting speech content from {href}. {error}".format(
-                    href=speech_info["href"], error=repr(e)
+                "{} {} {} content failed. Error: {}".format(
+                    speech_info["speaker"],
+                    speech_info["date"],
+                    speech_info["title"],
+                    repr(e),
                 )
             )
             speech = {**speech_info, "position": position, "content": ""}
-            print(
-                "{} {} {} content failed.".format(
-                    speech_info["speaker"], speech_info["date"], speech_info["title"]
-                )
-            )
         return speech
 
     def extract_speeches(
@@ -234,7 +207,7 @@ class PhiladelphiaSpeechScraper(SpeechScraper):
             for speech_info in single_year_infos:
                 # 跳过start_date之前的演讲
                 if parse_datestring(speech_info["date"]) <= start_date:
-                    logger.info(
+                    self.logger.info(
                         "Skip speech {speaker} {date} {title} cause' it's earlier than start_date.".format(
                             speaker=speech_info["speaker"],
                             date=speech_info["date"],
@@ -247,7 +220,7 @@ class PhiladelphiaSpeechScraper(SpeechScraper):
                 if single_speech["content"] == "":
                     # 记录提取失败的报告
                     failed.append(single_speech)
-                    logger.warning(
+                    self.logger.warning(
                         "Extract {speaker} {date} {title}".format(
                             speaker=speech_info["speaker"],
                             date=speech_info["date"],
@@ -263,14 +236,23 @@ class PhiladelphiaSpeechScraper(SpeechScraper):
                     )
                 )
             speeches_by_year[year] = update_records(
-                speeches_by_year[year], single_year_speeches
+                speeches_by_year(year), single_year_speeches
             )
             if self.save:
                 json_update(
-                    self.SAVE_PATH + f"{self.__fed_name__}_speeches_{year}.json",
+                    os.path.join(
+                        self.SAVE_PATH, f"{self.__fed_name__}_speeches_{year}.json"
+                    ),
                     single_year_speeches,
                 )
             print(f"Speeches of {year} collected.")
+        # 演讲稿字典
+        speeches_by_year = sort_speeches_dict(
+            speeches_by_year,
+            sort_field="date",
+            required_keys=["speaker", "date", "title"],
+            tag_fields=["href"],
+        )
         # 保存演讲内容
         if self.save:
             # 保存读取失败的演讲内容
@@ -296,8 +278,8 @@ class PhiladelphiaSpeechScraper(SpeechScraper):
         if os.path.exists(self.speech_infos_filename):
             existed_speech_infos = json_load(self.speech_infos_filename)
         else:
-            existed_speech_infos = {}
-            speech_infos = self.extract_speech_infos(existed_speech_infos)
+            # existed_speech_infos = {}
+            existed_speech_infos = self.extract_speech_infos(existed_speech_infos)
 
         # 提取已存储的演讲
         if os.path.exists(self.speeches_filename):
@@ -306,7 +288,7 @@ class PhiladelphiaSpeechScraper(SpeechScraper):
             existed_lastest = get_latest_speech_date(existed_speeches)
         else:
             existed_speeches = {}
-            existed_lastest = "Jan 01, 2006"
+            existed_lastest = EARLYEST_EXTRACT_DATE
 
         # 提取演讲正文内容
         print(
@@ -315,7 +297,7 @@ class PhiladelphiaSpeechScraper(SpeechScraper):
             + "==" * 20
         )
         speeches = self.extract_speeches(
-            speech_infos_by_year=speech_infos,
+            speech_infos_by_year=existed_speech_infos,
             existed_speeches=existed_speeches,
             start_date=existed_lastest,
         )
@@ -346,7 +328,9 @@ def test_extract_single_speech():
 
 
 def test():
-    scraper = PhiladelphiaSpeechScraper()
+    scraper = PhiladelphiaSpeechScraper(
+        output_dir="../../data/fed_speeches", log_dir="../../log"
+    )
     scraper.collect()
 
 

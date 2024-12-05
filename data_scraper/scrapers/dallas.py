@@ -20,9 +20,19 @@ from selenium.webdriver.remote.webelement import WebElement
 from datetime import datetime
 
 from data_scraper.scrapers.scraper import SpeechScraper
-from utils.common import STANDRAD_DATE_FORMAT, get_latest_speech_date, parse_datestring
-from utils.file_saver import json_dump, json_load, json_update, sort_speeches_dict, update_records
-from utils.logger import logger
+from utils.common import (
+    EARLYEST_EXTRACT_DATE,
+    STANDRAD_DATE_FORMAT,
+    get_latest_speech_date,
+    parse_datestring,
+)
+from utils.file_saver import (
+    json_dump,
+    json_load,
+    json_update,
+    sort_speeches_dict,
+    update_records,
+)
 
 # 行长宣誓就职日期
 SWORN_DATE_MAPPING = {"Lorie K. Logan": "August 22, 2022"}
@@ -32,25 +42,11 @@ class DallasSpeechScraper(SpeechScraper):
     URL = "https://www.dallasfed.org/news/speeches"
     __fed_name__ = "dallas"
     __name__ = f"{__fed_name__.title()}SpeechScraper"
-    SAVE_PATH = f"../../data/fed_speeches/{__fed_name__}_fed_speeches/"
 
-    def __init__(self, url: str = None, auto_save: bool = True):
-        super().__init__(url)
+    def __init__(self, url: str = None, auto_save: bool = True, **kwargs):
+        super().__init__(url=url, auto_save=auto_save, **kwargs)
         self.speech_infos_by_year = None
         self.speeches_by_year = None
-        os.makedirs(self.SAVE_PATH, exist_ok=True)
-        print(f"{self.SAVE_PATH} has been created.")
-        self.save = auto_save
-        # 保存文件的文件名
-        self.speech_infos_filename = (
-            self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
-        )
-        self.speeches_filename = (
-            self.SAVE_PATH + f"{self.__fed_name__}_speeches.json"
-        )
-        self.failed_speech_infos_filename = (
-            self.SAVE_PATH + f"{self.__fed_name__}_failed_speech_infos.json"
-        )
 
     def fetch_single_speech_info(self, speech_item: WebElement):
         """提取单个演讲元素的信息
@@ -94,7 +90,6 @@ class DallasSpeechScraper(SpeechScraper):
 
     def extract_speech_infos(self, existed_speech_infos: dict):
         """抽取演讲的信息"""
-        self.driver.get(self.URL)
         # 搜寻每一个阶段的链接
         links = self.driver.find_elements(
             By.XPATH, "//*[@id='content']/div/div/ul/li/a[@href]"
@@ -137,7 +132,7 @@ class DallasSpeechScraper(SpeechScraper):
                 )
                 for item in speech_items:
                     speech_info = self.fetch_single_speech_info(item)
-                    speech_info ={"speaker": speaker, **speech_info}
+                    speech_info = {"speaker": speaker, **speech_info}
                     # 如果日期已命中，则退出循环
                     if speech_info["date"] in existed_speech_dates:
                         break
@@ -158,6 +153,9 @@ class DallasSpeechScraper(SpeechScraper):
                                 speech_info["title"],
                             )
                         )
+        speech_infos_by_year = sort_speeches_dict(
+            speech_infos_by_year, required_keys=["date", "title"]
+        )
         if self.save:
             json_update(self.speech_infos_filename, speech_infos_by_year)
         return speech_infos_by_year
@@ -194,20 +192,17 @@ class DallasSpeechScraper(SpeechScraper):
                         speech_info["title"],
                     )
                 )
-
             speech = {**speech_info, "content": content}
         except Exception as e:
             print(
-                "Error when extracting speech content from {href}. {error}".format(
-                    href=speech_info["href"], error=repr(e)
+                "{} {} {} content failed. Error: {}".format(
+                    speech_info["speaker"],
+                    speech_info["date"],
+                    speech_info["title"],
+                    repr(e),
                 )
             )
             speech = {**speech_info, "content": ""}
-            print(
-                "{} {} {} content failed.".format(
-                    speech_info["speaker"], speech_info["date"], speech_info["title"]
-                )
-            )
         return speech
 
     def extract_speeches(
@@ -235,49 +230,58 @@ class DallasSpeechScraper(SpeechScraper):
             for speech_info in single_year_infos:
                 # 跳过start_date之前的演讲
                 if parse_datestring(speech_info["date"]) <= start_date:
-                    logger.info(
-                        "Skip speech {speaker} {date} {title} cause' it's earlier than start_date.".format(
-                            speaker=speech_info["speaker"],
-                            date=speech_info["date"],
-                            title=speech_info["title"],
-                        )
+                    msg = "Skip speech {speaker} {date} {title} cause' it's earlier than start_date.".format(
+                        speaker=speech_info["speaker"],
+                        date=speech_info["date"],
+                        title=speech_info["title"],
                     )
+                    self.logger.info(msg)
+                    print(msg)
                     continue
                 # 提取演讲正文
                 single_speech = self.extract_single_speech(speech_info)
                 if single_speech["content"] == "":
                     # 记录提取失败的报告
                     failed.append(single_speech)
-                    logger.warning(
-                        "Extract {speaker} {date} {title}".format(
-                            speaker=speech_info["speaker"],
-                            date=speech_info["date"],
-                            title=speech_info["title"],
-                        )
-                    )
-                single_year_speeches.append(single_speech)
-                print(
-                    "{speaker} {date} | {title} extracted.".format(
+                    msg = "Extract {speaker} {date} {title}".format(
                         speaker=speech_info["speaker"],
                         date=speech_info["date"],
                         title=speech_info["title"],
                     )
+                    self.logger.warning(msg)
+                    print(msg)
+                single_year_speeches.append(single_speech)
+                msg = "{speaker} {date} | {title} extracted.".format(
+                    speaker=speech_info["speaker"],
+                    date=speech_info["date"],
+                    title=speech_info["title"],
                 )
-                _counts +=1
+                print(msg)
+                _counts += 1
             # 更新当年爬取内容
-            speeches_by_year[year] = update_records(speeches_by_year[year], single_year_speeches)
+            speeches_by_year[year] = update_records(
+                speeches_by_year.get(year), single_year_speeches
+            )
             if self.save:
                 json_update(
-                    self.SAVE_PATH + f"{self.__fed_name__}_speeches_{year}.json",
+                    os.path.join(
+                        self.SAVE_PATH, f"{self.__fed_name__}_speeches_{year}.json"
+                    ),
                     single_year_speeches,
                 )
             print(f"{_counts} speeches of {year} collected.")
-        existed_speeches = sort_speeches_dict(speeches_by_year)
+        # 排序
+        speeches_by_year = sort_speeches_dict(
+            speeches_by_year,
+            sort_filed="date",
+            required_keys=["speaker", "date", "title"],
+            tag_fields=["href"],
+        )
         # 保存演讲内容
         if self.save:
             # 保存读取失败的演讲内容
             json_dump(failed, self.failed_speech_infos_filename)
-        if self.save and self.speeches_by_year!=existed_speeches:
+        if self.save and self.speeches_by_year != existed_speeches:
             # 更新已存储的演讲内容
             json_update(self.speech_infos_filename, speeches_by_year)
         return speeches_by_year
@@ -308,7 +312,7 @@ class DallasSpeechScraper(SpeechScraper):
             existed_lastest = get_latest_speech_date(existed_speeches)
         else:
             existed_speeches = {}
-            existed_lastest = "Jan 01, 2006"
+            existed_lastest = EARLYEST_EXTRACT_DATE
 
         # 提取演讲正文内容
         print(
@@ -347,7 +351,9 @@ def test_extract_single_speech():
 
 
 def test():
-    scraper = DallasSpeechScraper()
+    scraper = DallasSpeechScraper(
+        output_dir="../../data/fed_speeches", log_dir="../../log"
+    )
     scraper.collect()
 
 

@@ -285,16 +285,14 @@ class StLouisSpeechScraper(SpeechScraper):
             speech = {**speech_info, "content": content}
         except Exception as e:
             print(
-                "Error when extracting speech content from {href}. {error}".format(
-                    href=speech_info["href"], error=repr(e)
+                "{}, {}, {} content failed. Error: {}".format(
+                    speech_info["speaker"],
+                    speech_info["date"],
+                    speech_info["title"],
+                    repr(e),
                 )
             )
             speech = {**speech_info, "content": ""}
-            print(
-                "{}, {}, {} content failed.".format(
-                    speech_info["speaker"], speech_info["date"], speech_info["title"]
-                )
-            )
         return speech
 
     def extract_current_speech_content(self, href: str):
@@ -389,7 +387,7 @@ class StLouisSpeechScraper(SpeechScraper):
                 f"Error {repr(e)} occured when collecting the speeches' info of current president."
             )
             pass
-        
+
         # 将演讲信息更新到speech_infos中
         if self.save:
             json_update(self.speech_infos_filename, speeches)

@@ -1,4 +1,10 @@
+*.zip
+*.log
+**/__pycache__
+**/log/
+*.pyc
 data.zip
+**/*.log
 chrome-win64/129.0.6668.58.manifest
 chrome-win64/ABOUT
 chrome-win64/chrome_100_percent.pak
@@ -140,3 +146,16 @@ chrome-win64/resources/accessibility/reading_mode_gdocs_helper_manifest.json
 chrome-win64/resources/accessibility/reading_mode_gdocs_helper/content.js
 chrome-win64/resources/accessibility/reading_mode_gdocs_helper/gdocs_script.js
 chrome-win64.zip
+data_scraper/log/speech_scraper_scraper.log
+log/FRESERLogger_scraper.log
+log/speech_scraper_scraper.log
+utils/__pycache__/common.cpython-312.pyc
+utils/__pycache__/file_saver.cpython-312.pyc
+data_scraper/scrapers/__pycache__/scraper.cpython-312.pyc
+data_scraper/scrapers/__pycache__/scraper.cpython-312.pyc
+data_scraper/log/speech_scraper_scraper.log
+utils/__pycache__/common.cpython-312.pyc
+utils/__pycache__/file_saver.cpython-312.pyc
+log/speech_scraper_scraper.log
+utils/__pycache__/common.cpython-312.pyc
+utils/__pycache__/file_saver.cpython-312.pyc

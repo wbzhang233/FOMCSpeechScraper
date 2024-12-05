@@ -11,7 +11,6 @@
 from copy import deepcopy
 import os
 import time
-# import time
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -19,7 +18,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import StaleElementReferenceException
 from selenium.webdriver.remote.webelement import WebElement
-from freser_scraper import FRESERScraper
+from data_scraper.scrapers.freser_scraper import FRESERScraper
 from utils.common import parse_datestring
 from utils.file_saver import (
     json_dump,

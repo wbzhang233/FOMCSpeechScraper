@@ -199,16 +199,14 @@ class SanFranciscoSpeechScraper(SpeechScraper):
             speech = {**speech_info, "content": content}
         except Exception as e:
             print(
-                "Error when extracting speech content from {href}. {error}".format(
-                    href=speech_info["href"], error=repr(e)
+                "{} {} {} content failed. Error: {}".format(
+                    speech_info["speaker"],
+                    speech_info["date"],
+                    speech_info["title"],
+                    repr(e),
                 )
             )
             speech = {**speech_info, "content": ""}
-            print(
-                "{} {} {} content failed.".format(
-                    speech_info["speaker"], speech_info["date"], speech_info["title"]
-                )
-            )
         return speech
 
     def extract_speeches(
@@ -258,7 +256,9 @@ class SanFranciscoSpeechScraper(SpeechScraper):
                     f"Year:{year} | {len(singe_year_speeches)} speeches of {self.__fed_name__} was collected."
                 )
                 json_update(
-                    os.path.join(self.SAVE_PATH, f"{self.__fed_name__}_speeches_{year}.json"),
+                    os.path.join(
+                        self.SAVE_PATH, f"{self.__fed_name__}_speeches_{year}.json"
+                    ),
                     singe_year_speeches,
                 )
 
@@ -342,7 +342,9 @@ def test_extract_speech_infos():
 
 
 def test():
-    scraper = SanFranciscoSpeechScraper(output_dir="../../data/fed_speeches", log_dir="../../log")
+    scraper = SanFranciscoSpeechScraper(
+        output_dir="../../data/fed_speeches", log_dir="../../log"
+    )
     scraper.collect()
 
 
