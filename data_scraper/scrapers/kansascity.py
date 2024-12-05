@@ -20,7 +20,11 @@ import time
 import requests
 
 from data_scraper.scrapers.scraper import SpeechScraper
-from utils.common import EARLYEST_EXTRACT_DATE, get_latest_speech_date, parse_datestring
+from utils.common import (
+    EARLYEST_EXTRACT_DATE,
+    EARLYEST_YEAR,
+    get_latest_speech_date,
+)
 from utils.file_saver import (
     json_dump,
     json_load,
@@ -46,7 +50,8 @@ def download_pdf(pdf_url: str, file_name: str, save_path: str):
     response = requests.get(pdf_url)
 
     if response.status_code == 200:
-        with open(f"{save_path}/{file_name}", "wb") as f:
+        download_path = os.path.join(save_path, file_name)
+        with open(download_path, "wb") as f:
             f.write(response.content)
         print("PDF {} downloaded successfully.".format(file_name))
     else:
@@ -73,8 +78,11 @@ class KansasCitySpeechScraper(SpeechScraper):
     __name__ = f"{__fed_name__.title()}SpeechScraper"
 
     def __init__(self, url: str = None, auto_save: bool = True, **kwargs):
-        # CHROME下载地址比较难更改，暂时用默认值
-        self.DOWNLOAD_PATH = "C:/Users/Administrator/Downloads/"
+        # 预设PDF下载存储路径
+        pdf_save_dir = kwargs.get("pdf_save_dir", "../data/pdfs/")
+        self.DOWNLOAD_PATH = os.path.abspath(
+            os.path.join(pdf_save_dir, f"{self.__fed_name__}")
+        )
         # PDF文件下载目录
         self.prefs = {
             "download.default_directory": self.DOWNLOAD_PATH,
@@ -113,17 +121,8 @@ class KansasCitySpeechScraper(SpeechScraper):
                     "Jeffrey Schmid",
                 ]:
                     person_ele.click()
-            # 设置话题
-            filter_buttons[1].click()
-            topic_filter = self.driver.find_element(By.NAME, "6-13")
-            select = Select(topic_filter)
-            select.select_by_visible_text("All")
-            # 选中checkbox
-            all_element = topic_filter.find_element(
-                By.XPATH,
-                "./following-sibling::div[@class='options']/ul[@select-name='6-13']/li[@value='all']",
-            )
-            all_element.click()
+            # 设置时间
+
             # 点击apply_filters
             apply_filter_button = self.driver.find_element(
                 By.XPATH,
@@ -161,10 +160,10 @@ class KansasCitySpeechScraper(SpeechScraper):
         # 设置筛选的信息
         self.filter_setting()
 
-        # 已经存储的日期.
-        existed_speech_dates = set()
+        # 已经存储的链接.
+        existed_speech_hrefs = set()
         for _, single_year_infos in existed_speech_infos.items():
-            existed_speech_dates.update([info["date"] for info in single_year_infos])
+            existed_speech_hrefs.update([info["href"] for info in single_year_infos])
 
         # 主循环获取所有演讲信息
         speech_infos_by_year = deepcopy(existed_speech_infos)
@@ -174,29 +173,32 @@ class KansasCitySpeechScraper(SpeechScraper):
                 By.XPATH, "//div[@class='result-list']/div[@class='clear']"
             )
             for item in speech_items:
-                # 提取日期
-                date = item.find_element(
-                    By.XPATH, ".//span[contains(@class, 'date')]/time"
-                ).text.strip()
-                # 如果元素已经在列表中，则跳过
-                if date in existed_speech_dates:
-                    print(f"Date {date} already exists in the list. Break.")
-                    _continue = False
-                    break
+                # 提取日期. 日期可能不存在. 若不存在，则不收录.
+                try:
+                    date = item.find_element(
+                        By.XPATH, ".//span[contains(@class, 'date')]/time"
+                    ).text.strip()
+                except Exception as e:
+                    print(f"Error extracting date: {repr(e)}")
+                    date = ""
+                    continue
+
                 year = date.split(",")[-1].strip()
-                if year not in speech_infos_by_year:
-                    speech_infos_by_year[year] = []
+                if year.isdigit() and int(year) < EARLYEST_YEAR:
+                    continue
                 # 提取演讲者
                 speaker = item.find_element(
                     By.XPATH, ".//a[@class='mnt-tag-group-staff-link' and @href]"
                 ).text.strip()
-
                 # 提取标题和链接
                 title_link = item.find_element(By.XPATH, ".//h3/a[@href]")
                 title = title_link.text.strip()
                 href = title_link.get_attribute("href")
-
-                speech_infos_by_year[year].append(
+                # 如果元素已经在列表中，则跳过. 而非跳出循环. 因为这个顺序不是倒序的.
+                if href in existed_speech_hrefs:
+                    print(f"Date {date} already exists in the list. Continue.")
+                    continue
+                speech_infos_by_year.setdefault(year, []).append(
                     {
                         "speaker": speaker,
                         "date": date,
@@ -204,7 +206,7 @@ class KansasCitySpeechScraper(SpeechScraper):
                         "href": href,
                     }
                 )
-                print("Info of {} | {} {} collected.".format(date, speaker, title))
+                print("Info of {} | {} {} collected.".format(speaker, date, title))
 
             if not _continue:
                 break
@@ -212,7 +214,7 @@ class KansasCitySpeechScraper(SpeechScraper):
             try:
                 next_page_button = self.driver.find_element(
                     By.CSS_SELECTOR,
-                    "a[href][search-pagination-form-next-page-button][aria-label='Go to Next Page']",
+                    "a[href][search-pagination-form-next-page-button][aria-label='Go to Next Page']:not([disabled])",
                 )
                 next_page_button.click()
                 # 等待页面加载
@@ -230,12 +232,13 @@ class KansasCitySpeechScraper(SpeechScraper):
                 print(
                     f"Next button not found or disabled. Reached last page. {repr(e)}"
                 )
+                _continue = False
                 break
 
         # 排序
         speech_infos_by_year = sort_speeches_dict(speech_infos_by_year)
         # 保存
-        if self.save and speech_infos_by_year != existed_speech_dates:
+        if self.save and speech_infos_by_year != existed_speech_hrefs:
             json_update(self.speech_infos_filename, speech_infos_by_year)
         return speech_infos_by_year
 
@@ -247,40 +250,31 @@ class KansasCitySpeechScraper(SpeechScraper):
                 pdf_filename = href.split("/")[-1]
                 # 如果不存在，就下载
                 _times = 0
-                while (
-                    not is_download_existed(self.DOWNLOAD_PATH + pdf_filename)
-                ) and _times <= 1:
+                pdf_savepath = os.path.join(self.DOWNLOAD_PATH, pdf_filename)
+                while (not is_download_existed(pdf_savepath)) and _times <= 1:
                     self.driver.get(href)
                     time.sleep(1.0)
                     _times += 1
                 # 如果下载完成，则解析
-                if is_download_existed(self.DOWNLOAD_PATH + pdf_filename):
+                if is_download_existed(pdf_savepath):
                     # 解析pdf
-                    content = read_pdf_file(self.DOWNLOAD_PATH + pdf_filename)
+                    content = read_pdf_file(pdf_savepath)
                 else:
                     content = f"$PDF$: {pdf_filename}"
-                speech = {
-                    "content": content,
-                }
+                speech = {"content": content}
             elif href.startswith("https://www.youtube.com/"):
-                speech = {
-                    "content": f"$YOUTUBE$: {href}",
-                }
+                speech = {"content": f"$YOUTUBE$: {href}"}
             else:
                 # 爬取所有p元素
-                speech = {
-                    "content": f"$UNSUPPORTED$: {href}",
-                }
+                speech = {"content": f"$UNSUPPORTED$: {href}"}
         except Exception as e:
-            print(
-                "Error when extracting speech content from {href}. {error}".format(
-                    href=href, error=repr(e)
-                )
-            )
             speech = {"content": ""}
             print(
-                "{} {} {} content failed.".format(
-                    speech_info["speaker"], speech_info["date"], speech_info["title"]
+                "{} {} {} content failed. Error: {}".format(
+                    speech_info["speaker"],
+                    speech_info["date"],
+                    speech_info["title"],
+                    repr(e),
                 )
             )
         return {**speech_info, **speech}
@@ -289,26 +283,31 @@ class KansasCitySpeechScraper(SpeechScraper):
         self,
         speech_infos_by_year: dict,
         existed_speeches: dict,
-        start_date: str = "Jan 01, 2006",
     ):
         """搜集每篇演讲的内容"""
-        # 获取演讲的开始时间
-        start_date = parse_datestring(start_date)
-        start_year = start_date.year
+
+        # 已经存储的链接.
+        existed_speech_hrefs = {}
+        for _, single_year_speeches in existed_speeches.items():
+            for speech in single_year_speeches:
+                existed_speech_hrefs[speech.get("href")] = speech.get("content")
 
         # 获取每年的演讲内容
         speeches_by_year = deepcopy(existed_speeches)
         failed = []
         for year, single_year_infos in speech_infos_by_year.items():
-            # 跳过之前的年份
-            if int(year) < start_year:
-                continue
             single_year_speeches = []
             for speech_info in single_year_infos:
-                # 跳过start_date之前的演讲
-                if parse_datestring(speech_info["date"]) <= start_date:
+                # 如果已存储且正文内容不以$PDF$开头则跳过
+                if (
+                    speech_info["href"] in existed_speech_hrefs
+                    and existed_speech_hrefs.get(speech_info["href"])
+                    and not existed_speech_hrefs.get(speech_info["href"]).startswith(
+                        "$PDF$"
+                    )
+                ):
                     logger.info(
-                        "Skip speech {speaker} {date} {title} cause' it's earlier than start_date.".format(
+                        "Skip speech {speaker} {date} {title} cause' it was extracted before.".format(
                             speaker=speech_info["speaker"],
                             date=speech_info["date"],
                             title=speech_info["title"],
@@ -337,7 +336,12 @@ class KansasCitySpeechScraper(SpeechScraper):
                 )
             # 更新
             speeches_by_year[year] = update_records(
-                speeches_by_year[year], single_year_speeches
+                speeches_by_year.get(year),
+                single_year_speeches,
+                tag_fields=[
+                    "speaker",
+                    "date",
+                ],  # 此处已经融合了FRASER上的数据，因此不能根据href来辨认
             )
             if self.save:
                 json_update(
@@ -393,7 +397,6 @@ class KansasCitySpeechScraper(SpeechScraper):
         speeches = self.extract_speeches(
             speech_infos_by_year=speech_infos,
             existed_speeches=existed_speeches,
-            start_date=existed_lastest,
         )
         print("==" * 20 + f"{self.__fed_name__} finished." + "==" * 20)
         self.driver.quit()
@@ -424,7 +427,9 @@ def test_extract_speech_infos():
 
 def test():
     scraper = KansasCitySpeechScraper(
-        output_dir="../../data/fed_speeches", log_dir="../../log"
+        output_dir="../../data/fed_speeches",
+        pdf_save_dir="../../data/pdfs/",
+        log_dir="../../log",
     )
     scraper.collect()
 
