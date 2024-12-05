@@ -8,6 +8,7 @@
 @Desc    :   理事会成员讲话稿数据爬取
 """
 
+from copy import deepcopy
 import os
 import pandas as pd
 from selenium.webdriver.common.by import By
@@ -21,12 +22,18 @@ import time
 from datetime import datetime
 
 from data_scraper.scrapers.scraper import SpeechScraper
-from utils.common import EARLYEST_EXTRACT_DATE, get_latest_speech_date, parse_datestring
+from utils.common import (
+    EARLYEST_EXTRACT_DATE,
+    STANDRAD_DATE_FORMAT,
+    get_latest_speech_date,
+    parse_datestring,
+)
 from utils.file_saver import (
     json_dump,
     json_load,
     json_update,
     sort_speeches_dict,
+    update_records,
 )
 
 today = datetime.today().date()
@@ -75,7 +82,9 @@ class BOGSpeechScraper(SpeechScraper):
                 return position, speaker
         return "Unknown", applenation
 
-    def get_speech_links_from_current_page(self, speech_infos_by_year: dict):
+    def get_speech_links_from_current_page(
+        self, speech_infos_by_year: dict, existed_speech_dates: set
+    ):
         """搜集当前页面的所有演讲链接
 
         Returns:
@@ -87,6 +96,7 @@ class BOGSpeechScraper(SpeechScraper):
                 By.XPATH,
                 '//*[@id="article"]/div[1]/div[(@class="row ng-scope") and (contains(@ng-repeat, "item in items"))]',
             )
+            _continue = True
             while True:
                 try:
                     # 演讲稿链接
@@ -96,6 +106,13 @@ class BOGSpeechScraper(SpeechScraper):
                     title = link.text.strip()
                     # 日期
                     date = row.find_element(By.CSS_SELECTOR, "time").text.strip()
+                    # 如果已存在，则终止
+                    if (
+                        parse_datestring(date).strftime(STANDRAD_DATE_FORMAT)
+                        in existed_speech_dates
+                    ):
+                        _continue = False
+                        break
                     # 演讲人
                     speaker = row.find_element(
                         By.CLASS_NAME, "news__speaker.ng-binding"
@@ -125,13 +142,14 @@ class BOGSpeechScraper(SpeechScraper):
                         'following-sibling::div[(@class="row ng-scope") and (contains(@ng-repeat, "item in items"))]',
                     )
                     if not following_siblings or len(following_siblings) == 0:
+                        _continue = True
                         break
                     row = following_siblings[0]
                 except NoSuchElementException:
                     print("Could not find link or date in a row. Skipping.")
         except Exception as e:
             print(f"Error extracting speech URLs from the current page: {e}")
-        return speech_infos_by_year
+        return speech_infos_by_year, _continue
 
     def filter_setting(self):
         # 设置筛选时间
@@ -175,15 +193,30 @@ class BOGSpeechScraper(SpeechScraper):
             )
         )
 
-    def extract_speech_infos(self):
+    def extract_speech_infos(self, existed_speech_infos: dict):
         """抽取演讲的信息"""
-        # 主循环获取所有演讲信息
-        speech_infos_by_year = {}
-        while True:
-            # Get links from the current page
-            speech_infos_by_year = self.get_speech_links_from_current_page(
-                speech_infos_by_year
+        self.filter_setting()
+
+        # 已经存储的日期.
+        existed_speech_dates = set()
+        for _, single_year_infos in existed_speech_infos.items():
+            existed_speech_dates.update(
+                [
+                    parse_datestring(info["date"]).strftime(STANDRAD_DATE_FORMAT)
+                    for info in single_year_infos
+                ]
             )
+
+        # 主循环获取所有演讲信息
+        speech_infos_by_year = deepcopy(existed_speech_infos)
+        _continue = True
+        while _continue:
+            # Get links from the current page
+            speech_infos_by_year, flag = self.get_speech_links_from_current_page(
+                speech_infos_by_year, existed_speech_dates
+            )
+            if not flag:
+                break
             # Try to find and click the "Next" button
             try:
                 next_button = self.driver.find_element(
@@ -198,12 +231,11 @@ class BOGSpeechScraper(SpeechScraper):
                     f"Next button not found or disabled. Reached last page. {repr(e)}"
                 )
                 break
-
         speech_infos_by_year = sort_speeches_dict(
-            speech_infos_by_year, required_keys=["speaker", "date", "title"]
+            speech_infos_by_year, required_keys=["speaker", "date", "title", "href"]
         )
         if self.save:
-            json_update(self.speech_infos_filename, self.speech_infos_by_year)
+            json_update(self.speech_infos_filename, speech_infos_by_year)
         return speech_infos_by_year
 
     def extract_single_speech(self, speech_info: dict):
@@ -230,9 +262,9 @@ class BOGSpeechScraper(SpeechScraper):
             if paragraph_elements:
                 content = "\n\n".join([p.text.strip() for p in paragraph_elements])
                 print(
-                    "{}. {} | {} {} content extracted.".format(
-                        speech_info["speaker"],
+                    "{} {}. {} | {} content extracted.".format(
                         speech_info["position"],
+                        speech_info["speaker"],
                         speech_info["date"],
                         speech_info["title"],
                     )
@@ -240,37 +272,38 @@ class BOGSpeechScraper(SpeechScraper):
             else:
                 content = ""
                 print(
-                    "{}. {} | {} {} content failed.".format(
-                        speech_info["speaker"],
+                    "{} {}. {} | {} content failed.".format(
                         speech_info["position"],
+                        speech_info["speaker"],
                         speech_info["date"],
                         speech_info["title"],
                     )
                 )
             speech = {**speech_info, "content": content}
+            return speech
         except Exception as e:
             print(
-                "Error when extracting speech content from {href}. {error}".format(
-                    href=speech_info["href"], error=repr(e)
+                "{} {} {} | {} content failed. {}".format(
+                    speech_info["position"],
+                    speech_info["speaker"],
+                    speech_info["date"],
+                    speech_info["title"],
+                    repr(e),
                 )
             )
             speech = {**speech_info, "content": ""}
-            print(
-                "{} {} {} content failed.".format(
-                    speech_info["speaker"], speech_info["date"], speech_info["title"]
-                )
-            )
+            return speech
 
-        return speech
-
-    def extract_speeches(self, speech_infos_by_year: dict, start_date: str):
+    def extract_speeches(
+        self, speech_infos_by_year: dict, existed_speeches: dict, start_date: str
+    ):
         """搜集每篇演讲的内容"""
         # 获取演讲的开始时间
         start_date = parse_datestring(start_date).date()
         start_year = start_date.year
 
         # 获取每年的演讲内容
-        speeches_by_year = {}
+        speeches_by_year = deepcopy(existed_speeches)
         failed = []
         for year, single_year_infos in speech_infos_by_year.items():
             # 跳过之前的年份
@@ -306,7 +339,10 @@ class BOGSpeechScraper(SpeechScraper):
             single_year_speeches = sorted(
                 single_year_speeches, key=lambda x: x["date"], reverse=True
             )
-            speeches_by_year[year] = single_year_speeches
+            speeches_by_year[year] = update_records(
+                speeches_by_year.get(year), single_year_speeches
+            )
+
             if self.save:
                 json_update(
                     os.path.join(
@@ -333,23 +369,18 @@ class BOGSpeechScraper(SpeechScraper):
             dict: 按年整理的演讲稿字典
         """
         # 获取当前页面上最新的演讲日期
-        latest_speech_date = self.extract_lastest_speech_date()
         print(
             "==" * 20
             + f"Start collecting speech infos of {self.__fed_name__}"
             + "==" * 20
         )
-        # 提取每年演讲的基本信息（不含正文和highlights等）
         if os.path.exists(self.speech_infos_filename):
             # 加载已存在的演讲信息
-            speech_infos = json_load(self.speech_infos_filename)
-            existed_speech_info_date = get_latest_speech_date(speech_infos)
-            # 如果已存在的不是最新的，则获取; .
-            if latest_speech_date > existed_speech_info_date:
-                speech_infos = self.extract_speech_infos()
+            existed_speech_infos = json_load(self.speech_infos_filename)
         else:
-            # 从零搜集所有演讲信息
-            speech_infos = self.extract_speech_infos()
+            existed_speech_infos = {}
+        # 更新演讲基本信息
+        speech_infos = self.extract_speech_infos(existed_speech_infos)
 
         # 查看已有的最新的演讲日期
         if os.path.exists(self.speeches_filename):
@@ -358,6 +389,7 @@ class BOGSpeechScraper(SpeechScraper):
             # 早于已存在日期的则不再收集.
             existed_lastest = get_latest_speech_date(existed_speeches)
         else:
+            existed_speeches = {}
             existed_lastest = EARLYEST_EXTRACT_DATE
 
         # 提取演讲正文内容
@@ -366,7 +398,9 @@ class BOGSpeechScraper(SpeechScraper):
             + f"Start extracting speech content of {self.__fed_name__} from {existed_lastest}"
             + "==" * 20
         )
-        speeches = self.extract_speeches(speech_infos, existed_lastest)
+        speeches = self.extract_speeches(
+            speech_infos, existed_speeches, existed_lastest
+        )
         print("==" * 20 + f"{self.__fed_name__} finished." + "==" * 20)
         return speeches
 
