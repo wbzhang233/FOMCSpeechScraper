@@ -16,10 +16,15 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import StaleElementReferenceException
 from data_scraper.scrapers.scraper import SpeechScraper
-from freser_scraper import FRESERScraper
-from utils.common import parse_datestring
-from utils.file_saver import json_dump, json_load, json_update, update_dict
-from utils.logger import get_logger
+from data_scraper.scrapers.freser_scraper import FRESERScraper
+from utils.common import get_latest_speech_date, parse_datestring
+from utils.file_saver import (
+    json_dump,
+    json_load,
+    json_update,
+    sort_speeches_dict,
+    update_dict,
+)
 
 
 class StLouisSpeechScraper(SpeechScraper):
@@ -29,27 +34,15 @@ class StLouisSpeechScraper(SpeechScraper):
     URL_CURRENT = "https://www.stlouisfed.org/from-the-president/remarks"
     __fed_name__ = "stlouis"
     __name__ = f"{__fed_name__.title()}SpeechScraper"
-    SAVE_PATH = f"../../data/fed_speeches/{__fed_name__}_fed_speeches/"
-    logger = get_logger(__fed_name__, log_filepath="../../log")
 
-    def __init__(self, url: str = None, auto_save: bool = True):
-        super().__init__(url)
+    def __init__(self, url: str = None, auto_save: bool = True, **kwargs):
+        super().__init__(url=url, auto_save=auto_save, **kwargs)
         # 按年度整理的演讲信息、演讲记录
         self.speech_infos_by_year = None
         self.speeches_by_year = None
-        os.makedirs(self.SAVE_PATH, exist_ok=True)
-        print(f"{self.SAVE_PATH} has been created.")
-        self.save = auto_save
-        # 保存文件的文件名
-        self.speech_infos_filename = (
-            self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
-        )
-        self.speeches_filename = self.SAVE_PATH + f"{self.__fed_name__}_speeches.json"
-        self.failed_speech_infos_filename = (
-            self.SAVE_PATH + f"{self.__fed_name__}_failed_speech_infos.json"
-        )
-        self.title_infos_filename = (
-            self.SAVE_PATH + f"{self.__fed_name__}_title_infos.json"
+        # 标题信息
+        self.title_infos_filename = os.path.join(
+            self.SAVE_PATH, f"{self.__fed_name__}_title_infos.json"
         )
 
     def fetch_series_all_titles(self):
@@ -130,7 +123,6 @@ class StLouisSpeechScraper(SpeechScraper):
             }
         except Exception as e:
             msg = "Error {} occured when fetching item content".format(repr(e))
-            StLouisSpeechScraper.logger.info(msg)
             print(msg)
             return {
                 "date": "",
@@ -197,10 +189,10 @@ class StLouisSpeechScraper(SpeechScraper):
                     speech = self.fetch_item_info(item_id)
                     speech.update(
                         {
+                            "speaker": speaker,
                             "title": item_name,
                             "href": item_link,
                             "item_id": item_id,
-                            "speaker": speaker,
                         }
                     )
                     print(
@@ -261,6 +253,12 @@ class StLouisSpeechScraper(SpeechScraper):
             print("=" * 80)
             self.logger.info(msg=msg)
 
+        speech_infos_by_year = sort_speeches_dict(
+            speech_infos_by_year,
+            sort_filed="date",
+            required_keys=["date", "title"],
+            tag_fields=["href"],
+        )
         self.speech_infos_by_year = speech_infos_by_year
         # 更新基本信息.
         if self.save:
@@ -391,12 +389,24 @@ class StLouisSpeechScraper(SpeechScraper):
                 f"Error {repr(e)} occured when collecting the speeches' info of current president."
             )
             pass
+        
+        # 将演讲信息更新到speech_infos中
+        if self.save:
+            json_update(self.speech_infos_filename, speeches)
 
         # 遍历获取正文
         for year, single_year_speeches in speeches.items():
             for i, speech in enumerate(single_year_speeches):
                 content = self.extract_current_speech_content(speech["href"])
                 speeches[year][i].update({"content": content})
+            if self.save:
+                # 将该年的内容更新到已有数据中
+                json_update(
+                    os.path.join(
+                        self.SAVE_PATH, f"{self.__fed_name__}_speeches_{year}.json"
+                    ),
+                    speeches[year],
+                )
 
         return speeches
 
@@ -446,15 +456,24 @@ class StLouisSpeechScraper(SpeechScraper):
             # 按年度保存演讲
             if self.save:
                 json_update(
-                    self.SAVE_PATH + f"{self.__fed_name__}_speeches_{year}.json",
+                    os.path.join(
+                        self.SAVE_PATH, f"{self.__fed_name__}_speeches_{year}.json"
+                    ),
                     single_year_speeches,
                 )
             print(
                 "{} speeches of {} collected.".format(len(speeches_by_year[year]), year)
             )
+        speeches_by_year = sort_speeches_dict(
+            speeches_by_year,
+            sort_filed="date",
+            required_keys=["speaker", "date", "title"],
+            tag_fields=["href"],
+        )
         if self.save:
             # 更新读取失败的演讲内容
             json_dump(failed, self.failed_speech_infos_filename)
+            json_update(self.speeches_filename, speeches_by_year)
         return speeches_by_year
 
     def collect_speeches_of_former_presidents(self):
@@ -468,13 +487,7 @@ class StLouisSpeechScraper(SpeechScraper):
             # 若已经存在基本信息，则加载进来.
             speech_infos = json_load(self.speech_infos_filename)
             # 查看已有的最新的演讲日期
-            latest_year = max([k for k, _ in speech_infos.items() if k.isdigit()])
-            existed_lastest = max(
-                [
-                    parse_datestring(speech_info["date"])
-                    for speech_info in speech_infos[latest_year]
-                ]
-            ).strftime("%b %d, %Y")
+            existed_lastest = get_latest_speech_date(speech_infos)
             self.logger.info("Speech Infos Data already exists, skip collecting infos.")
             # existed_lastest = "October 01, 2023"
         else:
@@ -492,13 +505,18 @@ class StLouisSpeechScraper(SpeechScraper):
         speeches = self.extract_speeches(speech_infos, existed_lastest)
         return speeches
 
-    def collect(self, mode: str = "Current"):
+    def collect(self, mode: str = "Update"):
         """收集所有历任行长的讲话数据
 
         Args:
-            mode (str, optional): 数据模式. Defaults to "Current", 表示仅获取现任行长讲话数据.
+            mode (str, optional): 数据模式. Defaults to "Update", 表示仅获取现任行长讲话数据.
         """
-        if mode == "Current":
+        print(
+            "==" * 20
+            + f"Start collecting speech infos of {self.__fed_name__}"
+            + "==" * 20
+        )
+        if mode == "Update":
             speeches = self.collect_speeches_of_current_president()
         elif mode == "All":
             # 先爬取现在的
@@ -510,11 +528,16 @@ class StLouisSpeechScraper(SpeechScraper):
             print("Speeches of Fromer presidents was scraped.")
             speeches = update_dict(speeches, former_speeches)
         else:
-            msg = "mode {mode} was not supported. Only `All` and `Current` was valid."
+            msg = "mode {mode} was not supported. Only `All` and `Update` was valid."
             print(msg)
         # 保存
         if self.save:
             json_update(self.speeches_filename, speeches)
+        print(
+            "==" * 20
+            + f"Speech infos of {self.__fed_name__} has collected."
+            + "==" * 20
+        )
 
 
 def test_extract_speech_infos():
@@ -534,8 +557,10 @@ def test_extract_single_speech():
 
 
 def test():
-    scraper = StLouisSpeechScraper()
-    scraper.collect(mode="All")
+    scraper = StLouisSpeechScraper(
+        output_dir="../../data/fed_speeches", log_dir="../../log"
+    )
+    scraper.collect(mode="Update")
 
 
 if __name__ == "__main__":
