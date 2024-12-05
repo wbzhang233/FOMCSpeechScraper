@@ -21,12 +21,11 @@ from selenium.common.exceptions import (
 import time
 
 from data_scraper.scrapers.scraper import SpeechScraper
-from utils.common import get_latest_speech_date, parse_datestring
+from utils.common import EARLYEST_EXTRACT_DATE, get_latest_speech_date, parse_datestring
 from utils.file_saver import (
     json_dump,
     json_load,
     json_update,
-    unify_speech_dict,
     update_records,
     sort_speeches_dict,
 )
@@ -36,23 +35,11 @@ class SanFranciscoSpeechScraper(SpeechScraper):
     URL = "https://www.frbsf.org/news-and-media/speeches/"
     __fed_name__ = "sanfrancisco"
     __name__ = f"{__fed_name__.title()}SpeechScraper"
-    SAVE_PATH = f"../../data/fed_speeches/{__fed_name__}_fed_speeches/"
 
-    def __init__(self, url: str = None, auto_save: bool = True):
-        super().__init__(url)
+    def __init__(self, url: str = None, auto_save: bool = True, **kwargs):
+        super().__init__(url=url, auto_save=auto_save, **kwargs)
         self.speech_infos_by_year = None
         self.speeches_by_year = None
-        os.makedirs(self.SAVE_PATH, exist_ok=True)
-        print(f"{self.SAVE_PATH} has been created.")
-        self.save = auto_save
-        # 保存文件的文件名
-        self.speech_infos_filename = (
-            self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
-        )
-        self.speeches_filename = self.SAVE_PATH + f"{self.__fed_name__}_speeches.json"
-        self.failed_speech_infos_filename = (
-            self.SAVE_PATH + f"{self.__fed_name__}_failed_speech_infos.json"
-        )
 
     def choose_presidents(self):
         """点击直选中"""
@@ -64,7 +51,6 @@ class SanFranciscoSpeechScraper(SpeechScraper):
                 continue
             else:
                 try:
-                    # button.click()
                     self.driver.execute_script("arguments[0].click();", button)
                 except WebDriverException as e:
                     print(f"Clicking button failed: {e}")
@@ -179,8 +165,10 @@ class SanFranciscoSpeechScraper(SpeechScraper):
                 '//*[@id="wp--skip-link--target"]/div[2]/div/div[2]/div[1]/p[strong and contains(text(), "Footnotes")]',
             ]
 
-            footnotes_elements = self.driver.find_elements(By.XPATH, " | ".join(options))
-            if len(footnotes_elements)!=0:
+            footnotes_elements = self.driver.find_elements(
+                By.XPATH, " | ".join(options)
+            )
+            if len(footnotes_elements) != 0:
                 content_elements = footnotes_elements[0].find_elements(
                     By.XPATH, "./preceding-sibling::p[not(a)]"
                 )
@@ -191,12 +179,7 @@ class SanFranciscoSpeechScraper(SpeechScraper):
                 )
 
             if content_elements:
-                content = "\n\n".join(
-                    [
-                        p.text.strip()
-                        for p in content_elements
-                    ]
-                )
+                content = "\n\n".join([p.text.strip() for p in content_elements])
                 print(
                     "{}. {} | {} content extracted.".format(
                         speech_info["speaker"],
@@ -226,9 +209,7 @@ class SanFranciscoSpeechScraper(SpeechScraper):
                     speech_info["speaker"], speech_info["date"], speech_info["title"]
                 )
             )
-        return unify_speech_dict(
-            speech, necessary_keys=["speaker", "date", "title", "content"]
-        )
+        return speech
 
     def extract_speeches(
         self, speech_infos_by_year: dict, existed_speeches: dict, start_date: str
@@ -258,9 +239,9 @@ class SanFranciscoSpeechScraper(SpeechScraper):
                             title=speech_info["title"],
                         )
                     )
-                    continue
+                    break
                 # 跳过不为行长的演讲
-                if 'leadership' in speech_info['speaker'].lower():
+                if "leadership" in speech_info["speaker"].lower():
                     continue
                 single_speech = self.extract_single_speech(speech_info)
                 if single_speech["content"] == "":
@@ -268,24 +249,27 @@ class SanFranciscoSpeechScraper(SpeechScraper):
                     failed.append(single_speech)
                 singe_year_speeches.append(single_speech)
             speeches_by_year[year] = update_records(
-                speeches_by_year.get(year), singe_year_speeches,
-                tag_fields=['speaker', 'date', 'title']
+                speeches_by_year.get(year),
+                singe_year_speeches,
+                tag_fields=["href"],
             )
             if self.save:
-                print(f"Year:{year} | {len(singe_year_speeches)} speeches of {self.__fed_name__} was collected.")
+                print(
+                    f"Year:{year} | {len(singe_year_speeches)} speeches of {self.__fed_name__} was collected."
+                )
                 json_update(
-                    self.SAVE_PATH + f"{self.__fed_name__}_speeches_{year}.json",
+                    os.path.join(self.SAVE_PATH, f"{self.__fed_name__}_speeches_{year}.json"),
                     singe_year_speeches,
                 )
-        
+
         if self.save:
             json_dump(failed, self.failed_speech_infos_filename)
         # 去重并且排序
         speeches_by_year = sort_speeches_dict(
             speeches_by_year,
             sort_filed="date",
-            required_keys=["speaker", "date", "title", "content"],
-            tag_fields=["date", "href"],
+            required_keys=["speaker", "date", "title"],
+            tag_fields=["href"],
         )
         if self.save and speeches_by_year != existed_speeches:
             json_update(self.speeches_filename, speeches_by_year)
@@ -317,7 +301,7 @@ class SanFranciscoSpeechScraper(SpeechScraper):
             existed_lastest = get_latest_speech_date(existed_speeches)
         else:
             existed_speeches = {}
-        existed_lastest = "Jan 01, 2006"
+            existed_lastest = EARLYEST_EXTRACT_DATE
 
         # 提取演讲正文内容
         print(
@@ -358,7 +342,7 @@ def test_extract_speech_infos():
 
 
 def test():
-    scraper = SanFranciscoSpeechScraper()
+    scraper = SanFranciscoSpeechScraper(output_dir="../../data/fed_speeches", log_dir="../../log")
     scraper.collect()
 
 
