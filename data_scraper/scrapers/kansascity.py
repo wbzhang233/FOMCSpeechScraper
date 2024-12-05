@@ -15,20 +15,20 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
-from selenium.common.exceptions import (
-    TimeoutException,
-    WebDriverException,
-    NoSuchElementException,
-)
 
 import time
 import requests
 
 from data_scraper.scrapers.scraper import SpeechScraper
-from utils.common import get_latest_speech_date, parse_datestring
-from utils.file_saver import json_dump, json_load, json_update, update_records
+from utils.common import EARLYEST_EXTRACT_DATE, get_latest_speech_date, parse_datestring
+from utils.file_saver import (
+    json_dump,
+    json_load,
+    json_update,
+    sort_speeches_dict,
+    update_records,
+)
 from utils.logger import logger
-from collections import OrderedDict
 from PyPDF2 import PdfReader
 
 
@@ -71,37 +71,23 @@ class KansasCitySpeechScraper(SpeechScraper):
     URL = "https://www.kansascityfed.org/speeches/"
     __fed_name__ = "kansascity"
     __name__ = f"{__fed_name__.title()}SpeechScraper"
-    SAVE_PATH = f"../../data/fed_speeches/{__fed_name__}_fed_speeches/"
-    DOWNLOAD_PATH = "C:/Users/Administrator/Downloads/"
 
-    # PDF文件下载目录
-    prefs = {
-        "download.default_directory": SAVE_PATH,
-        "download.prompt_for_download": False,
-        "download.directory_upgrade": True,
-        "plugins.always_open_pdf_externally": True,  # 在外部程序中打开PDF文件
-    }
-
-    def __init__(self, url: str = None, auto_save: bool = True):
+    def __init__(self, url: str = None, auto_save: bool = True, **kwargs):
+        # CHROME下载地址比较难更改，暂时用默认值
+        self.DOWNLOAD_PATH = "C:/Users/Administrator/Downloads/"
+        # PDF文件下载目录
+        self.prefs = {
+            "download.default_directory": self.DOWNLOAD_PATH,
+            "download.prompt_for_download": False,
+            "download.directory_upgrade": True,
+            "plugins.always_open_pdf_externally": True,  # 在外部程序中打开PDF文件
+        }
         # 设置浏览器选项
         chrome_options = Options()
         chrome_options.add_experimental_option("prefs", self.prefs)
-        super().__init__(url, options=chrome_options)
-        self.speech_infos_by_year = None
-        self.speeches_by_year = None
-        os.makedirs(self.SAVE_PATH, exist_ok=True)
-        print(f"{self.SAVE_PATH} has been created.")
-        self.save = auto_save
-        # 保存路径
-        self.speech_infos_filename = (
-            self.SAVE_PATH + f"{self.__fed_name__}_speech_infos.json"
-        )
-        self.speeches_filename = self.SAVE_PATH + f"{self.__fed_name__}_speeches.json"
-        self.failed_speech_infos_filename = (
-            self.SAVE_PATH + f"{self.__fed_name__}_failed_speech_infos.json"
-        )
+        super().__init__(url=url, auto_save=auto_save, options=chrome_options, **kwargs)
 
-    def filter_setting(self, presidents: list=None):
+    def filter_setting(self, presidents: list = None):
         try:
             if not presidents:
                 presidents = ["Thomas M. Hoenig", "Esther L. George", "Jeffrey Schmid"]
@@ -147,7 +133,9 @@ class KansasCitySpeechScraper(SpeechScraper):
 
             # 等待页面
             WebDriverWait(self.driver, 10).until(
-                EC.presence_of_all_elements_located((By.XPATH, "//*[@id='mainContent']"))
+                EC.presence_of_all_elements_located(
+                    (By.XPATH, "//*[@id='mainContent']")
+                )
             )
             # 设置每页展示100个
             perpage_number_button = self.driver.find_element(
@@ -155,10 +143,6 @@ class KansasCitySpeechScraper(SpeechScraper):
                 "//*[@id='search']/footer/div/form/div/div[2]/div/div/button",
             )
             perpage_number_button.click()
-            # # 好像不起作用
-            # perpage = self.driver.find_element(By.NAME, "perpage")
-            # select = Select(perpage)
-            # select.select_by_value("100")
             # 直接选择控件点击
             perpage_100 = self.driver.find_element(
                 By.XPATH, "//ul[@select-name='perpage']/li[@value='100']"
@@ -174,7 +158,6 @@ class KansasCitySpeechScraper(SpeechScraper):
 
     def extract_speech_infos(self, existed_speech_infos: dict):
         """抽取演讲的信息"""
-        self.driver.get(self.URL)
         # 设置筛选的信息
         self.filter_setting()
 
@@ -197,7 +180,7 @@ class KansasCitySpeechScraper(SpeechScraper):
                 ).text.strip()
                 # 如果元素已经在列表中，则跳过
                 if date in existed_speech_dates:
-                    print(f"Date {date} already exists in the list. Continue.")
+                    print(f"Date {date} already exists in the list. Break.")
                     _continue = False
                     break
                 year = date.split(",")[-1].strip()
@@ -215,15 +198,13 @@ class KansasCitySpeechScraper(SpeechScraper):
 
                 speech_infos_by_year[year].append(
                     {
-                        "date": date,
                         "speaker": speaker,
+                        "date": date,
                         "title": title,
                         "href": href,
                     }
                 )
-                print("Info of {} | {} {} collected.".format(
-                    date, speaker, title
-                ))
+                print("Info of {} | {} {} collected.".format(date, speaker, title))
 
             if not _continue:
                 break
@@ -245,33 +226,20 @@ class KansasCitySpeechScraper(SpeechScraper):
                         )
                     )
                 )
-            except NoSuchElementException as e:
-                print(
-                    f"Next button not found or disabled. Reached last page. {repr(e)}"
-                )
-                break
-            except TimeoutException as e:
-                print(
-                    f"Next button not found or disabled. Reached last page. {repr(e)}"
-                )
-                break
-            except WebDriverException as e:
+            except Exception as e:
                 print(
                     f"Next button not found or disabled. Reached last page. {repr(e)}"
                 )
                 break
 
         # 排序
-        speech_infos_by_year = OrderedDict(
-            sorted(speech_infos_by_year.items(), key=lambda x: int(x[0]), reverse=True)
-        )
+        speech_infos_by_year = sort_speeches_dict(speech_infos_by_year)
         # 保存
-        if self.save and speech_infos_by_year!=existed_speech_dates:
+        if self.save and speech_infos_by_year != existed_speech_dates:
             json_update(self.speech_infos_filename, speech_infos_by_year)
         return speech_infos_by_year
 
     def extract_single_speech(self, speech_info: dict):
-        speech = {"speaker": "", "content": ""}
         try:
             href = speech_info["href"]
             if href.endswith(".pdf"):
@@ -279,10 +247,12 @@ class KansasCitySpeechScraper(SpeechScraper):
                 pdf_filename = href.split("/")[-1]
                 # 如果不存在，就下载
                 _times = 0
-                while (not is_download_existed(self.DOWNLOAD_PATH + pdf_filename)) and _times<=1:
+                while (
+                    not is_download_existed(self.DOWNLOAD_PATH + pdf_filename)
+                ) and _times <= 1:
                     self.driver.get(href)
                     time.sleep(1.0)
-                    _times +=1
+                    _times += 1
                 # 如果下载完成，则解析
                 if is_download_existed(self.DOWNLOAD_PATH + pdf_filename):
                     # 解析pdf
@@ -316,10 +286,10 @@ class KansasCitySpeechScraper(SpeechScraper):
         return {**speech_info, **speech}
 
     def extract_speeches(
-        self, 
-        speech_infos_by_year: dict, 
+        self,
+        speech_infos_by_year: dict,
         existed_speeches: dict,
-        start_date: str = "Jan 01, 2006"
+        start_date: str = "Jan 01, 2006",
     ):
         """搜集每篇演讲的内容"""
         # 获取演讲的开始时间
@@ -358,19 +328,26 @@ class KansasCitySpeechScraper(SpeechScraper):
                         )
                     )
                 single_year_speeches.append(single_speech)
-                print("Extracted speech {speaker} {date} {title}".format(
-                    speaker=speech_info["speaker"],
-                    date=speech_info["date"],
-                    title=speech_info["title"],
-                ))
+                print(
+                    "Extracted speech {speaker} {date} {title}".format(
+                        speaker=speech_info["speaker"],
+                        date=speech_info["date"],
+                        title=speech_info["title"],
+                    )
+                )
             # 更新
-            speeches_by_year[year] = update_records(speeches_by_year[year], single_year_speeches)
+            speeches_by_year[year] = update_records(
+                speeches_by_year[year], single_year_speeches
+            )
             if self.save:
                 json_update(
-                    self.SAVE_PATH + f"{self.__fed_name__}_speeches_{year}.json",
+                    os.path.join(
+                        self.SAVE_PATH, f"{self.__fed_name__}_speeches_{year}.json"
+                    ),
                     single_year_speeches,
                 )
             print(f"Speeches of {year} collected.")
+        speeches_by_year = sort_speeches_dict(speeches_by_year)
         # 保存演讲内容
         if self.save:
             # 保存读取失败的演讲内容
@@ -405,7 +382,7 @@ class KansasCitySpeechScraper(SpeechScraper):
             existed_lastest = get_latest_speech_date(existed_speeches)
         else:
             existed_speeches = {}
-            existed_lastest = "Jan 01, 2006"
+            existed_lastest = EARLYEST_EXTRACT_DATE
 
         # 提取演讲正文内容
         print(
@@ -419,6 +396,7 @@ class KansasCitySpeechScraper(SpeechScraper):
             start_date=existed_lastest,
         )
         print("==" * 20 + f"{self.__fed_name__} finished." + "==" * 20)
+        self.driver.quit()
         return speeches
 
 
@@ -445,7 +423,9 @@ def test_extract_speech_infos():
 
 
 def test():
-    scraper = KansasCitySpeechScraper()
+    scraper = KansasCitySpeechScraper(
+        output_dir="../../data/fed_speeches", log_dir="../../log"
+    )
     scraper.collect()
 
 
